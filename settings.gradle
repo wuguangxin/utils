@@ -1,0 +1,4 @@
+include ':utils'
+include ':utils'
+include ':app'
+rootProject.name = "lib_utils"

@@ -1,0 +1,81 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'com.novoda.bintray-release'
+
+// module配置
+def mModulesName = "utils"
+def mVersionCode = 1
+def mVersionName = "1.0.0"
+def mDescription = "工具类集合"
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode mVersionCode
+        versionName mVersionName
+        description mDescription
+
+        // 作用是当本项目作为lib或者module被别人使用，如果本项目中有不可被混淆的代码时，可在本项目中开启混淆配置，
+        // 当第三方引用到本module并打包时，会自动应用本module中的混淆配置文件，避免别人忘记配置而导致错误
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        // 当该项目以导入代码到主项目中作为module时，主项目有几个type就同样添加几个
+//        alpha {
+//            debuggable true
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+//        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // 腾讯 MMKV 替代 SP (https://github.com/Tencent/MMKV/blob/master/readme_cn.md)
+    implementation 'com.tencent:mmkv-static:1.2.1'
+    // 二维码
+    implementation 'com.google.zxing:core:3.4.0'
+}
+
+// 配置 bintray
+publish {
+    // 固定配置
+    bintrayUser = 'wuguangxin'              // 登陆账号
+    groupId = 'com.wuguangxin'              // 项目的包名
+    userOrg = 'wuguangxin'                  // bintray用户名
+    repoName = 'maven'                      // Repositories名，所有library都默认使用"maven"
+    // 可变配置
+    website = 'https://github.com/wuguangxin/' + mModulesName   // 项目的地址，不重要
+    artifactId = mModulesName               // 上传到bintray里的Package Name(这里填什么就显示什么)
+    publishVersion = mVersionName           // 引用版本号 (这里填什么就显示什么)
+    dryRun = false                          // false:上传，true：不上传
+    desc = mDescription                     // 版本描述（不重要）
+}
+
