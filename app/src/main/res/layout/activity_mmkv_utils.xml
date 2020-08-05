@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".ui.MainActivity"
+    tools:ignore="HardcodedText">
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入内容" />
+
+    <RadioGroup
+        android:id="@+id/user_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="切换当前用户：" />
+
+        <RadioButton
+            android:id="@+id/user_1"
+            style="@style/btn"
+            android:layout_width="match_parent"
+            android:text="张三" />
+
+        <RadioButton
+            android:id="@+id/user_2"
+            style="@style/btn"
+            android:layout_width="match_parent"
+            android:text="李四" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/put"
+            style="@style/btn"
+            android:text="存储" />
+
+        <Button
+            android:id="@+id/get"
+            style="@style/btn"
+            android:text="获取" />
+
+        <Button
+            android:id="@+id/del"
+            style="@style/btn"
+            android:text="清除" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/put_list"
+            style="@style/btn"
+            android:text="存储List" />
+
+        <Button
+            android:id="@+id/get_list"
+            style="@style/btn"
+            android:text="获取List" />
+
+        <Button
+            android:id="@+id/del_list"
+            style="@style/btn"
+            android:text="清除" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/put_map"
+            style="@style/btn"
+            android:text="存储Map" />
+
+        <Button
+            android:id="@+id/get_map"
+            style="@style/btn"
+            android:text="获取Map" />
+
+        <Button
+            android:id="@+id/del_map"
+            style="@style/btn"
+            android:text="清除" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/put_bean"
+            style="@style/btn"
+            android:text="存储Bean" />
+
+        <Button
+            android:id="@+id/get_bean"
+            style="@style/btn"
+            android:text="获取Bean" />
+
+        <Button
+            android:id="@+id/del_bean"
+            style="@style/btn"
+            android:text="清除Bean" />
+    </LinearLayout>
+
+
+</LinearLayout>

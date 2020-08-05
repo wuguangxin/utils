@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#DDDDDD">
+
+        <ImageView
+            android:id="@+id/anim_image_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/left_in" style="@style/btn" android:text="left_in" />
+        <Button android:id="@+id/top_in" style="@style/btn" android:text="top_in" />
+        <Button android:id="@+id/right_in" style="@style/btn" android:text="right_in" />
+        <Button android:id="@+id/bottom_in" style="@style/btn" android:text="bottom_in" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/left_out" style="@style/btn" android:text="left_out" />
+        <Button android:id="@+id/top_out" style="@style/btn" android:text="top_out" />
+        <Button android:id="@+id/right_out" style="@style/btn" android:text="right_out" />
+        <Button android:id="@+id/bottom_out" style="@style/btn" android:text="bottom_out" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/fade_in" style="@style/btn" android:text="fade_in" />
+        <Button android:id="@+id/fade_out" style="@style/btn" android:text="fade_out" />
+        <Button android:id="@+id/rotate_20" style="@style/btn" android:text="rotate_20" />
+        <Button android:id="@+id/rotate_360" style="@style/btn" android:text="rotate_360" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/zoom_out" style="@style/btn" android:text="zoom_out" />
+        <Button android:id="@+id/zoom_in" style="@style/btn" android:text="zoom_in" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/request_permission" style="@style/btn" android:text="请求权限" />
+        <Button android:id="@+id/check_permission" style="@style/btn" android:text="检查权限" />
+        <Button android:id="@+id/write_file" style="@style/btn" android:text="写文件" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -11,6 +11,10 @@ public class MD5 {
 
 	private static String key = "";
 
+	/**
+	 * 加盐
+	 * @param key
+	 */
 	public static void setKey(String key) {
 		MD5.key = key;
 	}
@@ -29,7 +33,7 @@ public class MD5 {
 			MessageDigest digester = MessageDigest.getInstance("MD5");
 			text += key;
 			byte[] result = digester.digest(text.getBytes());
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			for (byte b : result) {
 				int number = b & 0xff & 0xff;
 				String hexStr = Integer.toHexString(number);

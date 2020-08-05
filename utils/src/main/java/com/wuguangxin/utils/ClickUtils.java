@@ -7,11 +7,18 @@ import android.util.Log;
  * Created by wuguangxin on 2019/11/1.
  */
 public class ClickUtils {
+    /**
+     * 最小间隔还时间（毫秒）
+     */
     private static final int MIN_CLICK_DELAY_TIME = 700; // 过快点击间隔限制时间（毫秒）
+
+    /**
+     * 上一次点击的时间
+     */
     private static long lastClickTime;
 
     /**
-     * 是否过快点击
+     * 判断是否过快点击控件。
      * @return
      */
     public static boolean isFastClick() {

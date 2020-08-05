@@ -48,9 +48,6 @@ public class Null {
      * @return 返回原对象
      */
     public static <T> T check(T obj, T def) {
-        if (obj == null) {
-            return def;
-        }
-        return obj;
+        return obj == null ? def : obj;
     }
 }

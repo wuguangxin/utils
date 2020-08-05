@@ -5,7 +5,6 @@ import android.os.StrictMode;
 
 /**
  * Android 的【严格模式】工具类
- *
  * Created by wuguangxin on 2017/7/14.
  */
 public class StrictModeUtils {
@@ -43,21 +42,20 @@ public class StrictModeUtils {
             penaltyDropBox() // 将违规信息记录到 dropbox 系统日志目录中（/data/system/dropbox），你可以通过如下命令进行插件：
         */
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads() // 检查磁盘读取
-                .detectCustomSlowCalls() //API 11，使用StrictMode.noteSlowCode
-                .detectDiskWrites() // 检查磁盘写入
-                .detectNetwork()   // or .detectAll() for all detectable problems
-                // .detectResourceMismatches() // API23
-                // .detectUnbufferedIo() // API26
-                .detectAll() // 这是对以上的总开关
+                .detectNetwork()            // 开启网络操作（没问题）
+                .detectDiskReads()          // 检查磁盘读取（有问题）
+                .detectDiskWrites()         // 检查磁盘写入（没问题）
+                .detectCustomSlowCalls()    // API 11，开启自定义的耗时调用，使用StrictMode.noteSlowCode
+////                .detectResourceMismatches() // API23
+////                .detectUnbufferedIo()       // API26
+                .detectAll()                // 这是对以上的总开关
 
-                .penaltyDeathOnNetwork() // 当触发网络违规时，Crash掉当前应用程序。
-                .penaltyFlashScreen() // 会造成屏幕闪烁，不过一般的设备可能没有这个功能。
-                .penaltyLog() //在Logcat 中打印违规异常信息
-                .penaltyDeath() // 当触发违规条件时，直接Crash掉当前应用程序。
-                .penaltyDialog() // 触发违规时，弹出违规提示对话框
-                .penaltyDropBox() // 将违规信息记录到 dropbox 系统日志目录中（/data/system/dropbox），你可以通过如下命令进行插件：
-
+                .penaltyDeathOnNetwork()    // 当触发网络违规时，Crash掉当前应用程序。
+                .penaltyFlashScreen()       // 会造成屏幕闪烁，不过一般的设备可能没有这个功能。
+                .penaltyLog()               // 在Logcat 中打印违规异常信息
+                .penaltyDeath()             // 当触发违规条件时，直接Crash掉当前应用程序。
+                .penaltyDialog()            // 触发违规时，弹出违规提示对话框
+                .penaltyDropBox()           // 将违规信息记录到 dropbox 系统日志目录中（/data/system/dropbox），你可以通过如下命令进行插件：
                 .build());
 
         /*
@@ -68,22 +66,21 @@ public class StrictModeUtils {
             setClassInstanceLimit()   开启检测实例数量
         */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                // .setClassInstanceLimit() // 设置某个类的同时处于内存中的实例上限，可以协助检查内存泄露
-//                .detectLeakedRegistrationObjects() // API16 用来检查 BroadcastReceiver 或者ServiceConnection 注册类对象是否被正确释放
-                .detectLeakedClosableObjects() // 用于资源没有正确关闭时提醒(API等级11)
-                .detectLeakedSqlLiteObjects() // 检查 SQLiteCursor 或者 其他 SQLite对象是否被正确关闭
-                .detectActivityLeaks() // 用户检查 Activity 的内存泄露情况
+//                .setClassInstanceLimit()           // 设置某个类的同时处于内存中的实例上限，可以协助检查内存泄露
+                .detectLeakedRegistrationObjects() // API16 用来检查 BroadcastReceiver 或者ServiceConnection 注册类对象是否被正确释放
+                .detectLeakedClosableObjects()  // 用于资源没有正确关闭时提醒(API等级11)
+                .detectLeakedSqlLiteObjects()   // 检查 SQLiteCursor 或者 其他 SQLite对象是否被正确关闭
+                .detectActivityLeaks()          // 用户检查 Activity 的内存泄露情况
                 // 违规检查
-                .penaltyLog()   //在Logcat 中打印违规异常信息
-                .penaltyDeath()  // 当触发违规条件时，直接Crash掉当前应用程序。
-                .penaltyDropBox() // 将违规信息记录到 dropbox 系统日志目录中（/data/system/dropbox），你可以通过如下命令进行插件：
+                .penaltyLog()                   //在Logcat 中打印违规异常信息
+                .penaltyDeath()                 // 当触发违规条件时，直接Crash掉当前应用程序。
+                .penaltyDropBox()               // 将违规信息记录到 dropbox 系统日志目录中（/data/system/dropbox），你可以通过如下命令进行插件：
                 .build());
     }
 
 
     /**
      * android 7、8 系统解决拍照的 provider 配置问题。
-     *
      * 太特么简单粗暴了，provider配置什么的都可以去死了？？？？？
      */
     public static void fileProvider() {

@@ -77,7 +77,7 @@ public class FontUtils{
 	}
 	
 	/**
-	 * 
+	 * 设置文字样式
 	 * @param view TextView
 	 * @param text 要改变的文本
 	 * @param textSize 文本字体大小（单位dip）（-1不设置）

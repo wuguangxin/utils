@@ -1,6 +1,5 @@
 package com.wuguangxin.utils;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import java.net.URL;
@@ -15,7 +14,6 @@ import java.util.Locale;
  * 日期时间工具类。
  * Created by wuguangxin on 15/3/31.
  */
-@SuppressLint("SimpleDateFormat")
 public class DateUtils {
     private static final String DEFAULT_URL = "http://www.baidu.com"; // 默认时间来源
     private static final SimpleDateFormat FORMAT_DATE_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -647,7 +645,7 @@ public class DateUtils {
     /**
      * 将字符串日期转换为Date
      *
-     * @param dataString 必须符合以下几种格式：
+     * @param dateString 必须符合以下几种格式：
      * 1：yyyy-MM
      * 2：yyyy-MM-dd
      * 3：yyyy-MM-dd HH:mm

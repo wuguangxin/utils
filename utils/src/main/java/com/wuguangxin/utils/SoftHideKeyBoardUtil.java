@@ -7,7 +7,9 @@ import android.os.Build;
 import android.os.IBinder;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import java.lang.reflect.Field;
@@ -87,6 +89,7 @@ public class SoftHideKeyBoardUtil {
 
     /**
      * 弹出选择输入法系统界面
+     *
      * @param activity
      */
     public static void showInputMethodPicker(Activity activity) {
@@ -100,6 +103,7 @@ public class SoftHideKeyBoardUtil {
 
     /**
      * 隐藏键盘
+     *
      * @param activity
      */
     public static void hideSoftInput(Activity activity) {
@@ -117,11 +121,20 @@ public class SoftHideKeyBoardUtil {
         }
     }
 
+    public static void showSoftInput(EditText view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            view.requestFocus();
+            imm.showSoftInput(view, 0);
+        }
+    }
+
     /**
-     *显示键盘
+     * 显示键盘
+     *
      * @param activity
      */
-    public static void showSoftInput(Activity activity) {
+    public static void showSoftInput2(Activity activity) {
         if (activity != null) {
             InputMethodManager imm = (InputMethodManager) activity.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
@@ -129,7 +142,7 @@ public class SoftHideKeyBoardUtil {
                 if (currentFocus != null) {
                     IBinder windowToken = currentFocus.getWindowToken();
                     if (windowToken != null) {
-                        imm.hideSoftInputFromWindow(windowToken, InputMethodManager.RESULT_SHOWN); // 显示键盘
+                        imm.showSoftInputFromInputMethod(windowToken, InputMethodManager.RESULT_SHOWN); // 显示键盘
                     }
                 }
             }
@@ -138,39 +151,33 @@ public class SoftHideKeyBoardUtil {
 
     /**
      * 切换软键盘显示状态。当前显示则隐藏，当前隐藏则显示。
+     *
      * @param context
      */
     public static void toggleSoftInput(Context context) {
         if (context != null) {
             InputMethodManager imm = (InputMethodManager) context.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+                // imm.toggleSoftInput(0, show ? InputMethodManager.RESULT_SHOWN : InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
     }
 
     /**
-     * 弹出软键盘(貌似有BUG)
+     * 软键盘是否弹出
      *
      * @param context 上下文
-     * @param isShow  是否显示软键盘
+     * @return 软键盘是否弹出
      */
-    public static void showInputMethodKeyboard(Context context, boolean isShow) {
-        if (isShow) {
-            Logger.i(context, "显示软键盘");
-            InputMethodManager immShow = (InputMethodManager) context.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            immShow.toggleSoftInput(0, InputMethodManager.RESULT_SHOWN);
-        } else {
-            Logger.i(context, "隐藏软键盘");
-            InputMethodManager immHide = (InputMethodManager) context.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            immHide.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+    public static boolean isShowSoftKey(Context context) {
+        return ((Activity) context).getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
     }
 
     /**
      * 获取状态栏高度
      *
-     * @param context context
+     * @param context 上下文
      * @return 状态栏高度
      */
     public static int getStatusBarHeight(Context context) {

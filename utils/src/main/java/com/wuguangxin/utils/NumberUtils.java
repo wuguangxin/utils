@@ -9,12 +9,11 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
- * 数字工具类（主要是格式化）
+ * 数字工具类（按业务需求修改金额格式，本工具类只做参考）
  *
  * Created by wuguangxin on 14/6/2
  */
 public class NumberUtils {
-//    private static DecimalFormat format = new DecimalFormat();
 
     /**
      * 去小数后面的.00 或 .0

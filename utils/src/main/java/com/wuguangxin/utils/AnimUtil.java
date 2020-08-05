@@ -12,13 +12,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.LayoutAnimationController;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
@@ -37,382 +40,655 @@ import java.util.List;
  */
 public class AnimUtil {
 
-    // android:toXDelta="100%",表示自身的100%,也就是从View自己的位置开始。
-    // android:toXDelta="80%p",表示父层View的80%,是以它父层View为参照的。
+    /*
+    详情参考：https://blog.csdn.net/qq_27061049/article/details/104537931
+    AccelerateDecelerateInterpolator	先加速再减速（开始和结束慢，中间快）
+    AccelerateInterpolator    加速（开始慢，结束快）
+    DecelerateInterpolator    减速（开始快，结束慢）
+    LinearInterpolator	其变化速率恒定
+    AnticipateInterpolator 沿着开始相反的方向先运行
+    OvershootInterpolator 结束后顺着结束的运行规律让然运行一段时间
+    AnticipateOvershootInterpolator AnticipateInterpolator 和 OvershootInterpolator 的结合
+    BounceInterpolator	自由落体规律运动
+    CycleInterpolator	    其速率为正弦曲线
+    LinearOutSlowInInterpolator 其变化先匀速再减速
+    FastOutSlowInInterpolator 其变化是先加速，然后减速
+    FastOutLinearInInterpolator 其变化先加速然后匀速，本质还是加速运动
 
+    android:toXDelta="100%"：表示自身的100%，也就是从View自己的位置开始。
+    android:toXDelta="80%p"：表示父层View的80%，是以它父层View为参照的。
+    */
+
+    private final static int DEF_DURATION = 500; // 默认动画时长
+
+    /**
+     * 加载动画。
+     *
+     * @param context 上下文
+     * @param animRes 动画资源ID
+     * @return
+     */
     public static Animation loadAnim(Context context, int animRes) {
         return AnimationUtils.loadAnimation(context, animRes);
     }
 
-    public static Animation getLeft_in(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从左边滑入的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getLeft_in() {
+        return getLeft_in(DEF_DURATION);
+    }
+
+    /**
+     * 从左边滑入的位移动画。
+     *
+     * @param duration 时长（毫秒）
+     * @return
+     */
+    public static TranslateAnimation getLeft_in(long duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_left_in);
+        translate.setDuration(duration);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
+        return translate;
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_left_in);
     }
 
-    public static Animation getLeft_out(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从左边滑出的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getLeft_out() {
+        return getLeft_out(DEF_DURATION);
+    }
+
+    /**
+     * 从左边滑出的位移动画。
+     *
+     * @param duration 动画时长毫秒值
+     * @return
+     */
+    public static TranslateAnimation getLeft_out(long duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_left_out);
+        translate.setDuration(duration);
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true);
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        set.setFillEnabled(true);
+//        set.setFillAfter(true);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_left_out);
     }
 
-    public static Animation getTop_in(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从顶部滑入的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getTop_in() {
+        return getTop_in(400);
+    }
+
+    /**
+     * 从顶部滑入的位移动画。
+     *
+     * @param duration 动画时长毫秒值
+     * @return
+     */
+    public static TranslateAnimation getTop_in(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_top_in);
+        translate.setDuration(duration);
+        translate.setInterpolator(new BounceInterpolator());
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_top_in);
     }
 
-    public static Animation getTop_out(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从顶部滑出的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getTop_out() {
+        return getTop_out(DEF_DURATION);
+    }
+
+    /**
+     * 从顶部滑出的位移动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getTop_out(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_top_out);
+        translate.setDuration(duration);
+        translate.setInterpolator(new BounceInterpolator());
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_top_out);
     }
 
-    public static Animation getRight_in(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从右边滑入的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getRight_in() {
+        return getRight_in(DEF_DURATION);
+    }
+
+    /**
+     * 从右边滑入的位移动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getRight_in(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_right_in);
+        translate.setDuration(duration);
+        return translate;
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_right_in);
     }
 
-    public static Animation getRight_out(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从右边滑出的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getRight_out() {
+        return getRight_out(DEF_DURATION);
+    }
+
+    /**
+     * 从右边滑出的位移动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getRight_out(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        return set; // loadAnim(context, R.anim.xin_anim_right_out);
+        translate.setDuration(duration);
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_right_out);
     }
 
-    public static Animation getBottom_in(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从底部滑入的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getBottom_in() {
+        return getBottom_in(DEF_DURATION);
+    }
+
+    /**
+     * 从底部滑入的位移动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getBottom_in(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        set.setFillAfter(true);
-        set.setFillEnabled(true);
-        return set; // loadAnim(context, R.anim.xin_anim_bottom_in);
+        translate.setDuration(duration);
+        translate.setFillAfter(true);
+        translate.setFillEnabled(true);
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        set.setFillAfter(true);
+//        set.setFillEnabled(true);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_bottom_in);
     }
 
-    public static Animation getBottom_out(Context context) {
-        Animation translate = new TranslateAnimation(
+    /**
+     * 从底部滑出的位移动画。
+     *
+     * @return
+     */
+    public static TranslateAnimation getBottom_out() {
+        return getBottom_out(DEF_DURATION);
+    }
+
+    /**
+     * 从底部滑出的位移动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getBottom_out(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_SELF, 1.0F);
-        translate.setDuration(300);
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-        set.setFillAfter(true); // 动画停留在最后一帧
-        set.setFillEnabled(true);
-        return set; // loadAnim(context, R.anim.xin_anim_bottom_out);
+        translate.setDuration(duration);
+        // 让动画停留在最后一帧
+        translate.setFillAfter(true);
+        translate.setFillEnabled(true);
+        return translate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        set.setFillAfter(true); // 动画停留在最后一帧
+//        set.setFillEnabled(true);
+//        return set;
+//        return loadAnim(context, R.anim.xin_anim_bottom_out);
     }
 
-    public static Animation getFade_in(Context context) {
-        Animation alpha = new AlphaAnimation(0.0F, 1.0F);
-        alpha.setDuration(1000);
+    /**
+     * 创建淡入效果的动画。
+     *
+     * @return
+     */
+    public static AlphaAnimation getFade_in() {
+        return getFade_in(DEF_DURATION);
+    }
+
+    /**
+     * 创建淡入效果的动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static AlphaAnimation getFade_in(int duration) {
+        AlphaAnimation alpha = new AlphaAnimation(0.0F, 1.0F);
+        alpha.setDuration(duration);
+        return alpha;
+
 //        AnimationSet set = new AnimationSet(false);
 //        set.addAnimation(alpha);
-        return alpha; // loadAnim(context, R.anim.xin_anim_fade_in);
+//        return set;
+//        return loadAnim(context, R.anim.xin_anim_fade_in);
     }
 
-    public static Animation getFade_out(Context context) {
-        Animation alpha = new AlphaAnimation(1.0F, 0.0F);
-        alpha.setDuration(1000);
+    /**
+     * 创建淡出效果的动画。
+     *
+     * @return
+     */
+    public static AlphaAnimation getFade_out() {
+        return getFade_out(DEF_DURATION);
+    }
+
+    /**
+     * 淡出动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static AlphaAnimation getFade_out(int duration) {
+        AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0F);
+        alpha.setDuration(duration);
+        return alpha;
+
 //        AnimationSet set = new AnimationSet(false);
 //        set.addAnimation(alpha);
-        return alpha; // loadAnim(context, R.anim.xin_anim_fade_out);
+//        return set;
+//        return loadAnim(context, R.anim.xin_anim_fade_out);
     }
 
-    public static Animation getLayerFadeIn(Context context) {
-        Animation alpha = new AlphaAnimation(0.0F, 1.0F);
-        alpha.setDuration(300);
-//        AnimationSet set = new AnimationSet(false);
-//        set.addAnimation(alpha);
-        return alpha; // loadAnim(context, R.anim.xin_anim_layer_fade_in);
+    /**
+     * 以自身为圆心，左右摇摆20度的动画
+     *
+     * @return
+     */
+    public static RotateAnimation getRotate_20() {
+        return getRotate_20(1000);
     }
 
-    public static Animation getLayerFadeOut(Context context) {
-        Animation alpha = new AlphaAnimation(1.0F, 0.0F);
-        alpha.setDuration(300);
-//        AnimationSet set = new AnimationSet(false);
-//        set.addAnimation(alpha);
-        return alpha; // loadAnim(context, R.anim.xin_anim_layer_fade_out);
-    }
-
-// <rotate
-//    android:fromDegrees="-20"
-//    android:toDegrees="20"
-//    android:pivotX="50%"
-//    android:pivotY="50%"
-//    android:duration="1000"
-//    android:startOffset="300"
-//    android:fromXScale="1"
-//    android:fromYScale="1"
-//    android:toXScale="0"
-//    android:toYScale="0"
-//    android:repeatCount="infinite"
-//    android:repeatMode="reverse" />
-    public static Animation getRotate_20(Context context) {
+    /**
+     * 以自身为圆心，左右旋转20度的动画。比如用于消息图标摇晃提醒功能。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static RotateAnimation getRotate_20(int duration) {
 //        float fromDegrees,
 //        float toDegrees,
 //        int pivotXType,
 //        float pivotXValue,
 //        int pivotYType,
 //        float pivotYValue
-        RotateAnimation rotate = new RotateAnimation(
-                -20, 20, // 旋转幅度 -20度到20度
+        RotateAnimation rotate = new RotateAnimation(-20, 20, // 旋转幅度 -20度到20度
                 Animation.RELATIVE_TO_SELF, 0.5F, // 50%
-                Animation.RELATIVE_TO_SELF, 0.5F // 50%
+                Animation.RELATIVE_TO_SELF, 0.5F  // 50%
         );
-        rotate.setDuration(1000); // 执行时长
-        rotate.setStartOffset(300); // 执行延时
+        rotate.setDuration(duration); // 执行时长
         rotate.setRepeatCount(Animation.INFINITE); // infinite 无限次数
         rotate.setRepeatMode(Animation.REVERSE); // reverse 循环播放
-        AnimationSet set = new AnimationSet(false);
-        set.setInterpolator(new AccelerateInterpolator()); // @android:anim/accelerate_interpolator
-        set.addAnimation(rotate);
-        return set; // loadAnim(context, R.anim.xin_anim_rotate_20);
+        rotate.setInterpolator(new AccelerateDecelerateInterpolator());
+        return rotate;
+
+//        AnimationSet set = new AnimationSet(false);
+//        set.setInterpolator(new AccelerateInterpolator()); // @android:anim/accelerate_interpolator
+//        set.addAnimation(rotate);
+//        return set;
+//        return loadAnim(context, R.anim.xin_anim_rotate_20);
     }
 
-// <rotate
-//    android:fromDegrees="0"
-//    android:toDegrees="360"
-//    android:pivotX="50%"
-//    android:pivotY="50%"
-//    android:duration="1000"
-//    android:startOffset="300"
-//    android:repeatCount="infinite"
-//    android:repeatMode="reverse" />
-    public static Animation getRotate_360(Context context) {
-        RotateAnimation rotate = new RotateAnimation(
-        0, 360, // 360度旋转
-                Animation.RELATIVE_TO_SELF, 0.5F, // 50%
-                Animation.RELATIVE_TO_SELF, 0.5F // 50%
-        );
-        rotate.setDuration(1000); // 执行时长
-        rotate.setStartOffset(300); // 执行延时
-        rotate.setRepeatCount(Animation.INFINITE); // infinite 无限次数
-        rotate.setRepeatMode(Animation.REVERSE); // reverse 循环播放
-
-        AnimationSet set = new AnimationSet(false);
-        set.setInterpolator(new AccelerateInterpolator()); // @android:anim/accelerate_interpolator
-        set.addAnimation(rotate);
-        return set; // loadAnim(context, R.anim.xin_anim_rotate_360);
-    }
-
-
-// <set xmlns:android="http://schemas.android.com/apk/res/android" >
-//    <alpha
-//        android:duration="500"
-//        android:repeatCount="0"
-//        android:fromAlpha="0"
-//        android:toAlpha="1" />
-//
-//    <scale
-//        android:interpolator= "@android:anim/accelerate_interpolator"
-//        android:fromXScale="3"
-//        android:toXScale="1"
-//        android:fromYScale="3"
-//        android:toYScale="1"
-
-//        android:pivotX="50%"
-//        android:pivotY="50%"
-//        android:duration="800"
-//        android:repeatCount="0"  />
-//
-//    <!--
-//        fromXDelta,fromYDelta       	起始时X，Y座标,屏幕右下角的座标是X:320,Y:480
-//        toXDelta， toYDelta      		动画结束时X,Y的座标
-//        interpolator                  指定动画插入器
-//        加速减速插入器        		    accelerate_decelerate_interpolator
-//        加速插入器               		accelerate_interpolator，
-//        减速插入器               		decelerate_interpolator。
-//        fromXScale,fromYScale，       动画开始前X,Y的缩放，0.0为不显示，  1.0为正常大小
-//        toXScale，toYScale，          动画最终缩放的倍数， 1.0为正常大小，大于1.0放大
-//        pivotX，  pivotY             动画起始位置，相对于屏幕的百分比,两个都为50%表示动画从屏幕中间开始
-//        startOffset，                动画多次执行的间隔时间，如果只执行一次，执行前会暂停这段时间，
-//                                    单位毫秒 duration，一次动画效果消耗的时间，单位毫秒，
-//                                    值越小动画速度越快 repeatCount，动画重复的计数，动画将会执行该值+1次
-//        repeatMode，               动画重复的模式，reverse为反向，当第偶次执行时，动画方向会相反。
-//        restart                   为重新执行，方向不变 -->
-// </set>
     /**
-     * 全屏逐渐缩小的动画
+     * 以自身为圆心，做360度旋转的动画。
+     *
+     * @return
      */
-    public static Animation getZoomOut(Context context) {
+    public static RotateAnimation getRotate_360() {
+        return getRotate_360(1000);
+    }
+
+    /**
+     * 以自身为圆心，做360度旋转的动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static RotateAnimation getRotate_360(int duration) {
+        RotateAnimation rotate = new RotateAnimation(0, 360, // 360度旋转
+                Animation.RELATIVE_TO_SELF, 0.5F, // 50%
+                Animation.RELATIVE_TO_SELF, 0.5F // 50%
+        );
+        rotate.setDuration(duration); // 执行时长
+        rotate.setRepeatCount(Animation.INFINITE); // infinite 无限次数
+        rotate.setRepeatMode(Animation.INFINITE); // reverse 循环播放
+        rotate.setInterpolator(new LinearInterpolator()); // 加这个插值器，可以匀速旋转不停顿
+        return rotate;
+
+//        AnimationSet set = new AnimationSet(true);
+//        set.setInterpolator(new AccelerateInterpolator()); // @android:anim/accelerate_interpolator
+//        set.addAnimation(rotate);
+//        return set;
+//        return loadAnim(context, R.anim.xin_anim_rotate_360);
+    }
+
+    /**
+     * 自身三倍进行放大+淡入的组合动画。
+     *
+     * @return
+     */
+    public static AnimationSet getZoomOut() {
+        return getZoomOut(DEF_DURATION);
+    }
+
+    /**
+     * 自身三倍进行放大+淡入的组合动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static AnimationSet getZoomOut(int duration) {
         AlphaAnimation alpha = new AlphaAnimation(0.0F, 1.0F);
-        alpha.setDuration(500);
+        alpha.setDuration(duration);
         alpha.setRepeatCount(0);
 
         ScaleAnimation scale = new ScaleAnimation(
                 3.0F, 1.0F, 3.0F, 1.0F,
                 Animation.RELATIVE_TO_SELF, 0.5F, // 50%
                 Animation.RELATIVE_TO_SELF, 0.5F); // 50%
-        scale.setDuration(500);
+        scale.setDuration(duration);
         scale.setRepeatCount(0);
 
-        AnimationSet set = new AnimationSet(false);
-        set.setInterpolator(new AccelerateInterpolator()); // @android:anim/accelerate_interpolator
+        AnimationSet set = new AnimationSet(true);
+        set.setInterpolator(new AccelerateInterpolator());
         set.addAnimation(alpha);
         set.addAnimation(scale);
 
-        return set; // loadAnim(context, R.anim.xin_anim_zoomout);
+        return set;
+        // return loadAnim(context, R.anim.xin_anim_zoomout);
+    }
+
+
+    /**
+     * 从自身三倍大小进行缩小+淡出的组合动画。
+     *
+     * @return
+     */
+    public static AnimationSet getZoomIn() {
+        return getZoomIn(DEF_DURATION);
+    }
+
+
+    /**
+     * 从自身三倍大小进行缩小+淡出的组合动画。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static AnimationSet getZoomIn(int duration) {
+        AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0F);
+        alpha.setDuration(duration);
+        alpha.setRepeatCount(0);
+
+        ScaleAnimation scale = new ScaleAnimation(
+                1.0F, 3.0F, 1.0F, 3.0F,
+                Animation.RELATIVE_TO_SELF, 0.5F, // 50%
+                Animation.RELATIVE_TO_SELF, 0.5F); // 50%
+        scale.setDuration(duration);
+        scale.setRepeatCount(0);
+
+        AnimationSet set = new AnimationSet(true);
+        set.setInterpolator(new AccelerateInterpolator()); // 加速
+        set.addAnimation(alpha);
+        set.addAnimation(scale);
+
+        return set;
+        // return loadAnim(context, R.anim.xin_anim_zoomout);
     }
 
     /**
-     * 左右晃动动画
+     * 左右摆动5次的动画。适用于让View摇晃引起用户的注意。
+     *
+     * @return
      */
-    public static Animation getShakeLR(Context context) {
-        Animation translate = new TranslateAnimation(
+    public static TranslateAnimation getShakeLR() {
+        return getShakeLR(DEF_DURATION);
+    }
+
+    /**
+     * 左右摆动5次的动画。适用于让View摇晃引起用户的注意。
+     *
+     * @param duration 动画时长
+     * @return
+     */
+    public static TranslateAnimation getShakeLR(int duration) {
+        TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 5.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
-        translate.setDuration(800);
+        translate.setDuration(duration);
         translate.setInterpolator(new CycleInterpolator(5));
+        return translate;
 
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(translate);
-
-        return set; // loadAnim(context, R.anim.xin_anim_shake_view);
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(translate);
+//        return set; //
+//        return loadAnim(context, R.anim.xin_anim_shake_view);
     }
 
     /**
-     * 让组件从左边移入
+     * 以动画从左边滑入的方式显示view
+     *
+     * @param view 要执行动画的view
      */
     public static void startLeftIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getLeft_in(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getLeft_in());
     }
 
     /**
-     * 让组件从上边移入
+     * 以动画从顶部滑入的方式显示view
+     *
+     * @param view 要执行动画的view
      */
     public static void startTopIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getTop_in(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getTop_in());
     }
 
     /**
-     * 让组件从右边移入
+     * 以动画从右边滑入的方式显示view
+     *
+     * @param view 要执行动画的view
      */
     public static void startRightIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRight_in(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getRight_in());
     }
 
     /**
-     * 让组件从下边移入
+     * 以动画从底部滑入的方式显示view
+     *
+     * @param view 要执行动画的view
      */
     public static void startBottomIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getBottom_in(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getBottom_in());
     }
 
     /**
-     * 让组件从左边移出
+     * 以动画从左边滑出的方式隐藏view
+     *
+     * @param view 要执行动画的view
      */
     public static void startLeftOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getLeft_out(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getLeft_out());
     }
 
     /**
-     * 让组件从上边移出
+     * 以动画从顶部滑出的方式隐藏view
+     *
+     * @param view 要执行动画的view
      */
     public static void startTopOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getTop_out(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getTop_out());
     }
 
     /**
-     * 让组件从右边移出
+     * 以动画从右边滑出的方式隐藏view
+     *
+     * @param view 要执行动画的view
      */
     public static void startRightOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getRight_out(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getRight_out());
     }
 
     /**
-     * 让组件从下边移出
+     * 以动画从底部滑出的方式隐藏view
+     *
+     * @param view 要执行动画的view
      */
     public static void startBottomOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getBottom_out(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getBottom_out());
     }
 
     /**
-     * 让组件淡入-放大界面
+     * 以动画淡入的方式显示view
+     *
+     * @param view 要执行动画的view
      */
     public static void startFadeIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getFade_in(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getFade_in());
     }
 
     /**
-     * 让组件淡出-缩小界面
+     * 以动画淡出的方式隐藏view
+     *
+     * @param view 要执行动画的view
      */
     public static void startFadeOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getFade_out(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getFade_out());
     }
 
     /**
-     * 让View以淡入方式显示（半透明层）
+     * 以动画淡入的方式显示view（蒙层效果）
+     *
+     * @param view 要执行动画的view
      */
     public static void startAlphaLayerFadeIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getLayerFadeIn(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getFade_in());
     }
 
     /**
-     * 让View以淡出方式隐藏（半透明层）
+     * 以动画淡出的方式隐藏view（蒙层效果）
+     *
+     * @param view 要执行动画的view
      */
     public static void startAlphaLayerFadeOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getLayerFadeOut(view.getContext()));
+        if (view != null) startAnim(view, View.GONE, getFade_out(300));
     }
 
     /**
-     * 让View左右20度来回摆动（如八挂钟摆）
+     * 以自身为圆心，左右各20度摆动（如钟摆）
+     *
+     * @param view 要执行动画的view
      */
     public static void startRotate20(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRotate_20(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getRotate_20());
     }
 
     /**
-     * 让View 360度循环旋转
+     * 以自身为圆心，360度循环旋转view。
+     *
+     * @param view 要执行动画的view
      */
     public static void startRotate360(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRotate_360(view.getContext()));
+        if (view != null) startAnim(view, View.VISIBLE, getRotate_360());
     }
 
-    private static void startAnim(View view, int visibility, Animation anim) {
+    /**
+     * 让view开始执行动画。
+     *
+     * @param view 执行动画的View
+     * @param visibility view是否显示
+     * @param anim 动画具体实现对象
+     */
+    public static void startAnim(View view, int visibility, Animation anim) {
         if (view != null) {
             view.setVisibility(visibility);
             if (anim != null) {
@@ -425,7 +701,7 @@ public class AnimUtil {
     /**
      * Activity 打开时动画，在Activity.startActivity()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animEnter(Activity activity) {
         if (activity != null) {
@@ -436,7 +712,7 @@ public class AnimUtil {
     /**
      * Activity 关闭时动画，在Activity.finish()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animClose(Activity activity) {
         if (activity != null) {
@@ -447,7 +723,7 @@ public class AnimUtil {
     /**
      * Lock Activity 打开时动画，在Activity.startActivity()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animEnterLock(Activity activity) {
         if (activity != null) {
@@ -458,7 +734,7 @@ public class AnimUtil {
     /**
      * Lock Activity 关闭时动画，在Activity.finish()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animCloseLock(Activity activity) {
         if (activity != null) {
@@ -469,7 +745,7 @@ public class AnimUtil {
     /**
      * Lock Activity 打开时动画，在Activity.startActivity()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animEnterLockDialog(Activity activity) {
         if (activity != null) {
@@ -480,7 +756,7 @@ public class AnimUtil {
     /**
      * Lock Activity 关闭时动画，在Activity.finish()后调用
      *
-     * @param activity
+     * @param activity 源Activity
      */
     public static void animCloseLockDialog(Activity activity) {
         if (activity != null) {
@@ -683,7 +959,7 @@ public class AnimUtil {
 
     /**
      * 给 ViewGroup 的 child 做动画，特别最适合给列表的item项动画。
-     * 此动画可以直接在继承至ViewGroup的xml属性中增加：android:layoutAnimation="@anim/xin_anim_layout"
+     * 此动画效果可以换一种方式做，就是在继承至ViewGroup的xml属性中增加：android:layoutAnimation="@anim/xin_anim_layout"
      *
      * @param viewGroup
      */
@@ -721,7 +997,6 @@ public class AnimUtil {
         }
     }
 
-    //============================================================================================
     //============================================================================================
     //============以下代码是给列表的Item做动画========================================================
 

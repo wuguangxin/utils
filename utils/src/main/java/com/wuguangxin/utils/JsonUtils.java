@@ -1,7 +1,5 @@
 package com.wuguangxin.utils;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -10,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,15 +20,13 @@ public class JsonUtils {
 	 * @return JSONObject
 	 */
 	public static JSONObject parseStr2Json(String inReader){
-		JSONTokener jsonParser = new JSONTokener(inReader);
-		JSONObject jobject;
 		try {
-			jobject = (JSONObject) jsonParser.nextValue();
-			return jobject;
+			JSONTokener jsonParser = new JSONTokener(inReader);
+			return (JSONObject) jsonParser.nextValue();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return new JSONObject();
+		return null;
 	}
 	
 	/**
@@ -42,10 +37,10 @@ public class JsonUtils {
 	public static JSONObject toJsonObject(String stringJson){
 		try {
 			return new JSONObject(stringJson);
-		} catch (JSONException e1) {
-			e1.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-		return new JSONObject();
+		return null;
 	}
 
 	/**
@@ -56,24 +51,24 @@ public class JsonUtils {
 	public static JSONArray toJsonArray(String stringJsonArray){
 		try {
 			return new JSONArray(stringJsonArray);
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return new JSONArray();
+		return null;
 	}
 
 	/**
 	 * 把标准json字符串转换为json对象JSONObject
-	 * @param list List
+	 * @param list List<T>
 	 * @return String
 	 */
-	public static String toJsonArray(List list){
+	public static <T> String toJsonArray(List<T> list){
 		try {
 			return mGson.toJson(list);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		return new JSONArray().toString();
+		return null;
 	}
 
 	/**
@@ -83,17 +78,12 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static JSONObject getJSONObject(JSONObject jsonObject, String key){
-		if (jsonObject != null && !TextUtils.isEmpty(key)) {
-			try {
-				JSONObject json = jsonObject.optJSONObject(key);
-				if (json != null) {
-					return json;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			return jsonObject.optJSONObject(key);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return new JSONObject();
+		return null;
 	}
 
 	/**
@@ -103,17 +93,12 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static JSONArray getJSONArray(JSONObject jsonObject, String key){
-		if (jsonObject != null && !TextUtils.isEmpty(key)) {
-			try {
-				JSONArray jsonArray = jsonObject.optJSONArray(key);
-				if (jsonArray != null) {
-					return jsonArray;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			return jsonObject.optJSONArray(key);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return new JSONArray();
+		return null;
 	}
 
 	/**
@@ -123,29 +108,24 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static <T> T toBean(JSONObject jsonObject, Class<T> cla){
-		if (cla != null) {
-			try {
-				if (jsonObject == null) jsonObject = new JSONObject();
-				return toBean(jsonObject.toString(), cla);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			return toBean(jsonObject.toString(), cla);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
 
 	/**
 	 * 将bean对象解析为json字符串对象
-	 * @param bean javBean
+	 * @param javaBean javBean
 	 * @return
 	 */
-	public static <T> String toString(T bean){
-		if (bean != null) {
-			try {
-				return mGson.toJson(bean);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public static <T> String toString(T javaBean){
+		try {
+			return mGson.toJson(javaBean);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -157,14 +137,10 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static <T> T toBean(String jsonString, Class<T> cla){
-		if (cla != null) {
-			try {
-				if (TextUtils.isEmpty(jsonString)) jsonString = new JSONObject().toString();
-				T t = mGson.fromJson(jsonString, cla);
-				if (t != null) return t;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			return mGson.fromJson(jsonString, cla);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -176,15 +152,12 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static <T> List<T> toList(JSONArray jsonArray, java.lang.reflect.Type type){
-		List<T> list = new ArrayList<>();
 		try {
-			if (jsonArray != null) {
-				list = mGson.fromJson(jsonArray.toString(), type);
-			}
+			return mGson.fromJson(jsonArray.toString(), type);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return list;
+		return null;
 	}
 
 	/**
@@ -195,8 +168,7 @@ public class JsonUtils {
 	 */
 	public static <T> List<T> toList(String jsonArrayString, java.lang.reflect.Type type){
 		try {
-			List<T> list = mGson.fromJson(jsonArrayString, type);
-			if (list != null) return list;
+			return mGson.fromJson(jsonArrayString, type);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -211,8 +183,7 @@ public class JsonUtils {
 	 */
 	public static <T> Map<String, T> toMap(String json, java.lang.reflect.Type type){
 		try {
-			Map<String, T> map = mGson.fromJson(json, type);
-			return map;
+			return mGson.fromJson(json, type);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -7,12 +7,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.AlertDialog.Builder;
 import android.app.AppOpsManager;
 import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -22,8 +20,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -72,47 +68,46 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
-/*
-                                                     正式版日期  版本号               SDK 英文名称             中文名称
-int SDK0 = 0;                           			// 2008-09-22 Android Beta	    	Beta                阿童木
-int SDK1 = VERSION_CODES.BASE; 					    // 2008-09-22 Android 1.0	    1	BASE                发条机器人
-int SDK2 = VERSION_CODES.BASE_1_1; 				    // 2009------ Android 1.1	    2	BASE                发条机器人
-int SDK3 = VERSION_CODES.CUPCAKE; 				    // 2009-04-30 Android 1.5	    3	CUPCAKE             纸杯蛋糕
-int SDK4 = VERSION_CODES.DONUT; 					// 2009-09-15 Android 1.6	    4	DONUT               甜甜圈
-int SDK5 = VERSION_CODES.ECLAIR; 					// 2009-10-26 Android 2.0	    5	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
-int SDK6 = VERSION_CODES.ECLAIR_0_1; 				// 2009-12-03 Android 2.0.1     6 	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
-int SDK7 = VERSION_CODES.ECLAIR_MR1; 				// 2010-01-10 Android 2.1	    7	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
-int SDK8 = VERSION_CODES.FROYO; 					// 2010-05-20 Android 2.2	    8	FROYO               冻酸奶
-int SDK9 = VERSION_CODES.GINGERBREAD;				// 2010-12-07 Android 2.3	    9	GINGERBREAD         姜饼
-int SDK10 = VERSION_CODES.GINGERBREAD_MR1;		    // 2011------ Android 2.3.3     10	GINGERBREAD         姜饼
-int SDK11 = VERSION_CODES.HONEYCOMB;				// 2011-02-03 Android 3.0	    11	HONEYCOMB           蜂巢
-int SDK12 = VERSION_CODES.HONEYCOMB_MR1;			// 2011-05-11 Android 3.1	    12	HONEYCOMB           蜂巢
-int SDK13 = VERSION_CODES.HONEYCOMB_MR2;			// 2011-07-13 Android 3.2	    13	HONEYCOMB           蜂巢
-int SDK14 = VERSION_CODES.ICE_CREAM_SANDWICH;		// 2011-10-19 Android 4.0 	    14	ICE_CREAM_SANDWICH  冰激凌三明治、冰淇淋三明治
-int SDK15 = VERSION_CODES.ICE_CREAM_SANDWICH_MR1;	// 2011-12-17 Android 4.0.3     15	ICE_CREAM_SANDWICH  冰激凌三明治、冰淇淋三明治
-int SDK16 = VERSION_CODES.JELLY_BEAN;				// 2012-06-28 Android 4.1	    16	JELLY_BEAN          果冻豆
-int SDK17 = VERSION_CODES.JELLY_BEAN_MR1;			// 2012-10-30 Android 4.2 	    17	JELLY_BEAN          果冻豆
-int SDK18 = VERSION_CODES.JELLY_BEAN_MR2;			// 2013-07-25 Android 4.3 	    18	JELLY_BEAN          果冻豆
-int SDK19 = VERSION_CODES.KITKAT;					// 2013-09-04 Android 4.4 	    19	KITKAT              奇巧巧克力棒
-int SDK20 = VERSION_CODES.KITKAT_WATCH;			    // 2013-09-04 Android 4.4W 	    20	KITKAT watches      奇巧巧克力棒
-int SDK21 = VERSION_CODES.LOLLIPOP;				    // 2014-10-15 Android 5.0	    21	LOLLIPOP            棒棒糖
-int SDK22 = VERSION_CODES.LOLLIPOP_MR1;			    // 2015-03-10 Android 5.1	    22	Lollipop            棒棒糖
-int SDK23 = VERSION_CODES.M;						// 2015-05-25 Android 6.0	    23	Marshmallow         棉花糖
-int SDK24 = VERSION_CODES.N;						// 2016-08-22 Android 7.0 	    24  Nougat              牛轧糖
-int SDK25 = VERSION_CODES.N_MR1;					// 2016-12-05 Android 7.1.1	    25  Nougat              牛轧糖
-int SDK26 = VERSION_CODES.O;						// 2017-08-22 Android 8.0	    26  Oreo                奥利奥
-int SDK27 = VERSION_CODES.O_MR1;					// 2017-12-05 Android 8.1	    27  Oreo                奥利奥
-int SDK28 = VERSION_CODES.P;						// 2018-08-07 Android 9.0       28  Pre                 派
-int SDK29 = VERSION_CODES.Q;						// 2019------ Android 10 	    29  Q
-update by:2019-12-30
-*/
+/**
+ * 正式版日期  版本号               SDK 英文名称             中文名称
+ * int SDK0 = 0;                           			    // 2008-09-22 Android Beta	    	Beta                阿童木
+ * int SDK1 = VERSION_CODES.BASE; 					    // 2008-09-22 Android 1.0	    1	BASE                发条机器人
+ * int SDK2 = VERSION_CODES.BASE_1_1; 				    // 2009------ Android 1.1	    2	BASE                发条机器人
+ * int SDK3 = VERSION_CODES.CUPCAKE; 				    // 2009-04-30 Android 1.5	    3	CUPCAKE             纸杯蛋糕
+ * int SDK4 = VERSION_CODES.DONUT; 					    // 2009-09-15 Android 1.6	    4	DONUT               甜甜圈
+ * int SDK5 = VERSION_CODES.ECLAIR; 					// 2009-10-26 Android 2.0	    5	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
+ * int SDK6 = VERSION_CODES.ECLAIR_0_1; 				// 2009-12-03 Android 2.0.1     6 	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
+ * int SDK7 = VERSION_CODES.ECLAIR_MR1; 				// 2010-01-10 Android 2.1	    7	ECLAIR              闪电泡芙、法式奶油夹心甜点、松饼
+ * int SDK8 = VERSION_CODES.FROYO; 					    // 2010-05-20 Android 2.2	    8	FROYO               冻酸奶
+ * int SDK9 = VERSION_CODES.GINGERBREAD;				// 2010-12-07 Android 2.3	    9	GINGERBREAD         姜饼
+ * int SDK10 = VERSION_CODES.GINGERBREAD_MR1;		    // 2011------ Android 2.3.3     10	GINGERBREAD         姜饼
+ * int SDK11 = VERSION_CODES.HONEYCOMB;				    // 2011-02-03 Android 3.0	    11	HONEYCOMB           蜂巢
+ * int SDK12 = VERSION_CODES.HONEYCOMB_MR1;			    // 2011-05-11 Android 3.1	    12	HONEYCOMB           蜂巢
+ * int SDK13 = VERSION_CODES.HONEYCOMB_MR2;			    // 2011-07-13 Android 3.2	    13	HONEYCOMB           蜂巢
+ * int SDK14 = VERSION_CODES.ICE_CREAM_SANDWICH;		// 2011-10-19 Android 4.0 	    14	ICE_CREAM_SANDWICH  冰激凌三明治、冰淇淋三明治
+ * int SDK15 = VERSION_CODES.ICE_CREAM_SANDWICH_MR1;	// 2011-12-17 Android 4.0.3     15	ICE_CREAM_SANDWICH  冰激凌三明治、冰淇淋三明治
+ * int SDK16 = VERSION_CODES.JELLY_BEAN;				// 2012-06-28 Android 4.1	    16	JELLY_BEAN          果冻豆
+ * int SDK17 = VERSION_CODES.JELLY_BEAN_MR1;			// 2012-10-30 Android 4.2 	    17	JELLY_BEAN          果冻豆
+ * int SDK18 = VERSION_CODES.JELLY_BEAN_MR2;			// 2013-07-25 Android 4.3 	    18	JELLY_BEAN          果冻豆
+ * int SDK19 = VERSION_CODES.KITKAT;					// 2013-09-04 Android 4.4 	    19	KITKAT              奇巧巧克力棒
+ * int SDK20 = VERSION_CODES.KITKAT_WATCH;			    // 2013-09-04 Android 4.4W 	    20	KITKAT watches      奇巧巧克力棒
+ * int SDK21 = VERSION_CODES.LOLLIPOP;				    // 2014-10-15 Android 5.0	    21	LOLLIPOP            棒棒糖
+ * int SDK22 = VERSION_CODES.LOLLIPOP_MR1;			    // 2015-03-10 Android 5.1	    22	Lollipop            棒棒糖
+ * int SDK23 = VERSION_CODES.M;						    // 2015-05-25 Android 6.0	    23	Marshmallow         棉花糖
+ * int SDK24 = VERSION_CODES.N;						    // 2016-08-22 Android 7.0 	    24  Nougat              牛轧糖
+ * int SDK25 = VERSION_CODES.N_MR1;					    // 2016-12-05 Android 7.1.1	    25  Nougat              牛轧糖
+ * int SDK26 = VERSION_CODES.O;						    // 2017-08-22 Android 8.0	    26  Oreo                奥利奥
+ * int SDK27 = VERSION_CODES.O_MR1;					    // 2017-12-05 Android 8.1	    27  Oreo                奥利奥
+ * int SDK28 = VERSION_CODES.P;						    // 2018-08-07 Android 9.0       28  Pre                 派
+ * int SDK29 = VERSION_CODES.Q;						    // 2019------ Android 10 	    29  Q
+ * update by:2019-12-30
+ */
 
 /**
  * Android系统相关的一些工具方法。
  * Created by wuguangxin on 15/6/14
  */
 public class AndroidUtils {
-
     /**
      * 获取SDK版本号
      *
@@ -229,35 +224,34 @@ public class AndroidUtils {
      * @param context 上下文
      * @return 手机的总RAM（运存）
      */
-    @SuppressLint("NewApi")
     public static long getTotalRAM(Context context) {
-        if (getSDKCode() >= 16) {
+        if (VERSION.SDK_INT >= 16) {
             ActivityManager manager = getActivityManager(context);
             if (manager != null) {
                 MemoryInfo memoryInfo = new MemoryInfo();
                 manager.getMemoryInfo(memoryInfo);
                 return memoryInfo.totalMem;
             }
-        }
-        // SDK16以下
-        try {
-            FileReader localFileReader = new FileReader("/proc/meminfo"); // /proc/meminfo系统内存信息文件
-            BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
-            String lineStr = localBufferedReader.readLine();
-            long totalRAM = 0;
-            if (lineStr != null) {
-                String[] lineStrs = lineStr.split("\\s+");
-                if (lineStrs.length >= 2) {
-                    String lineStrs1 = lineStrs[1];
-                    if (lineStrs1 != null) {
-                        totalRAM = Long.parseLong(lineStrs1) * 1024; // 获得的是KB，*1024转为byte
+        } else {
+            try {
+                FileReader localFileReader = new FileReader("/proc/meminfo"); // /proc/meminfo系统内存信息文件
+                BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
+                String lineStr = localBufferedReader.readLine();
+                long totalRAM = 0;
+                if (lineStr != null) {
+                    String[] lineStrs = lineStr.split("\\s+");
+                    if (lineStrs.length >= 2) {
+                        String lineStrs1 = lineStrs[1];
+                        if (lineStrs1 != null) {
+                            totalRAM = Long.parseLong(lineStrs1) * 1024; // 获得的是KB，*1024转为byte
+                        }
                     }
                 }
+                localBufferedReader.close();
+                return totalRAM;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            localBufferedReader.close();
-            return totalRAM;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -443,7 +437,7 @@ public class AndroidUtils {
     /**
      * 获取版本号
      *
-     * @param context context
+     * @param context 上下文
      * @return 版本号
      */
     public static int getVersionCode(Context context) {
@@ -468,7 +462,7 @@ public class AndroidUtils {
     /**
      * 判断当前设备是否是模拟器。如果是模拟器返回TRUE，不是返回FALSE
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否是模拟器
      */
     public static boolean isMobilePhone(Context context) {
@@ -485,19 +479,24 @@ public class AndroidUtils {
     }
 
     /**
-     * 根据WifiManager获取MAC地址(在6.0以上系统获取不到)
+     * 根据WifiManager获取MAC地址。需要ACCESS_WIFI_STATE权限。(在6.0以上系统不再支持此种方式)
      *
-     * @param context context
+     * @param context 上下文
      * @return MAC地址
      * @deprecated use getMac()
      */
-    @SuppressLint("HardwareIds")
     public static String getMac(Context context) {
-        WifiManager manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (manager != null) {
-            WifiInfo wifiInfo = manager.getConnectionInfo();
-            if (wifiInfo != null) {
-                return wifiInfo.getMacAddress();
+        if (context != null) {
+            WifiManager manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (manager != null) {
+                WifiInfo wifiInfo = manager.getConnectionInfo();
+                if (wifiInfo != null) {
+                    try {
+                        return wifiInfo.getMacAddress();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         return null;
@@ -541,7 +540,7 @@ public class AndroidUtils {
     /**
      * 获取本机号码，如果是双卡手机，获取的将是卡槽1的号码
      *
-     * @param context context
+     * @param context 上下文
      * @return 本机号码，带有国家代码，如 "+86"
      */
     @SuppressLint({"MissingPermission", "HardwareIds"})
@@ -559,11 +558,14 @@ public class AndroidUtils {
      * 获取联系人电话
      * 参考 http://www.2cto.com/kf/201109/104686.html
      *
-     * @param context context
+     * @param context 上下文
      * @param cursor cursor
      * @return 联系人电话
      */
     public static String getContactPhone(Context context, Cursor cursor) {
+        if (context == null || cursor == null) {
+            return null;
+        }
         int phoneColumn = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
         int phoneNum = cursor.getInt(phoneColumn);
         String phoneResult = "";
@@ -573,12 +575,11 @@ public class AndroidUtils {
             String contactId = cursor.getString(idColumn);
             // 获得联系人的电话号码的cursor;
             Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-            if (phones.moveToFirst()) {
+            if (phones != null && phones.moveToFirst()) {
                 // 遍历所有的电话号码
                 for (; !phones.isAfterLast(); phones.moveToNext()) {
                     int index = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                    String phoneNumber = phones.getString(index);
-                    phoneResult = phoneNumber;
+                    phoneResult = phones.getString(index);
                 }
                 if (!phones.isClosed()) {
                     phones.close();
@@ -589,29 +590,10 @@ public class AndroidUtils {
     }
 
     /**
-     * 判断网络是否是WIFI网络
+     * 得到屏幕宽度（px）
      *
-     * @param context context
-     * @return 是否是WIFI网络
-     */
-    public static boolean isWifi(Context context) {
-        if (context != null) {
-            ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (manager != null) {
-                NetworkInfo info = manager.getActiveNetworkInfo();
-                if (info != null) {
-                    return info.getType() == ConnectivityManager.TYPE_WIFI;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 得到屏幕宽度
-     *
-     * @param context context
-     * @return 单位:px
+     * @param context 上下文
+     * @return
      */
     public static int getScreenWidth(@Nullable Context context) {
         return context == null ? 0 : context.getResources().getDisplayMetrics().widthPixels;
@@ -628,10 +610,10 @@ public class AndroidUtils {
     }
 
     /**
-     * 得到屏幕高度
+     * 得到屏幕高度（px）
      *
-     * @param context context
-     * @return 单位:px
+     * @param context 上下文
+     * @return
      */
     public static int getScreenHeight(Context context) {
         return context == null ? 0 : context.getResources().getDisplayMetrics().heightPixels;
@@ -645,68 +627,6 @@ public class AndroidUtils {
 //            }
 //        }
 //        return 0;
-    }
-
-    /**
-     * 判断是否有任何可用的网络
-     *
-     * @param context context
-     * @return 是否有任何可用的网络
-     */
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        @SuppressLint("MissingPermission")
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetworkInfo != null) {
-            return activeNetworkInfo.isConnected();
-        }
-        return false;
-    }
-
-    /**
-     * 判断是否有可以连接的WIFI
-     *
-     * @param context context
-     * @return 是否有可以连接的WIFI
-     */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        @SuppressLint("MissingPermission")
-        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo != null) {
-            return wifiNetworkInfo.isConnected();
-        }
-        return false;
-    }
-
-    /**
-     * 判断wifi的连接状态
-     *
-     * @param context context
-     * @return wifi的连接状态
-     */
-    public static boolean isWifiConnection(Context context) {
-        ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (networkInfo != null) {
-            return networkInfo.isConnected();
-        }
-        return false;
-    }
-
-    /**
-     * 判断基站的连接状态
-     *
-     * @param context context
-     * @return 基站的连接状态
-     */
-    public static boolean isBaseStateConnection(Context context) {
-        ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (networkInfo != null) {
-            return networkInfo.isConnected();
-        }
-        return false;
     }
 
     /**
@@ -727,9 +647,7 @@ public class AndroidUtils {
             if (inChannel != null) {
                 inChannel.close();
             }
-            if (outChannel != null) {
-                outChannel.close();
-            }
+            outChannel.close();
         }
         in.close();
         out.close();
@@ -761,7 +679,7 @@ public class AndroidUtils {
      * @param args 参数
      */
     public static <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... args) {
-        if (VERSION.SDK_INT >= VERSION_CODES.FROYO) {
+        if (VERSION.SDK_INT >= 11) {
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
         } else {
             task.execute(args);
@@ -799,7 +717,7 @@ public class AndroidUtils {
     /**
      * 判断程序是否在前台运行
      *
-     * @param context context
+     * @param context 上下文
      * @return 程序是否在前台运行
      */
     public static boolean isAppOnForeground(Context context) {
@@ -822,7 +740,7 @@ public class AndroidUtils {
     /**
      * 判断程序是否在后台运行
      *
-     * @param context context
+     * @param context 上下文
      * @return 程序是否在后台运行
      */
     public static boolean isAppOnBackground(Context context) {
@@ -832,13 +750,13 @@ public class AndroidUtils {
     /**
      * 判断当前应用程序是否处于系统栈顶
      *
-     * @param context context
+     * @param context 上下文
      * @return 当前应用程序是否处于系统栈顶
      */
     public static boolean isTopActivity(final Context context) {
         if (context != null) {
-            String topPackageName = AndroidUtils.getAppTopActivityPackageName(context);
-            return context.getPackageName().equals(topPackageName);
+            String packageName = AndroidUtils.getAppTopActivityPackageName(context);
+            return context.getPackageName().equals(packageName);
         }
         return false;
     }
@@ -848,18 +766,20 @@ public class AndroidUtils {
      * 注：getRunningTasks() 方法从 Android L 起限制访问。
      * 看：http://blog.csdn.net/hyhyl1990/article/details/45700447
      *
-     * @param context context
+     * @param context 上下文
      * @return 当前运行的APP中处于栈顶的APP包名
      */
     public static String getAppTopActivityPackageName(Context context) {
+        if (context == null) return null;
         try {
-            if (context == null) return null;
             ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
-            if (tasks != null && !tasks.isEmpty()) {
-                ComponentName topActivity = tasks.get(0).topActivity;
-                if (topActivity != null) {
-                    return topActivity.getPackageName();
+            if (am != null) {
+                List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+                if (tasks != null && !tasks.isEmpty()) {
+                    ComponentName topActivity = tasks.get(0).topActivity;
+                    if (topActivity != null) {
+                        return topActivity.getPackageName();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -869,19 +789,18 @@ public class AndroidUtils {
     }
 
     /**
-     * 获取当前运行的APP中处于栈顶的APP包名。
+     * 获取当前运行的APP中处于栈顶的APP包名（已设置最大返回100条数据）。
      * 该方法从Android L起限制访问，看 http://blog.csdn.net/hyhyl1990/article/details/45700447
      *
-     * @param context context
+     * @param context 上下文
      * @return 当前运行的APP中处于栈顶的APP包名
      */
     public static List<ActivityManager.RunningTaskInfo> getRunningAppList(Context context) {
+        if (context == null) return null;
         try {
-            if (context != null) {
-                ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-                if (am != null) {
-                    return am.getRunningTasks(100); // 获取多少条记录
-                }
+            ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+            if (am != null) {
+                return am.getRunningTasks(100); // 获取多少条记录
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -893,7 +812,7 @@ public class AndroidUtils {
     /**
      * 让App在后台运行
      *
-     * @param context context
+     * @param context 上下文
      */
     public static void setAppRunInBackground(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -905,7 +824,7 @@ public class AndroidUtils {
     /**
      * 获取当前应用程序的包名
      *
-     * @param context context
+     * @param context 上下文
      * @return 当前应用程序的包名
      */
     public static String getAppPackageName(Context context) {
@@ -922,17 +841,16 @@ public class AndroidUtils {
     /**
      * 获取设备ID和MAC信息（注册友盟测试设备使用）
      *
-     * @param context context
+     * @param context 上下文
      * @return 设备ID和MAC信息
      */
-    @SuppressLint({"HardwareIds", "MissingPermission"})
+    @SuppressLint({"HardwareIds"})
     public static String getDeviceInfo(Context context) {
         try {
             org.json.JSONObject json = new org.json.JSONObject();
-            TelephonyManager tm = (TelephonyManager) context
-                    .getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String device_id = null;
-            if (checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            if (tm != null && checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
                 device_id = tm.getDeviceId();
             }
             String mac = null;
@@ -979,17 +897,6 @@ public class AndroidUtils {
     }
 
     /**
-     * 判断是否已获取权限（TODO 未验证）
-     *
-     * @param context 上下文
-     * @param permission 权限
-     * @return
-     */
-    public static boolean checkPermission2(Context context, String permission) {
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED;
-    }
-
-    /**
      * 检查权限是否获取
      *
      * @param context 上下文
@@ -997,28 +904,28 @@ public class AndroidUtils {
      * @return 是否已获取
      */
     public static boolean checkPermission(Context context, String permission) {
-        boolean result = false;
-        if (VERSION.SDK_INT >= 23) {
-            try {
-                Class<?> clazz = Class.forName("android.content.Context");
-                Method method = clazz.getMethod("checkSelfPermission", String.class);
-                result = (int) method.invoke(context, permission) == PackageManager.PERMISSION_GRANTED;
-            } catch (Exception e) {
-                result = false;
-            }
-        } else {
-            PackageManager pm = context.getPackageManager();
-            if (pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED) {
-                result = true;
-            }
-        }
-        return result;
+        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+
+//        boolean result = false;
+//        if (VERSION.SDK_INT >= 23) {
+//            try {
+//                Class<?> clazz = Class.forName("android.content.Context");
+//                Method method = clazz.getMethod("checkSelfPermission", String.class);
+//                result = (int) method.invoke(context, permission) == PackageManager.PERMISSION_GRANTED;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            PackageManager pm = context.getPackageManager();
+//            result = pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
+//        }
+//        return result;
     }
 
     /**
      * 判断是否已经获取该权限
      *
-     * @param context context
+     * @param context 上下文
      * @param permissions 权限集
      * @return 如果其中某个权限为获取，返回false，否则返回true
      */
@@ -1053,7 +960,7 @@ public class AndroidUtils {
         if (list.isEmpty()) {
             return null;
         }
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     /**
@@ -1090,51 +997,9 @@ public class AndroidUtils {
     }
 
     /**
-     * 软键盘是否弹出
-     *
-     * @param context context
-     * @return 软键盘是否弹出
-     */
-    public static boolean isShowSoftKey(Context context) {
-        return ((Activity) context).getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
-    }
-
-    /**
-     * 打开设置网络界面
-     *
-     * @param context context
-     */
-    public static void setNetworkMethod(final Context context) {
-        //提示对话框
-        Builder builder = new Builder(context);
-        builder.setTitle("提示").setMessage("无法连接网络，是否进行设置？")//
-                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = null;
-                        //判断手机系统的版本  即API大于10 就是3.0或以上版本
-                        if (VERSION.SDK_INT > 10) {
-                            intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                        } else {
-                            intent = new Intent();
-                            ComponentName component = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
-                            intent.setComponent(component);
-                            intent.setAction("android.intent.action.VIEW");
-                        }
-                        context.startActivity(intent);
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();
-    }
-
-    /**
      * 重启应用程序
      *
-     * @param context context
+     * @param context 上下文
      */
     public static void restartApplication(Context context) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
@@ -1145,7 +1010,7 @@ public class AndroidUtils {
     /**
      * 卸载应用程序
      *
-     * @param context context
+     * @param context 上下文
      */
     public static void uninstallApplication(Context context) {
         // <action android:name="android.intent.action.DELETE" />
@@ -1163,7 +1028,7 @@ public class AndroidUtils {
     /**
      * 开启一个应用程序
      *
-     * @param context context
+     * @param context 上下文
      */
     public static void startApplication(Context context) {
         // 开启这个应用程序的第一个activity. 默认情况下 第一个activity就是具有启动能力的activity.
@@ -1190,7 +1055,7 @@ public class AndroidUtils {
     /**
      * 分享应用程序,启动系统的分享界面
      *
-     * @param context context
+     * @param context 上下文
      */
     public static void shareApplication(Context context) {
         // <action android:name="android.intent.action.SEND" />
@@ -1207,7 +1072,7 @@ public class AndroidUtils {
     /**
      * 获取状态栏高度
      *
-     * @param context context
+     * @param context 上下文
      * @return 状态栏高度
      */
     public static int getStatusBarHeight(Context context) {
@@ -1299,7 +1164,7 @@ public class AndroidUtils {
     /**
      * 获取Manifest中配置的渠道名
      *
-     * @param context context
+     * @param context 上下文
      * @param key key
      * @return 渠道名
      */
@@ -1328,7 +1193,7 @@ public class AndroidUtils {
     /**
      * 判断屏幕是否亮着
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否亮着
      */
     public static boolean isScreenOn(Context context) {
@@ -1339,7 +1204,7 @@ public class AndroidUtils {
     /**
      * 是否开启了重力感应
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否开启了重力感应
      */
     public static boolean isOpenRotate(Context context) {
@@ -1355,20 +1220,24 @@ public class AndroidUtils {
     /**
      * 是否开启锁屏功能（比如手势，PIN，密码等锁屏功能）
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否开启锁屏功能
      */
     public static boolean isOpenKeyguard(Context context) {
-        KeyguardManager keyguardManager = (KeyguardManager) context.getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
-        if (keyguardManager == null) return false;
-        return keyguardManager.isKeyguardSecure();
+        if (VERSION.SDK_INT >= 16) {
+            KeyguardManager keyguardManager = (KeyguardManager) context.getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager != null) {
+                return keyguardManager.isKeyguardSecure();
+            }
+        }
+        return false;
     }
 
     /**
      * 是否支持指纹识别（判断是否有硬件）
      * 给出两种方式，第一种是通过V4支持包获得兼容的对象引用，这是google推行的做法；还有就是直接使用api 23 framework中的接口获得对象引用。
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否支持指纹识别
      */
     @SuppressLint("MissingPermission")
@@ -1384,7 +1253,7 @@ public class AndroidUtils {
     /**
      * 检查设备中是否有注册过的指纹信息（需要权限）
      *
-     * @param context context
+     * @param context 上下文
      * @return 是否有注册过的指纹信息
      */
     @SuppressLint("MissingPermission")
@@ -1432,7 +1301,7 @@ public class AndroidUtils {
     /**
      * 判断服务是否启动,context上下文对象 ，className服务的name
      *
-     * @param context context
+     * @param context 上下文
      * @param serviceClass 服务类名
      * @return 服务是否启动
      */
@@ -1457,7 +1326,7 @@ public class AndroidUtils {
     /**
      * 根据文件路径安装APK
      *
-     * @param context context
+     * @param context 上下文
      * @param filePath 文件路径
      */
     public static void install(Context context, String filePath) {
@@ -1467,7 +1336,7 @@ public class AndroidUtils {
     /**
      * 根据文件安装APK
      *
-     * @param context context
+     * @param context 上下文
      * @param file APK文件
      */
     public static void install(Context context, File file) {
@@ -1508,7 +1377,7 @@ public class AndroidUtils {
      * 标准量化的DPI-额外的扩展-高密度屏幕 3 一般4K电视屏幕使用这个密度，分辨率3840x2160
      * DENSITY_XXXHIGH = 640;
      *
-     * @param context context
+     * @param context 上下文
      * @return 获取屏幕密度DPI，默认返回0
      */
     public static int getScreenDensityDpi(Context context) {
@@ -1518,7 +1387,7 @@ public class AndroidUtils {
     /**
      * 获取屏幕密度（如1.0、1.5, 2.0）
      *
-     * @param context context
+     * @param context 上下文
      * @return 默认返回0.0
      */
     public static float getScreenDensity(Context context) {
@@ -1528,7 +1397,7 @@ public class AndroidUtils {
     /**
      * 字体缩放比例
      *
-     * @param context context
+     * @param context 上下文
      * @return 字体缩放比例，默认返回0.0
      */
     public static float getScaledDensity(Context context) {

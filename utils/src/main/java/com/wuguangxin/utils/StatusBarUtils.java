@@ -244,12 +244,14 @@ public class StatusBarUtils {
      * @return
      */
     public static int getStatusBarHeight(Context context) {
-        int status_bar_height = 96; // 一般是24dp
+        int status_bar_height;
         int identifier = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (identifier > 0) {
             status_bar_height = context.getResources().getDimensionPixelSize(identifier);
+        } else {
+            // 默认是24dp
+            status_bar_height = Utils.dip2px(context, 24);
         }
-//		Log.e(TAG, "status_bar_height = " + status_bar_height);
         return status_bar_height;
     }
 

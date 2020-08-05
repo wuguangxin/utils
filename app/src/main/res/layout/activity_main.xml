@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity"
+    tools:ignore="HardcodedText">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello world!"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button android:id="@+id/anim_utils" style="@style/btn" android:text="AnimUtils" />
+        <Button android:id="@+id/mmkv_utils" style="@style/btn" android:text="MmkvUtils" />
+        <Button android:id="@+id/shot_key_board" style="@style/btn" android:text="ShotKeyBoardUtils" />
+    </LinearLayout>
 
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:onClick="alarm_add"-->
-<!--        android:text="AlarmUtils.add()"/>-->
 
 </LinearLayout>

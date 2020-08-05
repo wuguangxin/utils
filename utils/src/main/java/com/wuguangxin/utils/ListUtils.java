@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * List集合操作工具类
  * Created by wuguangxin on 2020-01-08.
  */
 public class ListUtils {
 
     /**
      * 截取 list 中从下标 index 开始（包含index）的 len 条数据，如果需要的长度不够，则截取到最后一条
+     *
      * @param list 列表
      * @param index 开始角标
      * @param len 长度
@@ -27,7 +29,7 @@ public class ListUtils {
         } else if (len >= size - 1) {
             return result.subList(index, size - 1);
         } else {
-            int toIndex = index + len > size ? size : index + len;
+            int toIndex = Math.min(index + len, size);
             return result.subList(index, toIndex);
         }
     }

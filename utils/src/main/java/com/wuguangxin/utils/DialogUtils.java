@@ -27,13 +27,16 @@ public class DialogUtils{
 	 * @param alpha 透明度0.0-1.0之间float值
 	 */
 	public static void setDialog(AlertDialog dialog, int position, int width, float alpha){
+		if (dialog == null) return;
 		Window window = dialog.getWindow();
-		window.setGravity(position);
-//		window.setWindowAnimations(R.style.xin_dialog_from_bottom_in_out);
-		WindowManager.LayoutParams lp = window.getAttributes();
-		lp.width = width;
-		lp.alpha = alpha;
-		window.setAttributes(lp);
+		if (window != null) {
+			window.setGravity(position);
+			// window.setWindowAnimations(R.style.xin_dialog_from_bottom_in_out);
+			WindowManager.LayoutParams lp = window.getAttributes();
+			lp.width = width;
+			lp.alpha = alpha;
+			window.setAttributes(lp);
+		}
 	}
 	
 	/**
@@ -106,7 +109,7 @@ public class DialogUtils{
 	
 	/**
 	 * 创建dialog 并显示
-	 * @param context context
+	 * @param context 上下文
 	 * @return Dialog
 	 */
 	public static Dialog makeGoingDialog(Context context){
