@@ -28,8 +28,6 @@ import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 
-import com.wuguangxin.R;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
