@@ -76,8 +76,6 @@ System.out.println("bytes: " + new String(kv.decodeBytes("bytes")));
  */
 public class MmkvUtils {
 
-    //    private static boolean sEncodeKey = true; // 是否加密Key再保存
-//    private static boolean sEncodeValue = true; // 是否加密Value再保存
     private static String userId; // 当前用户ID
     private static String cryptKey; // 加密key
 
@@ -87,6 +85,17 @@ public class MmkvUtils {
      * @param context Application上下文
      */
     public static void init(Context context) {
+        init(context, null);
+    }
+
+    /**
+     * 初始化，在 Application.onCreate()中调用。
+     *
+     * @param context Application上下文
+     * @param cryptKey 加密秘钥（可选）
+     */
+    public static void init(Context context, String cryptKey) {
+        MmkvUtils.cryptKey = cryptKey;
         if (Build.VERSION.SDK_INT >= 23) {
             MMKV.initialize(context);
         } else {

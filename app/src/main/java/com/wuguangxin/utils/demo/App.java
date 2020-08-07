@@ -21,7 +21,7 @@ public class App extends Application {
         mApp = new WeakReference<>(this);
         DES.setKey(Constants.DES_KEY);
         MD5.setKey(Constants.MD5_KEY);
-        MmkvUtils.init(mContext);               // 初始化缓存MMKV
+        MmkvUtils.init(this, Constants.MMKV_KEY);  // 初始化缓存MMKV
         Logger.setDebug(Constants.LOG_DEBUG);   // 日志debug模式
         Logger.setTagPrefix("wgx/");            // 设置日志Tag前缀，便于过滤
 

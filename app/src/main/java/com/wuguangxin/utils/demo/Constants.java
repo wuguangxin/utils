@@ -13,6 +13,7 @@ public class Constants {
 
     public static final String MD5_KEY = "#md5*wgx*utils*20200801#";        // MD5
     public static final String DES_KEY = "#des*wgx*utils*20200801#";        // DES
+    public static final String MMKV_KEY = "#mmkv*wgx*utils*20200801#";       // MMKV
 
     /**
      * 6.0动态请求的权限-拍照需要的权限
