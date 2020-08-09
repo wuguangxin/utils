@@ -36,6 +36,7 @@
         <activity android:name=".ui.MmkvUtilsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.SoftKeyBoardActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.ToastUtilsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.StorageUtilsActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

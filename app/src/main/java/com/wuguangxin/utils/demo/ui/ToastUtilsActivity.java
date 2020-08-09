@@ -1,34 +1,43 @@
 package com.wuguangxin.utils.demo.ui;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.ToastUtils;
 import com.wuguangxin.utils.demo.R;
 
-import androidx.annotation.Nullable;
+import butterknife.BindView;
+import butterknife.OnClick;
 
-public class ToastUtilsActivity extends Activity {
+public class ToastUtilsActivity extends BaseActivity {
 
-    private TextView mTextView;
+    @BindView(R.id.toast_text) TextView mTextView;
     private int count;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_toast);
-        setTitle("Toast工具类");
-        mTextView = findViewById(R.id.toast_text);
+    public int getLayoutRes() {
+        return R.layout.activity_toast;
+    }
 
-        findViewById(R.id.show_toast).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count++;
-                mTextView.setText(String.valueOf(count));
-                ToastUtils.showToast(ToastUtilsActivity.this, "Toast " + count);
-            }
-        });
+    @Override
+    public void initView() {
+        setTitle("Toast工具类");
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void setListener() {
+
+    }
+
+    @OnClick({R.id.show_toast})
+    public void onClick(View v) {
+        count++;
+        mTextView.setText(String.valueOf(count));
+        ToastUtils.showToast(this, "Toast " + count);
     }
 }

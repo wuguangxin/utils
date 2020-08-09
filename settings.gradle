@@ -1,4 +1,3 @@
-include ':utils'
-include ':utils'
 include ':app'
-rootProject.name = "lib_utils"
+include ':utils'
+rootProject.name = "UtilsDemo"

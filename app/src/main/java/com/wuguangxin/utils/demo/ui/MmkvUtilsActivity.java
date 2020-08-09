@@ -66,7 +66,7 @@ public class MmkvUtilsActivity extends BaseActivity {
                 for (UserBean userBean : userList) {
                     if (userBean.getId().equals(id)) {
                         currentUser = userBean;
-                        MmkvUtils.switchUser(id);
+//                        MmkvUtils.switchUser(id);
                         return;
                     }
                 }
@@ -130,7 +130,7 @@ public class MmkvUtilsActivity extends BaseActivity {
             break;
         case R.id.get_bean:
             UserBean userBean = MmkvUtils.getBean(KEY_BEAN, new TypeToken<UserBean>() {}.getType());
-            showToast(currentUser.getUsername() + "取出Bean：" + (userBean == null ? null : userBean.getUsername()));
+            showToast(currentUser.getUsername() + "取出Bean：" + userBean);
             break;
         case R.id.del_bean:
             MmkvUtils.removeValueByKey(KEY_BEAN);

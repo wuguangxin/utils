@@ -28,6 +28,8 @@ import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 
+import com.wuguangxin.R;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class AnimUtil {
     android:toXDelta="80%p"：表示父层View的80%，是以它父层View为参照的。
     */
 
-    private final static int DEF_DURATION = 500; // 默认动画时长
+    private final static int DEF_ANIM_DURATION = 500; // 默认动画时长
 
     /**
      * 加载动画。
@@ -76,7 +78,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getLeft_in() {
-        return getLeft_in(DEF_DURATION);
+        return getLeft_in(DEF_ANIM_DURATION);
     }
 
     /**
@@ -106,7 +108,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getLeft_out() {
-        return getLeft_out(DEF_DURATION);
+        return getLeft_out(DEF_ANIM_DURATION);
     }
 
     /**
@@ -171,7 +173,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getTop_out() {
-        return getTop_out(DEF_DURATION);
+        return getTop_out(DEF_ANIM_DURATION);
     }
 
     /**
@@ -202,7 +204,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getRight_in() {
-        return getRight_in(DEF_DURATION);
+        return getRight_in(DEF_ANIM_DURATION);
     }
 
     /**
@@ -231,7 +233,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getRight_out() {
-        return getRight_out(DEF_DURATION);
+        return getRight_out(DEF_ANIM_DURATION);
     }
 
     /**
@@ -261,7 +263,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getBottom_in() {
-        return getBottom_in(DEF_DURATION);
+        return getBottom_in(DEF_ANIM_DURATION);
     }
 
     /**
@@ -295,7 +297,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getBottom_out() {
-        return getBottom_out(DEF_DURATION);
+        return getBottom_out(DEF_ANIM_DURATION);
     }
 
     /**
@@ -330,7 +332,7 @@ public class AnimUtil {
      * @return
      */
     public static AlphaAnimation getFade_in() {
-        return getFade_in(DEF_DURATION);
+        return getFade_in(DEF_ANIM_DURATION);
     }
 
     /**
@@ -356,7 +358,7 @@ public class AnimUtil {
      * @return
      */
     public static AlphaAnimation getFade_out() {
-        return getFade_out(DEF_DURATION);
+        return getFade_out(DEF_ANIM_DURATION);
     }
 
     /**
@@ -454,7 +456,7 @@ public class AnimUtil {
      * @return
      */
     public static AnimationSet getZoomOut() {
-        return getZoomOut(DEF_DURATION);
+        return getZoomOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -491,7 +493,7 @@ public class AnimUtil {
      * @return
      */
     public static AnimationSet getZoomIn() {
-        return getZoomIn(DEF_DURATION);
+        return getZoomIn(DEF_ANIM_DURATION);
     }
 
 
@@ -528,7 +530,7 @@ public class AnimUtil {
      * @return
      */
     public static TranslateAnimation getShakeLR() {
-        return getShakeLR(DEF_DURATION);
+        return getShakeLR(DEF_ANIM_DURATION);
     }
 
     /**

@@ -8,6 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -382,5 +387,45 @@ public class BitmapUtils {
     public static boolean isImage(String url) {
         String key = url.substring(url.lastIndexOf(".") + 1);
         return imageSuffixList.contains(key);
+    }
+
+    /**
+     * 获取Bitmap大小(在内存中占的大小是文件本身大小的4倍，所以计算实际大小时 /4)
+     *
+     * @param bitmap
+     * @return
+     */
+    public static int getBitmapSize(Bitmap bitmap) {
+        int bitmapSize = 0;
+        if (bitmap != null) {
+            if (Build.VERSION.SDK_INT >= 17) {
+                bitmapSize = bitmap.getByteCount();
+            } else {
+                bitmapSize = bitmap.getRowBytes() * bitmap.getHeight(); // HC-MR1 以前
+            }
+        }
+        return bitmapSize;
+    }
+
+    /**
+     * 把图片的角设置为圆角（未测试）
+     *
+     * @param bitmap Bitmap图片
+     * @param roundSize 圆角的大小（PX）
+     * @return
+     */
+    public static Bitmap setBitmapRound(Bitmap bitmap, int roundSize) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(250, 0, 0, 0);
+        paint.setColor(Color.WHITE);
+        canvas.drawRoundRect(rectF, roundSize, roundSize, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 }

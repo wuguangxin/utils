@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActivityMap.put(R.id.mmkv_utils, MmkvUtilsActivity.class);
         mActivityMap.put(R.id.shot_key_board, SoftKeyBoardActivity.class);
         mActivityMap.put(R.id.toast_utils, ToastUtilsActivity.class);
+        mActivityMap.put(R.id.storage_utils, StorageUtilsActivity.class);
     }
 
     @Override

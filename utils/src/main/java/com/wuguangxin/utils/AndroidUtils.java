@@ -5,7 +5,6 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AppOpsManager;
 import android.app.KeyguardManager;
@@ -23,14 +22,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.os.Environment;
 import android.os.PowerManager;
-import android.os.StatFs;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -44,20 +40,13 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
 import java.net.NetworkInterface;
-import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -145,24 +134,6 @@ public class AndroidUtils {
     }
 
     /**
-     * 判断是否已经安装SD卡
-     *
-     * @return 是否已经安装SD卡
-     */
-    public static boolean isExistSDCard() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    /**
-     * 判断SD卡是否挂载 使用Environment.getExternalStorageState() 返回sd卡的状态， Environment.MEDIA_MOUNTED 表示被挂载
-     *
-     * @return 判断SD卡是否挂载
-     */
-    public static boolean isExtStorageAvailable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    /**
      * 获取 ActivityManager
      *
      * @param context
@@ -190,190 +161,6 @@ public class AndroidUtils {
     public static int getRunningProcessSize(Context context) {
         List<RunningAppProcessInfo> list = getRunningProcessList(context);
         return list == null ? 0 : list.size();
-    }
-
-    /**
-     * 获取手机内存路径
-     *
-     * @return 手机内存路径
-     */
-    public static String getInternalMemoryPath() {
-        File fileDir = Environment.getDataDirectory();
-        if (fileDir.exists()) {
-            return fileDir.getPath();
-        }
-        return null;
-    }
-
-    /**
-     * 获取扩展SD存储卡路径
-     *
-     * @return 扩展SD存储卡路径
-     */
-    public static String getExternalStoragePath() {
-        File fileDir = Environment.getExternalStorageDirectory();
-        if (fileDir.exists()) {
-            return fileDir.getPath();
-        }
-        return null;
-    }
-
-    /**
-     * 获取手机的总RAM（运存） 获取失败返回0
-     *
-     * @param context 上下文
-     * @return 手机的总RAM（运存）
-     */
-    public static long getTotalRAM(Context context) {
-        if (VERSION.SDK_INT >= 16) {
-            ActivityManager manager = getActivityManager(context);
-            if (manager != null) {
-                MemoryInfo memoryInfo = new MemoryInfo();
-                manager.getMemoryInfo(memoryInfo);
-                return memoryInfo.totalMem;
-            }
-        } else {
-            try {
-                FileReader localFileReader = new FileReader("/proc/meminfo"); // /proc/meminfo系统内存信息文件
-                BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
-                String lineStr = localBufferedReader.readLine();
-                long totalRAM = 0;
-                if (lineStr != null) {
-                    String[] lineStrs = lineStr.split("\\s+");
-                    if (lineStrs.length >= 2) {
-                        String lineStrs1 = lineStrs[1];
-                        if (lineStrs1 != null) {
-                            totalRAM = Long.parseLong(lineStrs1) * 1024; // 获得的是KB，*1024转为byte
-                        }
-                    }
-                }
-                localBufferedReader.close();
-                return totalRAM;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * 获取手机的可用RAM（运行内存）
-     *
-     * @param context 上下文
-     * @return
-     */
-    public static long getAvailRAM(Context context) {
-        if (context != null) {
-            ActivityManager manager = getActivityManager(context);
-            if (manager != null) {
-                MemoryInfo memoryInfo = new MemoryInfo();
-                manager.getMemoryInfo(memoryInfo);
-                return memoryInfo.availMem;
-            }
-        }
-        return 0;
-    }
-
-    /**
-     * 获取手机内存总容量
-     *
-     * @return 手机内存总容量
-     */
-    public static long getTotalInternalMemorySize() {
-        String path = Environment.getDataDirectory().getPath();
-        StatFs stat = new StatFs(path);
-        long blockSize = stat.getBlockSize();
-        long totalBlocks = stat.getBlockCount();
-        return totalBlocks * blockSize;
-    }
-
-    /**
-     * 获取手机内存剩余容量
-     *
-     * @return 手机内存剩余容量
-     */
-    public static long getAvailInternalMemorySize() {
-        String path = Environment.getDataDirectory().getPath();
-        StatFs stat = new StatFs(path);
-        long blockSize = stat.getBlockSize();
-        long availableBlocks = stat.getAvailableBlocks();
-        return blockSize * availableBlocks;
-    }
-
-    /**
-     * 获取内置存储卡总容量
-     *
-     * @return 如果已安装SD卡，则返回SD卡总容量，否则返回-1
-     */
-    public static long getTotalExternalMemorySize() {
-        if (isExistSDCard()) {
-            String path = Environment.getExternalStorageDirectory().getPath();
-            StatFs stat = new StatFs(path);
-            long blockSize = stat.getBlockSize();
-            long totalBlocks = stat.getBlockCount();
-            return totalBlocks * blockSize;
-        }
-        return -1;
-    }
-
-    /**
-     * 获取内置存储卡剩余容量 (可参考源码中的 Settings）
-     *
-     * @return 不存在则返回 -1
-     */
-    public static long getAvailExternalMemorySize() {
-        if (isExistSDCard()) {
-            String path = Environment.getExternalStorageDirectory().getPath();
-            StatFs stat = new StatFs(path); // 路径
-            long availableBlocks = stat.getAvailableBlocks(); // 获取区块的个数
-            long blockSize = stat.getBlockSize(); // 获取单个区块的大小
-            return blockSize * availableBlocks; // 总大小
-        }
-        return -1;
-    }
-
-    /**
-     * 判断SD卡下external_sd文件夹的总大小
-     *
-     * @return SD卡下external_sd文件夹的总大小
-     */
-    public static long getTotalExternal_SDMemorySize() {
-        if (isExistSDCard()) {
-            String path = Environment.getExternalStorageDirectory().getPath();
-            File externalSD = new File(path + "/external_sd");
-            if (externalSD.exists() && externalSD.isDirectory()) {
-                StatFs stat = new StatFs(path + "/external_sd");
-                long blockSize = stat.getBlockSize(); // 获取单个区块的大小
-                long blockCount = stat.getBlockCount(); // 获取区块的个数
-                long resultSize = blockCount * blockSize;
-                if (getTotalExternalMemorySize() != -1 && getTotalExternalMemorySize() != resultSize) {
-                    return resultSize;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * 判断SD卡下external_sd文件夹的可用大小
-     *
-     * @return SD卡下external_sd文件夹的可用大小
-     */
-    public static long getAvailableExternal_SDMemorySize() {
-        if (isExistSDCard()) {
-            String path = Environment.getExternalStorageDirectory().getPath();
-            File externalSD = new File(path + "/external_sd");
-            if (externalSD.exists() && externalSD.isDirectory()) {
-                StatFs stat = new StatFs(path + "/external_sd");
-                long blockSize = stat.getBlockSize();
-                long availableBlocks = stat.getAvailableBlocks();
-                long resultSize = availableBlocks * blockSize;
-                if (getAvailExternalMemorySize() != -1 && getAvailExternalMemorySize() != resultSize) {
-                    return resultSize;
-                }
-            }
-        }
-        return -1;
     }
 
     // *********************************************************************
@@ -597,7 +384,6 @@ public class AndroidUtils {
      */
     public static int getScreenWidth(@Nullable Context context) {
         return context == null ? 0 : context.getResources().getDisplayMetrics().widthPixels;
-        // 以下方式已过时
 //        if (context != null) {
 //            WindowManager manager = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
 //            if (manager != null) {
@@ -617,7 +403,6 @@ public class AndroidUtils {
      */
     public static int getScreenHeight(Context context) {
         return context == null ? 0 : context.getResources().getDisplayMetrics().heightPixels;
-        // 以下方式已过时
 //        if (context != null) {
 //            WindowManager manager = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
 //            if (manager != null) {
@@ -629,81 +414,7 @@ public class AndroidUtils {
 //        return 0;
     }
 
-    /**
-     * 复制文件
-     *
-     * @param sourceFile 源
-     * @param destinationFile 目标
-     * @throws IOException 异常
-     */
-    public static void copyFile(File sourceFile, File destinationFile) throws IOException {
-        FileInputStream in = new FileInputStream(sourceFile);
-        FileOutputStream out = new FileOutputStream(destinationFile);
-        FileChannel inChannel = in.getChannel();
-        FileChannel outChannel = out.getChannel();
-        try {
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-        } finally {
-            if (inChannel != null) {
-                inChannel.close();
-            }
-            outChannel.close();
-        }
-        in.close();
-        out.close();
-    }
 
-    /**
-     * 从一个输入流复制到一个输出流（默认缓冲大小 8192 B ）
-     *
-     * @param input 输入流
-     * @param output 输出流
-     * @return 总大小
-     * @throws IOException 异常
-     */
-    public static int copy(InputStream input, OutputStream output) throws IOException {
-        byte[] buffer = new byte[8192];
-        int count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
-    }
-
-    /**
-     * 在线程池中执行一个AsyncTask Execute an {@link AsyncTask} on a thread pool.
-     *
-     * @param task AsyncTask
-     * @param args 参数
-     */
-    public static <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... args) {
-        if (VERSION.SDK_INT >= 11) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
-        } else {
-            task.execute(args);
-        }
-    }
-
-    /**
-     * 通过HttpURLConnection连接到指定的URL地址，返回一个InputStream，实用于下载图片等..
-     *
-     * @param url 地址
-     * @return InputStream
-     * @throws IOException 异常
-     */
-    public static InputStream syncDownloadByUrl(String url) throws IOException {
-        AndroidUtils.disableConnectionReuseIfNecessary();
-        URL mUrl = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) mUrl.openConnection();
-        conn.setReadTimeout(10000); // 读取超时
-        conn.setConnectTimeout(15000); //连接超时
-        conn.setDoInput(true);
-        conn.setRequestMethod("GET");
-        conn.connect();
-        return conn.getInputStream();
-    }
 
     /**
      * 在Android 2.2版本之前，HttpURLConnection一直存在着一些令人厌烦的bug，

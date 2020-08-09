@@ -2,11 +2,9 @@ package com.wuguangxin.utils;
 
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.getkeepsafe.relinker.ReLinker;
 import com.google.gson.Gson;
 import com.tencent.mmkv.MMKV;
 
@@ -96,17 +94,20 @@ public class MmkvUtils {
      */
     public static void init(Context context, String cryptKey) {
         MmkvUtils.cryptKey = cryptKey;
-        if (Build.VERSION.SDK_INT >= 23) {
-            MMKV.initialize(context);
-        } else {
-            // 一些 Android 设备（API 19）在安装/更新 APK 时可能出错（ReLinker的说法是如果您的应用程序包含本机库，
-            // 并且您的最低SDK低于API 23）, 导致 libmmkv.so 找不到。
-            // 然后就会遇到 java.lang.UnsatisfiedLinkError 之类的 crash。
-            // 有个开源库 ReLinker (https://github.com/KeepSafe/ReLinker）专门解决这个问题，用它来加载 MMKV：
-            // 下面定义的rootDir的目录也是MMKV的原始目录，使用他即可
-            String rootDir = context.getFilesDir().getAbsolutePath() + "/mmkv";
-            MMKV.initialize(rootDir, libName -> ReLinker.loadLibrary(context, libName));
-        }
+        MMKV.initialize(context);
+
+        // 先不考虑该问题，出问题再解决
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            MMKV.initialize(context);
+//        } else {
+//            // 一些 Android 设备（API 19）在安装/更新 APK 时可能出错（ReLinker的说法是如果您的应用程序包含本机库，
+//            // 并且您的最低SDK低于API 23）, 导致 libmmkv.so 找不到。
+//            // 然后就会遇到 java.lang.UnsatisfiedLinkError 之类的 crash。
+//            // 有个开源库 ReLinker (https://github.com/KeepSafe/ReLinker）专门解决这个问题，用它来加载 MMKV：
+//            // 下面定义的rootDir的目录也是MMKV的原始目录，使用他即可
+//            String rootDir = context.getFilesDir().getAbsolutePath() + "/mmkv";
+//            MMKV.initialize(rootDir, libName -> ReLinker.loadLibrary(context, libName));
+//        }
     }
 
     /**

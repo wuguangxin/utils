@@ -5,7 +5,7 @@ apply plugin: 'com.novoda.bintray-release'
 // module配置
 def mModulesName = "utils"
 def mVersionCode = 2
-def mVersionName = "1.0.1"
+def mVersionName = "1.0.2-test"
 def mDescription = "优化"
 
 android {
@@ -21,10 +21,6 @@ android {
         // 作用是当本项目作为lib或者module被别人使用，如果本项目中有不可被混淆的代码时，可在本项目中开启混淆配置，
         // 当第三方引用到本module并打包时，会自动应用本module中的混淆配置文件，避免别人忘记配置而导致错误
         consumerProguardFiles "consumer-rules.pro"
-
-        ndk {
-            abiFilters 'armeabi'//, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-        }
     }
 
     buildTypes {
@@ -32,16 +28,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        // 当该项目以导入代码到主项目中作为module时，主项目有几个type就同样添加几个
-//        alpha {
-//            debuggable true
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-//        }
-    }
-
-    lintOptions {
-        abortOnError false
     }
 
     tasks.withType(Javadoc) {
@@ -54,23 +40,27 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
     // 腾讯mmkv替代sp (https://github.com/Tencent/MMKV/blob/master/readme_cn.md)
     implementation 'com.tencent:mmkv-static:1.2.1'
+    // MmkvUtils在初始化时有可能会报错，则需要使用ReLinker来辅助加载，（增加大小 45kb）
+    // 详细看：https://github.com/Tencent/MMKV/wiki/android_advance_cn#%E8%87%AA%E5%AE%9A%E4%B9%89-library-loader
+//    implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
 
     // 二维码,ZXingUtils用到
     implementation 'com.google.zxing:core:3.4.0'
-
-    // MmkvUtils在初始化时有可能会报错，则需要使用ReLinker来辅助加载，（增加大小 45kb）
-    // 详细看：https://github.com/Tencent/MMKV/wiki/android_advance_cn#%E8%87%AA%E5%AE%9A%E4%B9%89-library-loader
-    implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
 }
 
 // 配置 bintray
