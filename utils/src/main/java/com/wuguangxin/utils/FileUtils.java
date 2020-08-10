@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -25,15 +26,20 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveTask;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * 文件操作工具类
@@ -66,7 +72,7 @@ public class FileUtils {
      * @param targetFilePath 保存路径
      * @return 序列化成功返回true
      */
-    public static boolean writeObjectToCache(Object obj, String targetFilePath) {
+    public static boolean writeByFile(Object obj, String targetFilePath) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
@@ -88,7 +94,7 @@ public class FileUtils {
      * @param savePath 序列化该对象时保存的路径
      * @return 反序列化成功返回true
      */
-    public static Object readObjectFromCache(String savePath) {
+    public static Object readByFile(String savePath) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
@@ -108,22 +114,19 @@ public class FileUtils {
      *
      * @param context 程序上下文
      * @param fileName 文件名，要在系统内保持唯一
-     * @param list 对象数组集合，对象必须实现Parcelable
+     * @param list 对象数组集合，对象必须实现 Parcelable 接口
      * @return boolean 存储成功的标志
      */
     @SuppressLint("Recycle")
-    public static boolean writeParcelableList(Context context, String fileName, List<Parcelable> list) {
-        boolean success = false;
+    public static <T extends Parcelable> boolean writeParcelableList(Context context, String fileName, List<T> list) {
         FileOutputStream fos = null;
         try {
-            if (list instanceof List) {
-                fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-                Parcel parcel = Parcel.obtain();
-                parcel.writeList(list);
-                byte[] data = parcel.marshall();
-                fos.write(data);
-                success = true;
-            }
+            fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            Parcel parcel = Parcel.obtain();
+            parcel.writeList(list);
+            byte[] data = parcel.marshall();
+            fos.write(data);
+            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -131,80 +134,91 @@ public class FileUtils {
         } finally {
             close(fos);
         }
-        return success;
+        return false;
     }
 
     /**
-     * 获取制定文件目录下所有文件大小
-     * @param dir 文件目录
+     * 获取文件大小
+     * @param file
      * @return
      */
-    public static long getFileSize(File dir) {
-        long size = 0;
-        try {
-            File[] files = dir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    // 如果下面还有文件
-                    if (file.isDirectory()) {
-                        size += getFileSize(file);
-                    } else {
-                        size += file.length();
+    public static long getFileSize(File file) {
+        return getFileSizeWhile(file);
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            return getFileSizeWhile(file);
+//        } else {
+//            ForkJoinPool forkJoinPool = new ForkJoinPool();
+//            return forkJoinPool.invoke(new FileSizeFinder(file));
+//        }
+    }
+
+    /**
+     * 获取文件大小（递归方式）
+     * @param file
+     * @return
+     */
+    private static long getFileSizeWhile(File file) {
+        if (file == null) return 0L;
+        Log.i(TAG, file.getPath());
+        if (file.isFile()) {
+            return file.length();
+        }
+        long totalSize = 0;
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File child : files) {
+                totalSize += getFileSize(child);
+            }
+        }
+        return totalSize;
+    }
+
+
+    /**
+     * 获取文件大小（线程池方式）
+     * @param file
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static long getFileSizePool(File file) {
+        return new ForkJoinPool().invoke(new FileSizeFinder(file));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static class FileSizeFinder extends RecursiveTask<Long> {
+        private static final long serialVersionUID = 8204702901559704902L;
+        final File file;
+
+        public FileSizeFinder(final File theFile) {
+            file = theFile;
+        }
+
+        @Override
+        public Long compute() {
+            long size = 0;
+            if (file.isFile()) {
+                size = file.length();
+            } else {
+                final File[] children = file.listFiles();
+                if (children != null) {
+                    List<ForkJoinTask<Long>> tasks = new ArrayList<ForkJoinTask<Long>>();
+                    long length;
+                    for (final File child : children) {
+                        if (child.isFile()) {
+                            length = child.length();
+                            size += length;
+                            Log.i(TAG, child.getPath() + " " + (length / 1024L / 1024L) + "MB");
+                        } else {
+                            tasks.add(new FileSizeFinder(child));
+                        }
+                    }
+                    for (final ForkJoinTask<Long> task : invokeAll(tasks)) {
+                        size += task.join();
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return size;
         }
-        return size;
-    }
-
-
-    /**
-     * 格式化文件大小单位
-     *
-     * @param size 大小（Byte单位）
-     * @return
-     */
-    public static String formatFileSize(long size) {
-        return formatFileSize(size, 2);
-    }
-
-    /**
-     * 格式化文件大小单位
-     *
-     * @param size 大小（Byte单位）
-     * @param scale 小数位数
-     * @return
-     */
-    public static String formatFileSize(long size, int scale) {
-        if (scale < 0) {
-            scale = 0;
-        }
-        if (size <= 0) {
-            return "0B";
-        }
-        long kiloByte = size >> 10; // 就是 size/1024
-        if (kiloByte < 1) {
-            return size + "B";
-        }
-        long megaByte = kiloByte >> 10; // /1024
-        if (megaByte < 1) {
-            BigDecimal result1 = new BigDecimal(Double.toString(kiloByte));
-            return result1.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString() + "KB";
-        }
-        long gigaByte = megaByte >> 10; // /1024
-        if (gigaByte < 1) {
-            BigDecimal result2 = new BigDecimal(Double.toString(megaByte));
-            return result2.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString() + "MB";
-        }
-        long teraBytes = gigaByte >> 10; // /1024
-        if (teraBytes < 1) {
-            BigDecimal result3 = new BigDecimal(Double.toString(gigaByte));
-            return result3.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString() + "GB";
-        }
-        BigDecimal result4 = new BigDecimal(teraBytes);
-        return result4.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
 
     /**
@@ -214,7 +228,7 @@ public class FileUtils {
      * @return
      */
     public static String formatFileSize(Context context, long size) {
-        return android.text.format.Formatter.formatFileSize(context, size);
+        return Formatter.formatFileSize(context, size);
     }
 
     /**
@@ -224,7 +238,7 @@ public class FileUtils {
      * @return
      */
     public static String formatShortFileSize(Context context, long size) {
-        return android.text.format.Formatter.formatShortFileSize(context, size);
+        return Formatter.formatShortFileSize(context, size);
     }
 
     /**

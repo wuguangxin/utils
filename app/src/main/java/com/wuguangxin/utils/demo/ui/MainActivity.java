@@ -28,6 +28,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActivityMap.put(R.id.shot_key_board, SoftKeyBoardActivity.class);
         mActivityMap.put(R.id.toast_utils, ToastUtilsActivity.class);
         mActivityMap.put(R.id.storage_utils, StorageUtilsActivity.class);
+        mActivityMap.put(R.id.android_utils, AndroidUtilsActivity.class);
     }
 
     @Override

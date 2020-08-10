@@ -1,6 +1,7 @@
 package com.wuguangxin.utils.demo.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,11 +14,13 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder mBinder;
+    protected Context context;
 
     @Override
     final protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
+        context = this;
         mBinder = ButterKnife.bind(this);
         setTitle(getTitleByActivity());
         initView();

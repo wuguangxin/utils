@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
-import com.wuguangxin.utils.AndroidUtils;
 import com.wuguangxin.utils.AnimUtil;
 import com.wuguangxin.utils.BitmapUtils;
+import com.wuguangxin.utils.PermissionUtils;
 import com.wuguangxin.utils.demo.R;
 
 import java.io.File;
@@ -118,11 +118,11 @@ public class AnimUtilsActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, PERMISSION_EXTERNAL_STORAGE, 100);
             break;
         case R.id.check_permission:
-            boolean permission1 = AndroidUtils.checkPermission(this, PERMISSION_EXTERNAL_STORAGE);
+            boolean permission1 = PermissionUtils.checkPermission(this, PERMISSION_EXTERNAL_STORAGE);
             showToast(Manifest.permission.READ_EXTERNAL_STORAGE + "权限是否已获取：" + permission1);
             break;
         case R.id.write_file:
-            if (AndroidUtils.checkPermission(this, PERMISSION_EXTERNAL_STORAGE)) {
+            if (PermissionUtils.checkPermission(this, PERMISSION_EXTERNAL_STORAGE)) {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img);
                 if (bitmap != null) {
                     File file = BitmapUtils.bitmapToFile(this, bitmap);

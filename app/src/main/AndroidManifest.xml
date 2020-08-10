@@ -37,6 +37,7 @@
         <activity android:name=".ui.SoftKeyBoardActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.ToastUtilsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.StorageUtilsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AndroidUtilsActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

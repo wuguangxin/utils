@@ -47,14 +47,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 /**
@@ -97,19 +94,23 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
  * Created by wuguangxin on 15/6/14
  */
 public class AndroidUtils {
+
+    //######### System信息 ######################################################################
+    //######### System信息 ######################################################################
+    //######### System信息 ######################################################################
     /**
      * 获取SDK版本号
      *
-     * @return SDK版本号
+     * @return
      */
     public static int getSdkVersion() {
         return VERSION.SDK_INT;
     }
 
     /**
-     * 获取手机版本号
+     * 获取手机系统版本号
      *
-     * @return 手机版本号
+     * @return
      */
     public static String getRelease() {
         return VERSION.RELEASE;
@@ -118,59 +119,18 @@ public class AndroidUtils {
     /**
      * 获取手机型号
      *
-     * @return 手机型号
+     * @return
      */
     public static String getModel() {
         return Build.MODEL;
     }
 
     /**
-     * 获取应用程序包名
-     *
-     * @return 应用程序包名
-     */
-    public static String getPackageName(Context context) {
-        return context == null ? null : context.getPackageName();
-    }
-
-    /**
-     * 获取 ActivityManager
-     *
-     * @param context
-     * @return
-     */
-    public static ActivityManager getActivityManager(Context context) {
-        return context == null ? null : (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-    }
-
-    /**
-     * 获取正在运行的进程信息列表
-     *
-     * @return 正在运行的进程信息列表
-     */
-    public static List<RunningAppProcessInfo> getRunningProcessList(Context context) {
-        ActivityManager manager = getActivityManager(context);
-        return manager == null ? null : manager.getRunningAppProcesses();
-    }
-
-    /**
-     * 获取正在运行的进程数量
-     *
-     * @return 正在运行的进程数量
-     */
-    public static int getRunningProcessSize(Context context) {
-        List<RunningAppProcessInfo> list = getRunningProcessList(context);
-        return list == null ? 0 : list.size();
-    }
-
-    // *********************************************************************
-
-    /**
      * 获取设备ID (唯一标识 IMEI)。
      * (6.0及以上系统需要动态请求权限 Manifest.permission.READ_PHONE_STATE)
      *
      * @param context 上下文
-     * @return 设备ID
+     * @return
      */
     @SuppressLint({"MissingPermission", "HardwareIds"})
     public static String getDeviceId(Context context) {
@@ -178,7 +138,7 @@ public class AndroidUtils {
             return null;
         }
         if (VERSION.SDK_INT >= 23) {
-            if (!AndroidUtils.checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            if (!PermissionUtils.checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
                 Log.e(AndroidUtils.class.getSimpleName(), "权限拒绝：READ_PHONE_STATE");
                 return null;
             }
@@ -198,53 +158,12 @@ public class AndroidUtils {
      * 获取设备IMEI，同 getDeviceId().
      *
      * @param context 上下文
-     * @return 设备IMEI
+     * @return
      */
     public static String getIMEI(Context context) {
         return getDeviceId(context);
     }
 
-    /**
-     * 获取当前应用程序版本名称
-     *
-     * @return 当前应用程序版本名称。如 1.0.0
-     */
-    public static String getVersionName(Context context) {
-        try {
-            if (context != null) {
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                return packageInfo.versionName;
-            }
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @param context 上下文
-     * @return 版本号
-     */
-    public static int getVersionCode(Context context) {
-        try {
-            PackageInfo packInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * 获取SDK版本号
-     *
-     * @return SDK版本号
-     */
-    public static int getSDKCode() {
-        return VERSION.SDK_INT;
-    }
 
     /**
      * 判断当前设备是否是模拟器。如果是模拟器返回TRUE，不是返回FALSE
@@ -341,6 +260,51 @@ public class AndroidUtils {
         return null;
     }
 
+    //######### APP信息 ###########################################################################
+    //######### APP信息 ###########################################################################
+    //######### APP信息 ###########################################################################
+    /**
+     * 获取应用程序包名
+     *
+     * @return
+     */
+    public static String getPackageName(Context context) {
+        return context == null ? null : context.getPackageName();
+    }
+
+    /**
+     * 获取当前应用程序版本名称
+     *
+     * @return 如 1.0.0
+     */
+    public static String getVersionName(Context context) {
+        try {
+            if (context != null) {
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                return packageInfo.versionName;
+            }
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取版本号
+     *
+     * @param context 上下文
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        try {
+            PackageInfo packInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packInfo.versionCode;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     /**
      * 获取联系人电话
      * 参考 http://www.2cto.com/kf/201109/104686.html
@@ -414,8 +378,6 @@ public class AndroidUtils {
 //        return 0;
     }
 
-
-
     /**
      * 在Android 2.2版本之前，HttpURLConnection一直存在着一些令人厌烦的bug，
      * 比如说对一个可读的InputStream调用close()方法时，就有可能会导致连接池失效了，
@@ -423,6 +385,38 @@ public class AndroidUtils {
      */
     public static void disableConnectionReuseIfNecessary() {
         System.setProperty("http.keepAlive", "false");
+    }
+
+
+
+    /**
+     * 获取 ActivityManager
+     *
+     * @param context
+     * @return
+     */
+    public static ActivityManager getActivityManager(Context context) {
+        return context == null ? null : (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+    }
+
+    /**
+     * 获取正在运行的进程信息列表
+     *
+     * @return 正在运行的进程信息列表
+     */
+    public static List<RunningAppProcessInfo> getRunningProcessList(Context context) {
+        ActivityManager manager = getActivityManager(context);
+        return manager == null ? null : manager.getRunningAppProcesses();
+    }
+
+    /**
+     * 获取正在运行的进程数量
+     *
+     * @return 正在运行的进程数量
+     */
+    public static int getRunningProcessSize(Context context) {
+        List<RunningAppProcessInfo> list = getRunningProcessList(context);
+        return list == null ? 0 : list.size();
     }
 
     /**
@@ -466,7 +460,7 @@ public class AndroidUtils {
      */
     public static boolean isTopActivity(final Context context) {
         if (context != null) {
-            String packageName = AndroidUtils.getAppTopActivityPackageName(context);
+            String packageName = AndroidUtils.getTopActivityPackageName(context);
             return context.getPackageName().equals(packageName);
         }
         return false;
@@ -480,7 +474,7 @@ public class AndroidUtils {
      * @param context 上下文
      * @return 当前运行的APP中处于栈顶的APP包名
      */
-    public static String getAppTopActivityPackageName(Context context) {
+    public static String getTopActivityPackageName(Context context) {
         if (context == null) return null;
         try {
             ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -533,23 +527,6 @@ public class AndroidUtils {
     }
 
     /**
-     * 获取当前应用程序的包名
-     *
-     * @param context 上下文
-     * @return 当前应用程序的包名
-     */
-    public static String getAppPackageName(Context context) {
-        // Android 提供了一个API以让应用程序向系统查询包名信息，使用 PackageManager 的 getPackageInfo(java.lang.String, int)方法
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return info.packageName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * 获取设备ID和MAC信息（注册友盟测试设备使用）
      *
      * @param context 上下文
@@ -561,7 +538,7 @@ public class AndroidUtils {
             org.json.JSONObject json = new org.json.JSONObject();
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String device_id = null;
-            if (tm != null && checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            if (tm != null && PermissionUtils.checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
                 device_id = tm.getDeviceId();
             }
             String mac = null;
@@ -605,84 +582,6 @@ public class AndroidUtils {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 检查权限是否获取
-     *
-     * @param context 上下文
-     * @param permission 权限
-     * @return 是否已获取
-     */
-    public static boolean checkPermission(Context context, String permission) {
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
-
-//        boolean result = false;
-//        if (VERSION.SDK_INT >= 23) {
-//            try {
-//                Class<?> clazz = Class.forName("android.content.Context");
-//                Method method = clazz.getMethod("checkSelfPermission", String.class);
-//                result = (int) method.invoke(context, permission) == PackageManager.PERMISSION_GRANTED;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            PackageManager pm = context.getPackageManager();
-//            result = pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
-//        }
-//        return result;
-    }
-
-    /**
-     * 判断是否已经获取该权限
-     *
-     * @param context 上下文
-     * @param permissions 权限集
-     * @return 如果其中某个权限为获取，返回false，否则返回true
-     */
-    public static boolean checkPermission(Context context, String... permissions) {
-        if (context == null || permissions == null) return true;
-        String packageName = context.getPackageName();
-        PackageManager packageManager = context.getPackageManager();
-        for (String permission : permissions) {
-            if (PackageManager.PERMISSION_GRANTED != packageManager.checkPermission(permission, packageName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 检测未授权的权限并返回
-     *
-     * @param context
-     * @param permissions 权限集
-     * @return
-     */
-    public static String[] checkUnAcceptPermission(Context context, String... permissions) {
-        ArrayList<String> list = new ArrayList<>();
-        if (permissions != null) {
-            for (String permission : permissions) {
-                if (!AndroidUtils.checkPermission(context, permission)) {
-                    list.add(permission);
-                }
-            }
-        }
-        if (list.isEmpty()) {
-            return null;
-        }
-        return list.toArray(new String[0]);
-    }
-
-    /**
-     * 请求权限。（直接搬用系统的： {@link ActivityCompat#requestPermissions(Activity, String[], int)}）
-     *
-     * @param activity Activity
-     * @param permissions 权限集
-     * @param requestCode 请求码
-     */
-    public static void requestPermissions(Activity activity, String[] permissions, int requestCode) {
-        ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
     /**
@@ -957,7 +856,6 @@ public class AndroidUtils {
         FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
         // Using API level 23:
 //        FingerprintManager fingerprintManager = (FingerprintManager) context.getApplicationContext().getSystemService(Context.FINGERPRINT_SERVICE);
-        if (fingerprintManager == null) return false;
         return fingerprintManager.isHardwareDetected();
     }
 

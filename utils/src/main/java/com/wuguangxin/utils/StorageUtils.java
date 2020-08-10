@@ -14,11 +14,9 @@ import java.io.IOException;
 
 /**
  * 存储管理工具类。
- * 
  * {@link #getFilesDir(Context))                        // /data/user/0/<包名>/files
  * {@link #getCacheDir(Context))                        // /data/user/0/<包名>/cache
  * {@link #getCodeCacheDir(Context));                   // /data/user/0/<包名>/code_cache
- * 
  * {@link #getExternalCacheDir(Context));               // /storage/emulated/0/Android/data/<包名>/cache
  * {@link #getExternalFilesDir(Context));               // /storage/emulated/0/Android/data/<包名>/files
  * {@link #getExternalFilesDirDCIM(Context));           // /storage/emulated/0/Android/data/<包名>/files/DCIM
@@ -33,7 +31,6 @@ import java.io.IOException;
  * {@link #getExternalFilesDirRingtones(Context));      // /storage/emulated/0/Android/data/<包名>/files/Ringtones
  * {@link #getExternalFilesDirAudioBooks(Context));     // /storage/emulated/0/Android/data/<包名>/files/Audiobooks
  * {@link #getExternalFilesDirNotifications(Context));  // /storage/emulated/0/Android/data/<包名>/files/Notifications
- *
  * 获取存储卡各个目录：
  * {@link #hasExternalStorage())                // true
  * {@link #getRootDirectory())                  // /system
@@ -47,7 +44,7 @@ import java.io.IOException;
  * {@link #getDirectoryDownloads())             // /storage/emulated/0/Download
  * {@link #getDirectoryScreenshots())           // /storage/emulated/0/Screenshots
  * {@link #getDirectoryDocuments())             // /storage/emulated/0/Documents
- * 存储空间：                                        
+ * 存储空间：
  * {@link #isLowMemory(Context)}                // 是否是低内存：false
  * {@link #getTotalRAMSize(Context))            // 手机总RAM：5903380480    = 5.49GB
  * {@link #getAvailRAMSize(Context))            // 手机余RAM：1810214912    = 1.68GB
@@ -55,7 +52,6 @@ import java.io.IOException;
  * {@link #getInternalStorageAvailSize())       // 内置余ROM：3656527872    = 3.40GB
  * {@link #getExternalStorageTotalSize())       // 扩展总ROM：118981873664  = 110.81GB
  * {@link #getExternalStorageAvailSize())       // 扩展余ROM：3656527872    = 3.40GB
- * 
  * Created by wuguangxin on 2020/8/9.
  */
 public class StorageUtils {
@@ -256,7 +252,7 @@ public class StorageUtils {
     }
 
     /**
-     * 获取扩展存储卡的 Alarms(警告声) 目录，需要存储卡读写权限。
+     * 获取扩展存储卡的 Alarms(警告铃声) 目录，需要存储卡读写权限。
      * 路径：/storage/emulated/0/Android/data/<包名>/files/Alarms
      *
      * @param context 上下文
@@ -265,7 +261,6 @@ public class StorageUtils {
     public static File getExternalFilesDirAlarms(Context context) {
         return context == null ? null : context.getExternalFilesDir(Environment.DIRECTORY_ALARMS);
     }
-
 
     /**
      * 获取扩展存储卡的 Movies(电影) 目录，需要存储卡读写权限。
@@ -462,7 +457,7 @@ public class StorageUtils {
     }
 
     /**
-     * 获取扩展存储卡的【铃声-Alarms】目录。
+     * 获取扩展存储卡的【警告声-Alarms】目录。
      * 路径：/storage/emulated/0/Alarms
      *
      * @return

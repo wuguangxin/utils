@@ -17,6 +17,7 @@
         <Button android:id="@+id/shot_key_board" style="@style/btn" android:text="ShotKeyBoardUtils" />
         <Button android:id="@+id/toast_utils" style="@style/btn" android:text="ToastUtils" />
         <Button android:id="@+id/storage_utils" style="@style/btn" android:text="StorageUtils" />
+        <Button android:id="@+id/android_utils" style="@style/btn" android:text="AndroidUtils" />
     </LinearLayout>
 
 

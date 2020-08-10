@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/run_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="让程序在后台运行" />
+        <Button
+            android:id="@+id/reboot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="重启程序" />
+        <Button
+            android:id="@+id/uninstall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="卸载程序" />
+        <Button
+            android:id="@+id/startApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动一个程序" />
+        <Button
+            android:id="@+id/shareApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分享程序" />
+        <Button
+            android:id="@+id/immersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="沉浸式状态栏" />
+        <Button
+            android:id="@+id/immersion2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="透明状态栏" />
+        <Button
+            android:id="@+id/immersion_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消透明状态栏" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="存储信息" />
+
+        <TextView
+            android:id="@+id/android_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#333333"
+            android:text="" />
+
+    </LinearLayout>
+</ScrollView>
