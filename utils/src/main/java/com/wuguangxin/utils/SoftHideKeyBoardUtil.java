@@ -12,8 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import java.lang.reflect.Field;
-
 /**
  * 解决键盘档住输入框
  * Created by SmileXie on 2017/4/3.
@@ -32,7 +30,7 @@ public class SoftHideKeyBoardUtil {
     private int statusBarHeight;//状态栏高度
 
     private SoftHideKeyBoardUtil(Activity activity) {
-        statusBarHeight = getStatusBarHeight(activity);
+        statusBarHeight = StatusBarUtils.getStatusBarHeight(activity);
         //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout
         FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
         //2､获取到setContentView放进去的View
@@ -165,35 +163,12 @@ public class SoftHideKeyBoardUtil {
     }
 
     /**
-     * 软键盘是否弹出
+     * 判断软键盘是否是弹出状态
      *
      * @param context 上下文
      * @return 软键盘是否弹出
      */
     public static boolean isShowSoftKey(Context context) {
         return ((Activity) context).getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
-    }
-
-    /**
-     * 获取状态栏高度
-     *
-     * @param context 上下文
-     * @return 状态栏高度
-     */
-    public static int getStatusBarHeight(Context context) {
-        Class<?> c;
-        Object obj;
-        Field field;
-        int x = 0, sbar = 0;
-        try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            sbar = context.getResources().getDimensionPixelSize(x);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        return sbar;
     }
 }

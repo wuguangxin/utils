@@ -1,17 +1,14 @@
 package com.wuguangxin.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Build;
-import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.WindowManager;
-import android.widget.EditText;
 
 import java.util.List;
 import java.util.Locale;
@@ -27,16 +24,19 @@ import java.util.regex.Pattern;
 public class Utils {
     private static final String TAG = "Utils";
 
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        return context.getResources().getDisplayMetrics();
+    }
+
     /**
      * dip转换为px
      *
      * @param context  上下文
      * @param dipValue dip
-     * @return px
+     * @return
      */
     public static int dip2px(Context context, float dipValue) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * density + 0.5f);
+        return (int) (dipValue * getDisplayMetrics(context).density + 0.5f);
     }
 
     /**
@@ -44,10 +44,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param dpValue dip
-     * @return sp
+     * @return
      */
     public static int dip2sp(Context context, float dpValue) {
-        return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics()));
+        return (int) (dpValue * getDisplayMetrics(context).density);
     }
 
     /**
@@ -55,11 +55,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param pxValue px
-     * @return dip
+     * @return
      */
     public static int px2dip(Context context, float pxValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
+        return (int) (pxValue / getDisplayMetrics(context).density + 0.5f);
     }
 
     /**
@@ -67,11 +66,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param pxValue px数值
-     * @return sp
+     * @return
      */
     public static int px2sp(Context context, float pxValue) {
-        float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
+        return (int) (pxValue / getDisplayMetrics(context).scaledDensity + 0.5f);
     }
 
     /**
@@ -79,10 +77,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param value   mm数值
-     * @return X轴的px值
+     * @return
      */
-    public static float mm2pxX(Context context, float value) {
-        return value * context.getResources().getDisplayMetrics().xdpi * (1.0f / 25.4f);
+    public static int mm2pxX(Context context, float value) {
+        return (int) (value * getDisplayMetrics(context).xdpi * (1.0f / 25.4f));
     }
 
     /**
@@ -90,10 +88,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param value   mm数值
-     * @return Y轴的px值
+     * @return
      */
-    public static float mm2pxY(Context context, float value) {
-        return value * context.getResources().getDisplayMetrics().ydpi * (1.0f / 25.4f);
+    public static int mm2pxY(Context context, float value) {
+        return (int) (value * getDisplayMetrics(context).ydpi * (1.0f / 25.4f));
     }
 
     /**
@@ -101,10 +99,10 @@ public class Utils {
      *
      * @param context 上下文
      * @param value   px值
-     * @return X轴的mm值
+     * @return
      */
-    public static float px2mmX(Context context, float value) {
-        return value * (1 / mm2pxX(context, 1));
+    public static int px2mmX(Context context, float value) {
+        return (int) (value * (1 / mm2pxX(context, 1)));
     }
 
     /**
@@ -112,10 +110,14 @@ public class Utils {
      *
      * @param context 上下文
      * @param value   px值
-     * @return Y轴的mm值
+     * @return
      */
-    public static float px2mmY(Context context, float value) {
-        return value * (1 / mm2pxY(context, 1));
+    public static int px2mmY(Context context, float value) {
+        return (int) (value * (1 / mm2pxY(context, 1)));
+    }
+
+    public static int applyDimension(Context context, int unit, float value) {
+        return (int) TypedValue.applyDimension(unit, value, context.getResources().getDisplayMetrics());
     }
 
     /**
@@ -140,18 +142,6 @@ public class Utils {
         float x = (event.getX(0) + event.getX(1)) / 2;
         float y = (event.getY(0) + event.getY(1)) / 2;
         return new PointF(x, y);
-    }
-
-    /**
-     * 设置EditText的最大长度
-     *
-     * @param editText EditText
-     * @param maxLength 最大长度
-     */
-    public static void setEditTextMaxLength(EditText editText, int maxLength) {
-        if (editText != null) {
-            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
-        }
     }
 
     /**
@@ -186,7 +176,7 @@ public class Utils {
      * 返回文字的长度，一个汉字算2个字符
      *
      * @param string 字符串
-     * @return 长度
+     * @return
      */
     public static int getTextLength(String string) {
         if (TextUtils.isEmpty(string)) return 0;
@@ -199,28 +189,12 @@ public class Utils {
     }
 
     /**
-     * 给1个分钟数，计算是多少小时多少分
-     *
-     * @param totalMinute 分钟数，如：100
-     * @return 例: 1小时40分钟
-     */
-    public static String getHourAndMinute(Long totalMinute) {
-        if (totalMinute <= 0) {
-            return "0分钟";
-        }
-        Long h = totalMinute / 60L;
-        Long m = totalMinute % 60L;
-        StringBuilder time = new StringBuilder().append(h).append("小时").append(m).append("分钟");
-        return time.toString();
-    }
-
-    /**
      * 用*号替换名字，只显示第一个字（如："吴某人" = "吴**"，"吴某" = "吴*"）
      *
      * @param name 名字
      * @return 字符串
      */
-    public static String encryptNameKeepFirst(String name) {
+    public static String replaceNameKeepFirst(String name) {
         if (!TextUtils.isEmpty(name)) {
             String encryptName = name.substring(1);
             StringBuilder nameStr = new StringBuilder(name.substring(0, 1));
@@ -238,7 +212,7 @@ public class Utils {
      * @param name 名字
      * @return 字符串
      */
-    public static String encryptNameKeepLast(String name) {
+    public static String replaceNameKeepLast(String name) {
         if (!TextUtils.isEmpty(name)) {
             if (name.length() < 2) {
                 return name;
@@ -349,16 +323,6 @@ public class Utils {
             random -= 1;
         }
         return list.get(random);
-    }
-
-    /**
-     * 判断软键盘是否是弹出状态
-     *
-     * @param context 上下文
-     * @return 软键盘是否显示
-     */
-    public static boolean isShowSoftKey(Context context) {
-        return ((Activity) context).getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
     }
 
     /**

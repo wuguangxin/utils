@@ -577,4 +577,16 @@ public class ViewUtils {
             Selection.setSelection(text, text.length());
         }
     }
+
+    /**
+     * 设置EditText的最大长度
+     *
+     * @param editText EditText
+     * @param maxLength 最大长度
+     */
+    public static void setEditTextMaxLength(EditText editText, int maxLength) {
+        if (editText != null) {
+            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+        }
+    }
 }

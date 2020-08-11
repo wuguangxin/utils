@@ -199,10 +199,20 @@ public class StatusBarUtils {
         return result;
     }
 
+    /**
+     * 在开启沉浸式或者全屏状态下，设置View距离屏幕顶部的距离为状态栏高度或者槽口高度（二者取最大值）
+     * @param activity
+     * @param viewId
+     */
     public static void setPaddingTop(Activity activity, int viewId) {
         setPaddingTop(activity, activity.findViewById(viewId));
     }
 
+    /**
+     * 在开启沉浸式或者全屏状态下，设置View距离屏幕顶部的距离为状态栏高度或者槽口高度（二者取最大值）
+     * @param activity
+     * @param view
+     */
     public static void setPaddingTop(Activity activity, View view) {
         if (view == null) return;
         // 如果有刘海屏,并且让布局延伸至刘海屏区域内，则设置标题栏的paddingTop=刘海区域高度
@@ -253,6 +263,29 @@ public class StatusBarUtils {
             status_bar_height = Utils.dip2px(context, 24);
         }
         return status_bar_height;
+    }
+
+    /**
+     * 获取状态栏高度
+     *
+     * @param context 上下文
+     * @return 状态栏高度
+     */
+    public static int getStatusBarHeight1(Context context) {
+        Class<?> c;
+        Object obj;
+        Field field;
+        int x = 0, sbar = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            sbar = context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return sbar;
     }
 
 }
