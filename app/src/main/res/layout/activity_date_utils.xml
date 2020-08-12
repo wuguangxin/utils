@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/text"
+        style="@style/TextView"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:background="#dddddd"
+        android:gravity="top"
+        android:hint="显示结果"
+        android:minLines="4"
+        android:text="" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="HardcodedText">
+
+            <Button android:id="@+id/getDate" style="@style/Button" android:text="获取系统长日期Date" />
+            <Button android:id="@+id/getDateString" style="@style/Button" android:text="获取系统长日期String" />
+            <Button android:id="@+id/getDateShort" style="@style/Button" android:text="获取系统短日期Date" />
+            <Button android:id="@+id/getDateShortString" style="@style/Button" android:text="获取系统短日期String" />
+            <Button android:id="@+id/getDateStringFromNet" style="@style/Button" android:text="获取网络长日期时间戳" />
+            <Button android:id="@+id/getTimestampFromNet" style="@style/Button" android:text="获取指定服务器网络时间戳 >> http://www.beijing-time.org" />
+
+            <EditText android:id="@+id/formatDateString_Long_Et" style="@style/EditText" android:hint="时间戳" />
+            <Button android:id="@+id/formatDate_Date" style="@style/Button" android:text="Date => String：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDateString_Long" style="@style/Button" android:text="Long => String：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDateString_String" style="@style/Button" android:text="StringLong => String：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDateString_Date" style="@style/Button" android:text="Date => String：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDateNoSecondString_Long" style="@style/Button" android:text="Long => String：yyyy-MM-dd HH:mm" />
+            <Button android:id="@+id/formatDateShortString_Long" style="@style/Button" android:text="Long => String：yyyy-MM-dd" />
+            <Button android:id="@+id/formatDateShortString_Date" style="@style/Button" android:text="Date => String：yyyy-MM-dd" />
+
+            <LinearLayout style="@style/LayoutHorizontal">
+                <EditText android:id="@+id/edit_time" style="@style/EditText" android:hint="时间戳"  android:inputType="number" android:maxLength="13"/>
+                <EditText android:id="@+id/edit_format" style="@style/EditText" android:hint="yyyy-MM-dd HH:mm:ss" />
+                <EditText android:id="@+id/edit_position" style="@style/EditText" android:hint="ParsePosition 默认1" android:text="1" android:maxLength="1" android:inputType="number"/>
+            </LinearLayout>
+            <Button android:id="@+id/formatDate_Long_Format" style="@style/Button"  android:text="Long => String" />
+            <Button android:id="@+id/formatDate_Date_Format" style="@style/Button"  android:text="Date => String" />
+            <Button android:id="@+id/formatDate_Long" style="@style/Button"         android:text="Long => Date：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDateShort_Long" style="@style/Button"    android:text="Long => Date：yyyy-MM-dd" />
+            <Button android:id="@+id/formatDateShort_String" style="@style/Button"  android:text="String => Date：yyyy-MM-dd" />
+            <Button android:id="@+id/formatDateShort_Date" style="@style/Button"    android:text="Date => Date：yyyy-MM-dd" />
+            <Button android:id="@+id/formatDate_Long_pattern" style="@style/Button" android:text="Long => Date：自定义Format" />
+            <Button android:id="@+id/formatDate_String_Pattern" style="@style/Button" android:text="String => Date：自定义Format" />
+            <Button android:id="@+id/formatDate_String_Position" style="@style/Button" android:text="String => Date：yyyy-MM-dd HH:mm:ss，自定义Position" />
+            <Button android:id="@+id/formatDate_String_Format" style="@style/Button" android:text="String => Date：自定义Format" />
+            <Button android:id="@+id/formatDate_String" style="@style/Button" android:text="String => Date：yyyy-MM-dd HH:mm:ss" />
+            <Button android:id="@+id/formatDate_String_Format_Position" style="@style/Button" android:text="String => Date：自定义Format，自定义Position" />
+
+            <Button android:id="@+id/formatTimestamp_String" style="@style/Button" android:text="String => Long" />
+            <Button android:id="@+id/formatTimestamp_Date" style="@style/Button" android:text="String => Long" />
+
+            <!--diff-->
+            <LinearLayout style="@style/LayoutHorizontal">
+            <EditText android:id="@+id/edit_start" style="@style/EditText" android:hint="开始时间" android:inputType="number" android:autofillHints="@string/app_name" />
+            <EditText android:id="@+id/edit_end" style="@style/EditText" android:hint="结束时间" android:inputType="number" android:autofillHints="@string/app_name" />
+            </LinearLayout>
+            <Button android:id="@+id/getIntervalDays_Date_Date" style="@style/Button" android:text="计算两个日期间隔几天" />
+            <Button android:id="@+id/diffDays_Date_Date" style="@style/Button" android:text="获取两个日期的间隔(天时分秒)" />
+
+            <EditText android:id="@+id/edit_total" style="@style/EditText" android:hint="毫秒值" android:inputType="number" android:maxLength="13" />
+            <TextView style="@style/TextView" android:text="将指定毫秒值格式化为以下格式：" />
+            <Button android:id="@+id/diffDays_Long_true" style="@style/Button" android:text="00天00时00分00秒" />
+            <Button android:id="@+id/diffDays_Long_false" style="@style/Button" android:text="00:00:00:00" />
+
+            <Button android:id="@+id/diffMinuteSecond_Long_Long" style="@style/Button" android:text="获取两个时间的间隔（格式：00分00秒）" />
+            <Button android:id="@+id/formatHourMinuteSecond_Long_Format" style="@style/Button" android:text="格式化毫秒数（如：00时00分00秒）" />
+            <Button android:id="@+id/formatHourMinuteSecond_Long_Boolean" style="@style/Button" android:text="格式化毫秒数（如：00时00分00秒）" />
+            <Button android:id="@+id/formatHourMinute_Long" style="@style/Button" android:text="格式化分钟数（如：00小时00分钟）" />
+            <Button android:id="@+id/formatHourMinute_Long_Boolean" style="@style/Button" android:text="格式化毫秒数（如：00小时00分钟）" />
+            <Button android:id="@+id/formatHourMinute_Long_Format" style="@style/Button" android:text="格式化指定时间毫秒数自定义的格式（如：00时00分）" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

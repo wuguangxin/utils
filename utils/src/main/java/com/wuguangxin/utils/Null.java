@@ -1,7 +1,5 @@
 package com.wuguangxin.utils;
 
-import java.lang.reflect.ParameterizedType;
-
 /**
  * 对象非null判断
  * Created by wuguangxin on 17/5/18.
@@ -31,8 +29,8 @@ public class Null {
     public static <T> T check(T obj, Class<T> clazz) {
         if (obj == null && clazz != null) {
             try {
-                return (T) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
-//                return (T) clazz.newInstance();
+//                return (T) ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0];
+                return (T) clazz.newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
             }

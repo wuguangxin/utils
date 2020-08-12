@@ -21,7 +21,7 @@ public class StorageUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("Toast工具类");
+        setTitle(getSimpleTitle());
         Context context = this;
         StorageUtils.test(this);
         StringBuilder sb = new StringBuilder();

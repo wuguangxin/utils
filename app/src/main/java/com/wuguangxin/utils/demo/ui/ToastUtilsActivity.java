@@ -21,7 +21,7 @@ public class ToastUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("Toast工具类");
+        setTitle(getSimpleTitle());
     }
 
     @Override

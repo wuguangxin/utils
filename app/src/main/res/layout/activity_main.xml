@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <Button android:id="@+id/anim_utils" style="@style/btn" android:text="AnimUtils" />
-        <Button android:id="@+id/mmkv_utils" style="@style/btn" android:text="MmkvUtils" />
-        <Button android:id="@+id/shot_key_board" style="@style/btn" android:text="ShotKeyBoardUtils" />
-        <Button android:id="@+id/toast_utils" style="@style/btn" android:text="ToastUtils" />
-        <Button android:id="@+id/storage_utils" style="@style/btn" android:text="StorageUtils" />
-        <Button android:id="@+id/android_utils" style="@style/btn" android:text="AndroidUtils" />
+        <Button android:id="@+id/anim_utils" style="@style/Button" android:text="AnimUtils" />
+        <Button android:id="@+id/mmkv_utils" style="@style/Button" android:text="MmkvUtils" />
+        <Button android:id="@+id/shot_key_board" style="@style/Button" android:text="ShotKeyBoardUtils" />
+        <Button android:id="@+id/toast_utils" style="@style/Button" android:text="ToastUtils" />
+        <Button android:id="@+id/storage_utils" style="@style/Button" android:text="StorageUtils" />
+        <Button android:id="@+id/android_utils" style="@style/Button" android:text="AndroidUtils" />
+        <Button android:id="@+id/date_utils" style="@style/Button" android:text="DateUtils" />
     </LinearLayout>
 
 

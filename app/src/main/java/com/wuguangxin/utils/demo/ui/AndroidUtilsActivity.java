@@ -18,7 +18,7 @@ public class AndroidUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("AndroidUtils");
+        setTitle(getSimpleTitle());
 
         StringBuilder sb = new StringBuilder();
 

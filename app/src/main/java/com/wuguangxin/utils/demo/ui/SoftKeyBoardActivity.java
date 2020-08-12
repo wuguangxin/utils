@@ -19,6 +19,7 @@ public class SoftKeyBoardActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        setTitle(getSimpleTitle());
     }
 
     @Override

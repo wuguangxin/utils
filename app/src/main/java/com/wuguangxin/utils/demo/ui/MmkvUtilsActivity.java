@@ -34,6 +34,7 @@ public class MmkvUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        setTitle(getSimpleTitle());
         userList = new ArrayList<>();
         userList.add(new UserBean(MD5.encode("0"), "张三"));
         userList.add(new UserBean(MD5.encode("1"), "李四"));

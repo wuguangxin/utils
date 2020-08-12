@@ -22,22 +22,22 @@
 
         <Button
             android:id="@+id/show"
-            style="@style/btn"
+            style="@style/Button"
             android:text="显示" />
 
         <Button
             android:id="@+id/hide"
-            style="@style/btn"
+            style="@style/Button"
             android:text="隐藏" />
 
         <Button
             android:id="@+id/toggle"
-            style="@style/btn"
+            style="@style/Button"
             android:text="反转" />
 
         <Button
             android:id="@+id/pick"
-            style="@style/btn"
+            style="@style/Button"
             android:text="选择输入法" />
     </LinearLayout>
 

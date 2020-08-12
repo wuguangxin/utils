@@ -33,7 +33,7 @@ public class AnimUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle("AnimUtils");
+        setTitle(getSimpleTitle());
     }
 
     @Override

@@ -56,6 +56,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return this.getClass().getSimpleName().replace("Activity", "");
     }
 
+    public String getSimpleTitle() {
+        return getClass().getSimpleName().replace("Activity", "");
+    }
+
     public void printLogI(String text) {
         Logger.i(this, text);
     }
