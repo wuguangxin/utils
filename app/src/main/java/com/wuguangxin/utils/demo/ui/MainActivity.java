@@ -30,9 +30,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActivityMap.put(R.id.storage_utils, StorageUtilsActivity.class);
         mActivityMap.put(R.id.android_utils, AndroidUtilsActivity.class);
         mActivityMap.put(R.id.date_utils, DateUtilsActivity.class);
+        mActivityMap.put(R.id.dialog_utils, DialogUtilsActivity.class);
 
         // 直接跳转
-        openActivity(DateUtilsActivity.class);
+        openActivity(DialogUtilsActivity.class);
     }
 
     @Override

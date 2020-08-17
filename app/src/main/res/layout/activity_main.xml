@@ -19,6 +19,7 @@
         <Button android:id="@+id/storage_utils" style="@style/Button" android:text="StorageUtils" />
         <Button android:id="@+id/android_utils" style="@style/Button" android:text="AndroidUtils" />
         <Button android:id="@+id/date_utils" style="@style/Button" android:text="DateUtils" />
+        <Button android:id="@+id/dialog_utils" style="@style/Button" android:text="DialogUtils" />
     </LinearLayout>
 
 

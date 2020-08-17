@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout style="@style/LayoutHorizontal">
+
+        <TextView
+            style="@style/TextView"
+            android:text="位置：" />
+
+        <RadioGroup
+            android:id="@+id/gravityRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="7dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/gravity_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="中" />
+
+            <RadioButton
+                android:id="@+id/gravity_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="左" />
+
+            <RadioButton
+                android:id="@+id/gravity_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上" />
+
+            <RadioButton
+                android:id="@+id/gravity_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="右" />
+
+            <RadioButton
+                android:id="@+id/gravity_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LayoutHorizontal"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            style="@style/TextView"
+            android:text="透明：" />
+
+        <SeekBar
+            android:id="@+id/alphaSeekBar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:scrollbarStyle="insideOverlay" />
+
+        <TextView
+            android:id="@+id/alphaValue"
+            style="@style/TextView"
+            android:text="0.00%" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        style="@style/LayoutHorizontal"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            style="@style/TextView"
+            android:text="宽度：" />
+
+        <SeekBar
+            android:id="@+id/widthSeekBar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="100"
+            android:scrollbarStyle="insideOverlay" />
+
+        <TextView
+            android:id="@+id/widthValue"
+            style="@style/TextView"
+            android:text="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/showDialog"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示对话框" />
+
+</LinearLayout>

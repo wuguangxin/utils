@@ -17,10 +17,14 @@ import java.util.WeakHashMap;
  */
 public class DateUtils {
 
-    private static final long  ONE_SECOND = 1000;            //一秒钟的毫秒数
-    private static final long  ONE_MINUTE = 60 * ONE_SECOND; //一分钟的毫秒数
-    private static final long  ONE_HOUR   = 60 * ONE_MINUTE; //一小时的毫秒数
-    private static final long  ONE_DAY    = 24 * ONE_HOUR;   //一天的毫秒数
+    public static final long  ONE_SECOND = 1000;            //一秒钟的毫秒数
+    public static final long  ONE_MINUTE = 60 * ONE_SECOND; //一分钟的毫秒数
+    public static final long  ONE_HOUR   = 60 * ONE_MINUTE; //一小时的毫秒数
+    public static final long  ONE_DAY    = 24 * ONE_HOUR;   //一天的毫秒数
+    public static final long  ONE_WEEK   = 7 * ONE_DAY;   //一周的毫秒数
+    public static final long  ONE_MONTH  = 30 * ONE_DAY;   //一月的毫秒数
+    public static final long  ONE_QUAR   = 3 * ONE_MONTH;   //一季的毫秒数
+    public static final long  ONE_YEAR   = 365 * ONE_DAY;   //一年的毫秒数
 
     /* ****************************************************************************
      * 获取 格式化实例对象
@@ -378,44 +382,6 @@ public class DateUtils {
     /* *****************************************************************************************
      *          其他
      *******************************************************************************************/
-    /**
-     * 计算两个日期间隔几天
-     * @param startDate 开始日期 long
-     * @param endTate 结束日期 long
-     */
-    public static long getIntervalDays(long startDate, long endTate) {
-        return getIntervalDays(formatDateShort(endTate), formatDateShort(startDate));
-    }
-
-    /**
-     * 计算两个日期间隔几天
-     * @param startDate 开始日期 Date
-     * @param endTate 结束日期 Date
-     */
-    public static long getIntervalDays(Date startDate, Date endTate) {
-        ObjectUtils.requireNonNull(startDate, "[startDate] must not be null");
-        ObjectUtils.requireNonNull(endTate, "[endTate] must not be null");
-        return Math.abs(endTate.getTime() - startDate.getTime());
-    }
-
-    /**
-     * 获取两个日期的间隔(天时分秒)，如："01天22时33分51秒" 或 "01:22:33:51"。
-     * @param startTime 开始日期 long
-     * @param endTime 结束日期 long
-     * @param isFormat true：00天11时22分33秒，false：00:11:22:33
-     */
-    public static String diffDays(long startTime, long endTime, boolean isFormat) {
-        return diffDays(getIntervalDays(startTime, endTime), isFormat);
-    }
-
-    /**
-     * 获取两个日期的间隔天数（精确到天，会把传入的两个时间戳去掉时分秒）
-     * @param startTime 开始日期
-     * @param endTime 结束日期
-     */
-    public static int diffDays(long startTime, long endTime) {
-        return diffDays(formatDateShort(startTime), formatDateShort(endTime));
-    }
 
     /**
      * 比较两个日期相差的天数，精确到天，时分秒去掉再比较。
@@ -485,36 +451,43 @@ public class DateUtils {
             dateBuilder.append(dS).append(":");
             dateBuilder.append(hS).append(":");
             dateBuilder.append(mS).append(":");
-            dateBuilder.append(sS).append(":");
+            dateBuilder.append(sS);
         }
         return dateBuilder.toString();
     }
 
     /**
-     * 获取两个时间的间隔(00分00秒)
+     * 获取两个时间的间隔毫秒数，格式化为(00:00)
      *
      * @param startTime 开始时间戳
      * @param endTime 结束时间戳
      * @return 返回如：33:51
      */
-    public static String diffMinuteSecond(long startTime, long endTime) {
+    public static String formatMinuteSecond(long startTime, long endTime) {
+        return formatMinuteSecond(startTime, endTime, false);
+    }
+
+    /**
+     * 获取两个时间的间隔毫秒数，格式化为(00:00)
+     *
+     * @param startTime 开始时间戳
+     * @param endTime 结束时间戳
+     * @param isFormat 是否使用文字，true返回如（00小时00分钟），false则返回(00:00)
+     */
+    public static String formatMinuteSecond(long startTime, long endTime, boolean isFormat) {
         long diff = new java.sql.Date(endTime).getTime() - new java.sql.Date(startTime).getTime();
         long min = diff % ONE_DAY % ONE_HOUR / ONE_MINUTE;  //分
         long sec = diff % ONE_DAY % ONE_HOUR % ONE_MINUTE / ONE_SECOND; //秒
         if (min + sec < 0) {
-            return "00:00";
+            return isFormat ? "00小时00分钟" : "00:00";
         }
-        StringBuilder buffer = new StringBuilder();
-        if (min < 10) {
-            buffer.append(0);
-        }
-        buffer.append(min);
-        buffer.append(":");
-        if (sec < 10) {
-            buffer.append(0);
-        }
-        buffer.append(sec);
-        return buffer.toString();
+        return String.format(Locale.getDefault(), "%s%d%s%s%d%s",
+                min < 10 ? "0" : "",
+                min,
+                isFormat ? "小时" : ":",
+                sec < 10 ? "0" : "",
+                sec,
+                isFormat ? "分钟" : "");
     }
 
     /**
@@ -578,21 +551,20 @@ public class DateUtils {
     }
 
     /**
-     * 格式化分钟数（如：00小时00分钟）
+     * 格式化毫秒数（如：00小时00分钟）
      *
-     * @param totalMinute 总分钟数
+     * @param totalTime 毫秒数
      * @return 例: 1小时40分钟
      */
-    public static String formatHourMinute(long totalMinute) {
-        if (totalMinute <= 0) return "0分钟";
-        return String.format("%s小时%s分钟", totalMinute / 60L, totalMinute % 60L);
+    public static String formatHourMinute(long totalTime) {
+        return formatHourMinute(totalTime, true);
     }
 
     /**
      * 格式化毫秒数（如：00小时00分钟）
      *
      * @param totalTime 总毫秒数
-     * @param isFormat true：00时00分，false：00:00
+     * @param isFormat true：00小时00分钟，false：00:00
      */
     public static String formatHourMinute(long totalTime, boolean isFormat) {
         StringBuilder dateBuilder = new StringBuilder();
@@ -608,8 +580,8 @@ public class DateUtils {
         String hS = hour < 10 ? "0" + hour : "" + hour;
         String mS = min < 10 ? "0" + min : "" + min;
         if (isFormat) {
-            dateBuilder.append(hS).append("时");
-            dateBuilder.append(mS).append("分");
+            dateBuilder.append(hS).append("小时");
+            dateBuilder.append(mS).append("分钟");
         } else {
             dateBuilder.append(hS).append(":");
             dateBuilder.append(mS);
@@ -618,11 +590,11 @@ public class DateUtils {
     }
 
     /**
-     * 格式化指定时间毫秒数自定义的格式（如：00时00分）
+     * 格式化指定时间毫秒数自定义的格式（如：00小时00分钟）
      *
      * @param totalTime 总毫秒数
-     * @param format 格式化类型,，例如：%s时%s分，则返回结果例如：00时00分
-     * @return 返回如: 00时00分
+     * @param format 格式化类型,，例如：%s小时%s分钟，则返回结果例如：00小时00分钟
+     * @return 返回如: 00小时00分钟
      */
     public static String formatHourMinute(long totalTime, String format) {
         StringBuilder dateBuilder = new StringBuilder();

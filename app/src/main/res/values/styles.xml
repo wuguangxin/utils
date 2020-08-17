@@ -31,7 +31,7 @@
 
     <style name="EditText" parent="BaseView">
         <item name="android:gravity">center_vertical</item>
-        <item name="android:maxWidth">200dp</item>
+        <item name="android:minWidth">100dp</item>
     </style>
 
     <!--//////////////////////////////////////////////////////////////////////////////-->

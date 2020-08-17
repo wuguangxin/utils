@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.DateUtils;
+import com.wuguangxin.utils.Utils;
 import com.wuguangxin.utils.demo.R;
 
 import java.text.ParsePosition;
@@ -40,6 +41,9 @@ public class DateUtilsActivity extends BaseActivity {
     public void initData() {
         mFormatDateStringEt.setText(System.currentTimeMillis() + "");
         mEditTime.setText(System.currentTimeMillis() + "");
+        mEditStart.setText("1986-12-13");
+        mEditEnd.setText(DateUtils.getDateShortString());
+        mEditFormat.setText(DateUtils.Format.FORMAT_DATE);
     }
 
     @Override
@@ -50,6 +54,10 @@ public class DateUtilsActivity extends BaseActivity {
         });
         mEditTime.setOnLongClickListener(v -> {
             mEditTime.setText(System.currentTimeMillis() + "");
+            return false;
+        });
+        mEditEnd.setOnLongClickListener(v -> {
+            mEditEnd.setText(DateUtils.getDateShortString());
             return false;
         });
 
@@ -87,20 +95,22 @@ public class DateUtilsActivity extends BaseActivity {
 
             R.id.formatTimestamp_String,
             R.id.formatTimestamp_Date,
-            R.id.getIntervalDays_Date_Date,
             R.id.diffDays_Date_Date,
 
             R.id.diffDays_Long_true,
             R.id.diffDays_Long_false,
 
-            R.id.diffMinuteSecond_Long_Long,
+            R.id.formatMinuteSecond_Long_Long_false,
+            R.id.formatMinuteSecond_Long_Long_true,
             R.id.formatHourMinuteSecond_Long_Format,
-            R.id.formatHourMinuteSecond_Long_Boolean,
+            R.id.formatHourMinuteSecond_Long_true,
+            R.id.formatHourMinuteSecond_Long_false,
             R.id.formatHourMinute_Long,
             R.id.formatHourMinute_Long_Boolean,
             R.id.formatHourMinute_Long_Format,
     })
     public void onClick(View v) {
+        mTextView.setText("");
         switch (v.getId()) {
         case R.id.getDate:
             setMessage(v, DateUtils.getDate(), DateUtils.Format.FORMAT_DATE);
@@ -147,10 +157,10 @@ public class DateUtilsActivity extends BaseActivity {
             break;
 
         case R.id.formatDate_Long_Format:
-            setMessage(v, DateUtils.formatDate(getTextLong(mEditTime), DateUtils.getFormat(getText(mEditFormat))), getText(mEditFormat));
+            setMessage(v, DateUtils.formatDate(getTextLong(mEditTime), DateUtils.getFormat(getText(mEditFormat, true))), getText(mEditFormat, true));
             break;
         case R.id.formatDate_Date_Format:
-            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(getTextLong(mEditTime)), DateUtils.getFormat(getText(mEditFormat))), getText(mEditFormat));
+            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(getTextLong(mEditTime)), DateUtils.getFormat(getText(mEditFormat, true))), getText(mEditFormat, true));
             break;
 
         case R.id.formatDate_Long:
@@ -167,22 +177,22 @@ public class DateUtilsActivity extends BaseActivity {
             setMessage(v, DateUtils.formatDateShort(DateUtils.formatDate(getTextLong(mEditTime))), DateUtils.Format.FORMAT_DATE_SHORT);
             break;
         case R.id.formatDate_Long_pattern:
-            setMessage(v, DateUtils.formatDate(getTextLong(mEditTime), getText(mEditFormat)), DateUtils.Format.FORMAT_DATE);
+            setMessage(v, DateUtils.formatDate(getTextLong(mEditTime), getText(mEditFormat, true)), DateUtils.Format.FORMAT_DATE);
             break;
         case R.id.formatDate_String_Pattern:
-            setMessage(v, DateUtils.formatDate(DateUtils.formatDateString(getTextLong(mEditTime)), getText(mEditFormat)), DateUtils.Format.FORMAT_DATE);
+            setMessage(v, DateUtils.formatDate(DateUtils.formatDateString(getTextLong(mEditTime)), getText(mEditFormat, true)), DateUtils.Format.FORMAT_DATE);
             break;
         case R.id.formatDate_String_Position:
             setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date()), getParsePosition(mEditPosition)), DateUtils.Format.FORMAT_DATE);
             break;
         case R.id.formatDate_String_Format:
-            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date()), DateUtils.getFormat(getText(mEditFormat))), DateUtils.Format.FORMAT_DATE);
+            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date()), DateUtils.getFormat(getText(mEditFormat, true))), DateUtils.Format.FORMAT_DATE);
             break;
         case R.id.formatDate_String:
             setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date())), DateUtils.Format.FORMAT_DATE);
             break;
         case R.id.formatDate_String_Format_Position:
-            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date()), DateUtils.getFormat(getText(mEditFormat)), getParsePosition(mEditPosition)), DateUtils.Format.FORMAT_DATE);
+            setMessage(v, DateUtils.formatDate(DateUtils.formatDate(new Date()), DateUtils.getFormat(getText(mEditFormat, true)), getParsePosition(mEditPosition)), DateUtils.Format.FORMAT_DATE);
             break;
 
         case R.id.formatTimestamp_String:
@@ -192,42 +202,83 @@ public class DateUtilsActivity extends BaseActivity {
             setMessage(v, DateUtils.formatTimestamp(new Date()) + "", DateUtils.Format.FORMAT_DATE);
             break;
 
-
-        case R.id.getIntervalDays_Date_Date:
-            Date startDate = DateUtils.formatDateShort(getText(mEditStart));
-            Date endDate = DateUtils.formatDateShort(getText(mEditStart));
-            mTextView.setText( new StringBuilder(getText(v))
-                    .append("开始日期：").append(DateUtils.formatDateString(startDate)).append("\n")
-                    .append("结束日期：").append(DateUtils.formatDateString(endDate)).append("\n")
-                    .append("间隔天数：").append(DateUtils.getIntervalDays(startDate, endDate)).append("天"));
-            break;
         case R.id.diffDays_Date_Date:
-            Date startDate1 = DateUtils.formatDateShort(getText(mEditStart));
-            Date endDate1 = DateUtils.formatDateShort(getText(mEditStart));
+            Date startDate = DateUtils.formatDateShort(getText(mEditStart));
+            Date endDate = DateUtils.formatDateShort(getText(mEditEnd));
             mTextView.setText( new StringBuilder(getText(v))
-                    .append("开始日期：").append(DateUtils.formatDateString(startDate1)).append("\n")
-                    .append("结束日期：").append(DateUtils.formatDateString(endDate1)).append("\n")
-                    .append("格式化：").append(DateUtils.diffDays(startDate1, endDate1)));
+                    .append("\n").append("开始日期：").append(DateUtils.formatDateShortString(startDate))
+                    .append("\n").append("结束日期：").append(DateUtils.formatDateShortString(endDate))
+                    .append("\n").append("间隔天数：").append(DateUtils.diffDays(startDate, endDate)));
             break;
 
         case R.id.diffDays_Long_true:
-//            mTextView.setText( new StringBuilder(getText(v))
-//                    .append("格式化：").append(DateUtils.diffDays(startDate2, endDate2)));
+            long diffDaysTextTrue = getTextLong(mEditTotal);
+            mTextView.setText( new StringBuilder()
+                    .append("format：").append(getText(v))
+                    .append("\n").append("time：").append(diffDaysTextTrue).append(" 毫秒")
+                    .append("\n").append("result：").append(DateUtils.diffDays(diffDaysTextTrue, true)));
             break;
         case R.id.diffDays_Long_false:
+            long diffDaysTextFalse = getTextLong(mEditTotal);
+            mTextView.setText( new StringBuilder()
+                    .append("format：").append(getText(v))
+                    .append("\n").append("time：").append(diffDaysTextFalse).append(" 毫秒")
+                    .append("\n").append("result：").append(DateUtils.diffDays(diffDaysTextFalse, false)));
             break;
 
-        case R.id.diffMinuteSecond_Long_Long:
+        case R.id.formatMinuteSecond_Long_Long_false:
+            long end11 = DateUtils.getDate().getTime();
+            long start11 = end11- DateUtils.ONE_MONTH - Utils.getRandom((int) DateUtils.ONE_DAY); // -1个月内的随机值
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("开始时间：").append(start11)
+                    .append("\n").append("结束时间：").append(end11)
+                    .append("\n").append("result：").append(DateUtils.formatMinuteSecond(start11, end11))); // 同下
+//                    .append("\n").append("result：").append(DateUtils.formatMinuteSecond(start11, end11, false)));
             break;
+        case R.id.formatMinuteSecond_Long_Long_true:
+            long end22 = DateUtils.getDate().getTime();
+            long start22 = end22- DateUtils.ONE_MONTH - Utils.getRandom((int) DateUtils.ONE_DAY); // -1个月内的随机值
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("开始时间：").append(start22)
+                    .append("\n").append("结束时间：").append(end22)
+                    .append("\n").append("result：").append(DateUtils.formatMinuteSecond(start22, end22, true)));
+            break;
+
         case R.id.formatHourMinuteSecond_Long_Format:
+            long totalTime_format= Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime_format).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinuteSecond(totalTime_format, "%sh%sm%ss")));
             break;
-        case R.id.formatHourMinuteSecond_Long_Boolean:
+        case R.id.formatHourMinuteSecond_Long_true:
+            long totalTime_true = Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime_true).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinuteSecond(totalTime_true, true)));
+            break;
+        case R.id.formatHourMinuteSecond_Long_false:
+            long totalTime_false = Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime_false).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinuteSecond(totalTime_false, false)));
             break;
         case R.id.formatHourMinute_Long:
+            long totalTime22 = Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime22).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinute(totalTime22)));
             break;
         case R.id.formatHourMinute_Long_Boolean:
+            long totalTime23 = Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime23).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinute(totalTime23, true)));
             break;
         case R.id.formatHourMinute_Long_Format:
+            long totalTime24 = Utils.getRandom(Integer.MAX_VALUE);
+            mTextView.setText( new StringBuilder(getText(v))
+                    .append("\n").append("毫秒值：").append(totalTime24).append("毫秒")
+                    .append("\n").append("result：").append(DateUtils.formatHourMinute(totalTime24, "%s小时%s分钟")));
             break;
         }
     }
@@ -259,11 +310,26 @@ public class DateUtilsActivity extends BaseActivity {
     }
 
     private String getText(View view) {
-        return view instanceof TextView ? ((TextView) view).getText().toString() : null;
+        return getText(view, false);
+    }
+
+    private String getText(View view, boolean defUseHint) {
+        String string = null;
+        if (view instanceof TextView) {
+            string = ((TextView) view).getText().toString();
+            if (defUseHint && TextUtils.isEmpty(string)) {
+                string = ((TextView) view).getHint().toString();
+            }
+        }
+        return string;
     }
 
     private long getTextLong(View view) {
-        String text = getText(view);
-        return text == null || text.length() < 13 ? 0 : Long.parseLong(text);
+        return getTextLong(view, false);
+    }
+
+    private long getTextLong(View view, boolean defUseHint) {
+        String text = getText(view, defUseHint);
+        return TextUtils.isEmpty(text) ? 0 : Long.parseLong(text);
     }
 }
