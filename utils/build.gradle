@@ -5,7 +5,7 @@ apply plugin: 'com.novoda.bintray-release'
 // module配置
 def mModulesName = "utils"
 def mVersionCode = 2
-def mVersionName = "1.0.2-test"
+def mVersionName = "1.0.1"
 def mDescription = "优化"
 
 android {
