@@ -31,9 +31,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActivityMap.put(R.id.android_utils, AndroidUtilsActivity.class);
         mActivityMap.put(R.id.date_utils, DateUtilsActivity.class);
         mActivityMap.put(R.id.dialog_utils, DialogUtilsActivity.class);
-
-        // 直接跳转
-        openActivity(DialogUtilsActivity.class);
     }
 
     @Override
@@ -42,7 +39,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void setListener() {
-        List<Integer> keyList = MapUtils.getKeyList(mActivityMap);
+        List<Integer> keyList = MapUtils.getKeys(mActivityMap);
         for (Integer id : keyList) findViewById(id).setOnClickListener(this);
     }
 

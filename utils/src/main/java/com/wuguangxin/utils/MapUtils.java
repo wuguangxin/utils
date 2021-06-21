@@ -21,7 +21,7 @@ public class MapUtils {
      * @param value value值
      * @return key
      */
-    public static <K, V> K getKeyFromValue(Map<K, V> map, V value) {
+    public static <K, V> K getKeyByValue(Map<K, V> map, V value) {
         if (map != null && !map.isEmpty() && value != null) {
             Iterator<Entry<K, V>> iterator = map.entrySet().iterator();
             Entry<K, V> entry;
@@ -42,11 +42,8 @@ public class MapUtils {
      * @param key key值
      * @return key
      */
-    public static <K, V> V getValueFromKey(Map<K, V> map, K key) {
-        if (map != null && key != null) {
-            return map.get(key);
-        }
-        return null;
+    public static <K, V> V getValueByKey(Map<K, V> map, K key) {
+        return map == null ? null : map.get(key);
     }
 
     /**
@@ -115,12 +112,8 @@ public class MapUtils {
      * @param map Map<K, V>
      * @return List
      */
-    public static <K, V> List<K> getKeyList(Map<K, V> map) {
-        List<K> list = new ArrayList<>();
-        if (map != null) {
-            list.addAll(map.keySet());
-        }
-        return list;
+    public static <K, V> List<K> getKeys(Map<K, V> map) {
+        return map == null ? null : new ArrayList<>(map.keySet());
     }
 
     /**
@@ -129,11 +122,7 @@ public class MapUtils {
      * @param map Map<K, V>
      * @return List
      */
-    public static <K, V> List<V> getValueList(Map<K, V> map) {
-        List<V> list = new ArrayList<>();
-        if (map != null) {
-            list.addAll(map.values());
-        }
-        return list;
+    public static <K, V> List<V> getValues(Map<K, V> map) {
+        return map == null ? null : (List<V>) map.values();
     }
 }
