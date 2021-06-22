@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 /**
@@ -29,7 +30,6 @@ public class MoneyUtils {
 
     /**
      * 格式化金额
-     *
      * @param value 字符串金额
      * @return
      */
@@ -39,7 +39,6 @@ public class MoneyUtils {
 
     /**
      * 格式化金额
-     *
      * @param value 金额
      * @return
      */
@@ -49,7 +48,6 @@ public class MoneyUtils {
 
     /**
      * 格式化金额
-     *
      * @param value 金额
      * @param unit 附加文字，比如"元"
      * @return
@@ -166,7 +164,6 @@ public class MoneyUtils {
 
     /**
      * 判断是否为0
-     *
      * @param value
      * @return
      */
@@ -182,23 +179,33 @@ public class MoneyUtils {
      * @return
      */
     public static BigDecimal formatBigDecimal(Object number) {
+        if (number == null) {
+            return BigDecimal.ZERO;
+        }
         try {
-            if (number != null) {
-                if (number instanceof Number) {
-                    return new BigDecimal(number.toString());
-                } else if (number instanceof String) {
-                    return new BigDecimal(((String) number).replaceAll(",", ""));
-                }
+            if (number instanceof Integer
+                    || number instanceof Float
+                    || number instanceof Long
+                    || number instanceof Double
+                    || number instanceof Short
+                    || number instanceof BigInteger
+                    || number instanceof BigDecimal
+                    || number instanceof Number
+                    ) {
+                return new BigDecimal(number.toString());
+            } else if (number instanceof String) {
+                String str = ((String) number).replaceAll(",", "");
+                return new BigDecimal(str);
+            } else {
+                return BigDecimal.ZERO;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return BigDecimal.ZERO;
         }
-        return BigDecimal.ZERO;
     }
 
     /**
      * 计算收益
-     *
      * @param money 本金
      * @param income 利率
      * @param duration 期限

@@ -93,7 +93,7 @@ public class MapUtils {
      * @param key key
      * @return index
      */
-    public static <K, V> int getIndex(Map<K, V> map, String key) {
+    public static <K, V> int indexOfKey(Map<K, V> map, String key) {
         if (map != null && key != null) {
             Set<K> keySet = map.keySet();
             Object[] objects = keySet.toArray();
@@ -113,7 +113,11 @@ public class MapUtils {
      * @return List
      */
     public static <K, V> List<K> getKeys(Map<K, V> map) {
-        return map == null ? null : new ArrayList<>(map.keySet());
+        List<K> list = new ArrayList<>();
+        if (map != null) {
+            list.addAll(map.keySet());
+        }
+        return list;
     }
 
     /**
@@ -123,6 +127,10 @@ public class MapUtils {
      * @return List
      */
     public static <K, V> List<V> getValues(Map<K, V> map) {
-        return map == null ? null : (List<V>) map.values();
+        List<V> list = new ArrayList<>();
+        if (map != null) {
+            list.addAll(map.values());
+        }
+        return list;
     }
 }

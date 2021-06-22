@@ -19,7 +19,7 @@ public class HanoiUtils {
         if (n == 1) {
             // 只有一个盘子
             String text1 = "第" + ++countSetup + "步：把第1个盘子从" + A + "移到" + C;
-            text.append(text1).append("\n");
+            text.append(text1).append("msg =");
             System.out.println("text1 = " + text1);
         } else {
             // 无论多少个盘子，都认为只有两个，最底下的一个盘子，和他上面的所有盘子。

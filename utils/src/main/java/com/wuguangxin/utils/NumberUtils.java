@@ -9,9 +9,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
- * 数字工具类（按业务需求修改金额格式，本工具类只做参考）
+ * 数字格式化工具类
  *
- * Created by wuguangxin on 14/6/2
+ * <p>Created by wuguangxin on 14/6/2 </p>
  */
 public class NumberUtils {
 
@@ -103,9 +103,9 @@ public class NumberUtils {
      * @return DecimalFormat
      */
     private static DecimalFormat getDecimalFormat(boolean isSpace, int bit) {
-        DecimalFormat format = new DecimalFormat();
-        format.applyPattern(getReg(isSpace, bit));
-        return format;
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.applyPattern(getReg(isSpace, bit));
+        return decimalFormat;
     }
 
     /*

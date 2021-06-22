@@ -70,41 +70,41 @@ public class AnimUtilsActivity extends BaseActivity {
             animator.start();
             break;
         case R.id.left_out:
-            mImageView.startAnimation(AnimUtil.getLeft_out());
+            mImageView.startAnimation(AnimUtil.getLeftOut());
 //            mImageView.animate().translationX(-mImageView.getWidth()).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
             break;
         case R.id.top_in:
-            mImageView.startAnimation(AnimUtil.getTop_in(1000));
+            mImageView.startAnimation(AnimUtil.getTopIn(1000));
             break;
         case R.id.top_out:
-            mImageView.startAnimation(AnimUtil.getTop_out(1000));
+            mImageView.startAnimation(AnimUtil.getTopOut(1000));
 //            mImageView.animate().translationY(-mImageView.getHeight());
             break;
         case R.id.right_in:
-            mImageView.startAnimation(AnimUtil.getRight_in());
+            mImageView.startAnimation(AnimUtil.getRightIn());
             break;
         case R.id.right_out:
-            mImageView.startAnimation(AnimUtil.getRight_out());
+            mImageView.startAnimation(AnimUtil.getRightOut());
 //            mImageView.animate().translationX(mImageView.getHeight());
             break;
         case R.id.bottom_in:
-            mImageView.startAnimation(AnimUtil.getBottom_in());
+            mImageView.startAnimation(AnimUtil.getBottomIn());
             break;
         case R.id.bottom_out:
-            mImageView.startAnimation(AnimUtil.getBottom_out());
+            mImageView.startAnimation(AnimUtil.getBottomOut());
 //            mImageView.animate().translationY(mImageView.getHeight());
             break;
         case R.id.fade_in:
-            mImageView.startAnimation(AnimUtil.getFade_in());
+            mImageView.startAnimation(AnimUtil.getFadeIn());
             break;
         case R.id.fade_out:
-            mImageView.startAnimation(AnimUtil.getFade_out());
+            mImageView.startAnimation(AnimUtil.getFadeOut());
             break;
         case R.id.rotate_20:
-            mImageView.startAnimation(AnimUtil.getRotate_20());
+            mImageView.startAnimation(AnimUtil.getRotate20());
             break;
         case R.id.rotate_360:
-            mImageView.startAnimation(AnimUtil.getRotate_360());
+            mImageView.startAnimation(AnimUtil.getRotate360());
             break;
         case R.id.zoom_out:
             mImageView.startAnimation(AnimUtil.getZoomOut());

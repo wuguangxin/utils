@@ -1,9 +1,8 @@
 package com.wuguangxin.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,95 +13,99 @@ import com.wuguangxin.R;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 /**
  * Toast工具类。
  * Created by wuguangxin on 14/11/28
  */
 public class ToastUtils {
-    private static final String TAG = "ToastUtils";
-    private static WeakReference<Toast> mSystemToast, mCustomToast;
 
-    public static void showToast(Context context, CharSequence text) {
-        showToast(context, getCustomToast(context), text);
-    }
+    private static int ICON_SUCCESS = R.drawable.xin_toast_icon;
+    private static int ICON_FAILED = R.drawable.xin_toast_icon;
+    private static WeakReference<Toast> mSystemToast;
+    private static WeakReference<CustomToast> mToast;
 
-    public static void showToastFromSystem(Context context, CharSequence text) {
-        showToast(context, getSystemToast(context), text);
-    }
-
-    private static void showToast(Context context, Toast toast, CharSequence text) {
-        if (context != null && toast != null && !isDestroyed(context)) {
-            int duration = getDuration(text);
-            toast.setDuration(duration);
-            toast.setText(text);
-            toast.show();
-        } else {
-            Log.i(TAG, "showToast() \ntoast="+toast + "\ntext="+text);
+    private static CustomToast getToast(Context context) {
+        if (mToast == null) {
+            if (context == null) {
+                return null;
+            }
+            mToast = new WeakReference<>(new CustomToast(context));
         }
+        return mToast.get();
     }
 
-    private static Toast getCustomToast(Context context) {
-        Toast toast = null;
-        if (mCustomToast != null) {
-            toast = mCustomToast.get();
+    @SuppressLint("ShowToast")
+    public static void showToast(Context context, String msg, @DrawableRes int resId, boolean isLong) {
+        if (context == null) {
+            return;
         }
-        if (toast == null && context != null) {
-            toast = new CustomToast(context);
-            mCustomToast = new WeakReference<>(toast);
-        }
-        return toast;
-    }
-
-    private static Toast getSystemToast(Context context) {
-        Toast toast = null;
-        if (mSystemToast != null) {
-            Log.i(TAG, "getSystemToast() by cache");
-            toast = mSystemToast.get();
-        }
-        if (toast == null && context != null) {
-            Log.i(TAG, "getSystemToast() by create");
-            toast = Toast.makeText(context, null, Toast.LENGTH_SHORT);
-            mSystemToast = new WeakReference<>(toast);
-        }
-        return toast;
-    }
-
-    // 根据字符长度获取显示时长
-    private static int getDuration(CharSequence msg) {
-        int len = msg == null ? 0 : msg.length();
-        return len < 15 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG;
-    }
-
-    // activity 是否已销毁
-    private static boolean isDestroyed(Context context) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            if (context instanceof Activity) {
-                return ((Activity) context).isDestroyed();
+        if (context instanceof Activity) {
+            if (((Activity) context).isDestroyed()) {
+                return;
             }
         }
-        return false;
+        CustomToast customToast = getToast(context);
+        if (customToast == null) {
+            showToastSystem(context, msg);
+            return;
+        }
+        customToast.setDuration(isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        customToast.setMessage(msg);
+        customToast.show();
     }
 
-    // 自定义Toast布局
+    public static void showToastSystem(Context context, String msg) {
+        if (mSystemToast == null) {
+            mSystemToast = new WeakReference<>(Toast.makeText(context, msg, Toast.LENGTH_LONG));
+        }
+        Toast toast = mSystemToast.get();
+        if (toast != null) {
+            toast.setText(msg);
+            toast.show();
+        }
+    }
+
+    public static void showToast(Context context, String msg) {
+        showToast(context, msg, 0, false);
+    }
+
+    public static void showToast(Context context, String msg, boolean isLong) {
+        showToast(context, msg, 0, isLong);
+    }
+
+    public static void showSuccess(Context context, String msg) {
+        showToast(context, msg, ICON_SUCCESS, false);
+    }
+
+    public static void showFailed(Context context, String msg) {
+        showToast(context, msg, ICON_FAILED, false);
+    }
+
     static class CustomToast extends Toast {
+        View mRootView;
         TextView msgView;
 
         CustomToast(Context context) {
             super(context);
-            View rootView = LayoutInflater.from(context).inflate(R.layout.xin_toast_warn_layout, null);
-            msgView = rootView.findViewById(R.id.xin_toast_text);
-            setView(rootView);
-            setGravity(Gravity.TOP, 0, 250);
+            mRootView = LayoutInflater.from(context).inflate(R.layout.xin_toast_warn_layout, null);
+            msgView = mRootView.findViewById(R.id.xin_toast_text);
+            setView(mRootView);
+            setGravity(Gravity.TOP, 0, 200);
         }
 
-        @Override
-        public void setText(int resId) {
-            msgView.setText(resId);
+        public CustomToast setMessage(String text) {
+            msgView.setText(text);
+            return this;
         }
 
-        @Override
-        public void setText(CharSequence s) {
-            msgView.setText(s);
+        public CustomToast setMessage(@StringRes int resid) {
+            msgView.setText(resid);
+            return this;
         }
+
+
     }
 }

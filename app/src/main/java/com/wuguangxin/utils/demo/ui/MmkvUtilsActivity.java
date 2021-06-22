@@ -67,7 +67,7 @@ public class MmkvUtilsActivity extends BaseActivity {
                 for (UserBean userBean : userList) {
                     if (userBean.getId().equals(id)) {
                         currentUser = userBean;
-//                        MmkvUtils.switchUser(id);
+                        MmkvUtils.switchUser(id);
                         return;
                     }
                 }

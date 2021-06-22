@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -363,13 +364,17 @@ public class IOFormat {
             is = context.getContentResolver().openInputStream(uri);
             if (is != null) {
                 Bitmap bitmap = BitmapFactory.decodeStream(is);
-                if (bitmap != null)
-                    return bitmap;
+                if (bitmap != null) return bitmap;
                 byte[] data = readStream(is);
                 if (data.length > 0) {
-                    return BitmapFactory.decodeByteArray(data, 0, data.length);
+                    bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    if (bitmap != null) {
+                        return bitmap;
+                    }
                 }
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -113,7 +113,7 @@ public class DialogUtilsActivity extends BaseActivity {
 
     private void setAlphaSeekBar(int progress) {
         alpha = progress;
-        alphaValue.setText(NumberUtils.formatPercent((float)alpha/(float)alphaSeekBar.getMax(), 2));
+        alphaValue.setText(NumberUtils.formatPercent(alpha/(float)alphaSeekBar.getMax(), 2));
         updateDialog();
     }
 

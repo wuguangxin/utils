@@ -4,11 +4,6 @@ import android.widget.CompoundButton;
 
 import java.lang.reflect.Field;
 
-/**
- * CompoundButton的操作工具类
- * 
- * Created by wuguangxin on 2018/3/1.
- */
 public class CompoundButtonUtils {
 
     /**
@@ -22,8 +17,8 @@ public class CompoundButtonUtils {
         }
         try {
             // 获取class对象
-            Class<?> clazz = checkBox.getClass();
-            while (!"CompoundButton".equals(clazz.getSimpleName())) {
+            Class clazz = checkBox.getClass();
+            while (!clazz.getSimpleName().equals("CompoundButton")) {
                 clazz = clazz.getSuperclass();
             }
 
@@ -38,6 +33,26 @@ public class CompoundButtonUtils {
                 checkBox.setChecked(checked);
                 checkBox.setOnCheckedChangeListener(listener);
             }
+
+//            // 5. 获取所有字段
+//            Field[] fields = clazz.getDeclaredFields();
+//            for (Field f : fields) {
+//                // 设置字段的可见性
+//                f.setAccessible(true);
+//                String name = f.getName();
+//                Object o = f.get(person);
+//                System.out.println(name + " - " + o);
+//            }
+//
+//            // 6. 获取所有的方法
+//            Method[] methods = clazz.getDeclaredMethods();
+//            for (Method m : methods) {
+//                m.setAccessible(true);
+//                String name = m.getName();
+//                Object invoke = m.invoke(person, "张三");
+//                System.out.println(name + " = " + invoke);
+//
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

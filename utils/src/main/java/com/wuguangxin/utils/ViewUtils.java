@@ -1,5 +1,8 @@
 package com.wuguangxin.utils;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -11,10 +14,14 @@ import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -34,8 +41,8 @@ import androidx.annotation.StringRes;
 import androidx.viewpager.widget.ViewPager;
 
 /**
- * 与 View 相关的工具类。
- * Created by wuguangxin on 14/10/23.
+ * View工具类
+ * <p>Created by wuguangxin on 14/10/23 </p>
  */
 public class ViewUtils {
     /**
@@ -49,10 +56,63 @@ public class ViewUtils {
     }
 
     /**
+     * 获取View的宽度
+     *
+     * @param view View
+     * @return 宽度
+     */
+    public static int getViewWidth(View view) {
+        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        return view.getMeasuredWidth();
+    }
+
+    /**
+     * 获取View的高度
+     *
+     * @param view View
+     * @return 高度
+     */
+    public static int getViewHeight(View view) {
+        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        return view.getMeasuredHeight();
+    }
+
+    /**
+     * 重置 ViewPager 的宽高度 (宽为屏幕宽度，高度为 屏幕宽/2)
+     *
+     * @param viewPager ViewPager
+     */
+    public static void setViewPagerHeight(ViewPager viewPager) {
+        LayoutParams layoutParams = viewPager.getLayoutParams();
+        WindowManager wm = (WindowManager) viewPager.getContext().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        layoutParams.height = dm.widthPixels >> 1;
+        viewPager.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * 重置 ViewPager 的宽高度
+     *
+     * @param context 上下文
+     * @param viewPager ViewPager
+     * @param height 高
+     */
+    public static void setViewPagerHeight(Context context, ViewPager viewPager, int height) {
+        LayoutParams layoutParams = viewPager.getLayoutParams();
+        WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        layoutParams.height = height;
+        viewPager.setLayoutParams(layoutParams);
+    }
+
+    /**
      * 重置 GridView 的高度,使高度等于Child 总数的高度
      *
      * @param gridView GridView
      */
+//	@SuppressLint("NewApi")
     public static void setGridViewHeight(GridView gridView) {
         if (gridView == null) {
             return;
@@ -64,8 +124,8 @@ public class ViewUtils {
         int itemCount = adapter.getCount();
         int colCount = gridView.getNumColumns();
         int totalHeight = 0;
-        int lines = itemCount / colCount + itemCount % colCount; // 计算行数
-        for (int i = 0; i < lines; i++) {
+        int lineCount = itemCount / colCount + itemCount % colCount; // 计算行数
+        for (int i = 0, len = lineCount; i < len; i++) {
             View listItem = adapter.getView(i, null, gridView);
             listItem.measure(0, 0); //计算子项View 的宽高
             int lineHeight = 0;
@@ -75,69 +135,91 @@ public class ViewUtils {
             totalHeight += lineHeight;
             for (int j = 0; j < colCount; j++) {
                 if (i * colCount + j < itemCount) {
+                    Logger.e("WGX", String.format("setGridViewHeight item getId=%s", listItem.getId()));
+                    Logger.e("WGX", String.format("setGridViewHeight item getHeight=%s", listItem.getHeight()));
+                    Logger.e("WGX", String.format("setGridViewHeight item getMeasuredHeight=%s", listItem.getMeasuredHeight()));
                     listItem.setMinimumHeight(lineHeight);
                     listItem.invalidate();
                 }
             }
+            Logger.e("WGX", String.format("setGridViewHeight 第%s行高：%s", i, lineHeight));
         }
 
+        Logger.e("WGX", "setGridViewHeight totalHeight=" + totalHeight);
         LayoutParams params = gridView.getLayoutParams();
         int verticalSpacing = 0;  // 垂直的间隔高度
-        if (Build.VERSION.SDK_INT >= 16) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             verticalSpacing = gridView.getVerticalSpacing();
         }
-        params.height = totalHeight + (verticalSpacing * (lines - 1));
+        params.height = totalHeight + (verticalSpacing * (lineCount - 1));
         //listView.getDividerHeight()获取子项间分隔符占用的高度
         //params.height最后得到整个ListView完整显示需要的高度
         gridView.setLayoutParams(params);
     }
 
-    /**
-     * 重置 GridView 的最小高度，使它的高度等于每一行最大高度的总和。
-     *
-     * @param gridView GridView
-     */
-    public static void setGridViewMinHeight(GridView gridView) {
+    public static void setGridViewHeightByItem(GridView gridView) {
         if (gridView == null) {
             return;
         }
-        // 垂直间距
-        int verticalSpacing = Build.VERSION.SDK_INT < 16 ? 0 : gridView.getVerticalSpacing();
-        int itemCount = gridView.getChildCount(); // 多少个item
-        int cols = gridView.getNumColumns(); // 多少列
-        int rows = (int) Math.ceil((double) itemCount / (double) cols); // 多少行
-        int lastRow = 0;
-        int curRow; // 当前行数
-        int rowMaxHeight = 0; // 这一行中item高度最大的值
-        int minHeight = 0; // 最小高度
-        ArrayList<View> views = new ArrayList<>();
-        for (int i = 0; i < itemCount; i++) {
-            curRow = i / cols; // 当前在第几行
+        int childCount = gridView.getChildCount();
+        int colCount = gridView.getNumColumns();                 // 总列数
+        int totalHeight = 0;                                     // 总高度
+        Logger.e("WGX", "childCount=" + childCount);
+        Logger.e("WGX", "colCount=" + colCount);
+        ArrayList<View> listView = new ArrayList<>();
+        int lastLine = 0;
+        int curLineMaxHeight = 0;
+        for (int i = 0; i < childCount; i++) {
+            int curLine = i / colCount; // 当前在第几行
             View itemView = gridView.getChildAt(i);
             if (itemView != null) {
-                int itemHeight = itemView.getMeasuredHeight();
-                if (rowMaxHeight < itemHeight) {
-                    rowMaxHeight = itemHeight;
+                int measuredHeight = itemView.getMeasuredHeight();
+                if (curLineMaxHeight < measuredHeight) {
+                    curLineMaxHeight = measuredHeight;
                 }
-                views.add(itemView);
+                Logger.i("wgxin", String.format("%s 第%s-%s高度为%s", i, curLine, i % colCount, curLineMaxHeight));
+                listView.add(itemView);
             }
-            if (views.size() == itemCount || curRow > lastRow) {
-                for (int j = 0; j < views.size(); j++) {
+            if (listView.size() == childCount || curLine > lastLine) {
+                for (int j = 0; j < listView.size(); j++) {
                     int currentPosition = i - j;
-                    if (currentPosition < itemCount) {
-                        gridView.getChildAt(currentPosition).setMinimumHeight(rowMaxHeight);
+                    if (currentPosition < childCount) {
+                        Logger.e("wgxin", (String.format("修改item%s，%s-%s高度为%s", currentPosition, curLine, j, curLineMaxHeight)));
+                        gridView.getChildAt(currentPosition).setMinimumHeight(curLineMaxHeight);
                     }
                 }
-                minHeight += rowMaxHeight;
-                minHeight += (curRow > lastRow && curRow < rows ? verticalSpacing : 0); // 加上行间距
-                rowMaxHeight = 0;
-                lastRow = curRow;
-                views.clear();
+                totalHeight += curLineMaxHeight;
+                lastLine = curLine;
+                curLineMaxHeight = 0;
+                listView.clear();
             }
         }
-        minHeight += (gridView.getPaddingTop() + gridView.getPaddingBottom()); // 加上上下内边距
-        gridView.setMinimumHeight(minHeight);
+        gridView.setMinimumHeight(totalHeight);
+
+        Logger.e("WGX", "totalHeight=" + totalHeight);
     }
+
+//    E/wgx_WGXIN: creditMaterialInfo.getCreditInfoList() = 9
+//    I/wgx_wgxin: 0 第0行，第0列 高度91
+//    I/wgx_wgxin: 1 第0行，第1列 高度133
+//    I/wgx_wgxin: 2 第1行，第0列 高度133
+//    E/wgx_wgxin: 修改第2(1-0) 高度为133
+//    E/wgx_wgxin: 修改第1(1-0) 高度为133
+//    E/wgx_wgxin: 修改第0(1-0) 高度为133
+//    I/wgx_wgxin: 3 第1行，第1列 高度91
+//    I/wgx_wgxin: 4 第2行，第0列 高度133
+//    E/wgx_wgxin: 修改第4(2-0) 高度为133
+//    E/wgx_wgxin: 修改第3(2-0) 高度为133
+//    I/wgx_wgxin: 5 第2行，第1列 高度133
+//    I/wgx_wgxin: 6 第3行，第0列 高度133
+//    E/wgx_wgxin: 修改第6(3-0) 高度为133
+//    E/wgx_wgxin: 修改第5(3-0) 高度为133
+//    I/wgx_wgxin: 7 第3行，第1列 高度91
+//    I/wgx_wgxin: 8 第4行，第0列 高度175
+//    E/wgx_wgxin: 修改第8(4-0) 高度为175
+//    E/wgx_wgxin: 修改第7(4-0) 高度为175
+//    E/wgx_WGXIN: creditMaterialInfo.getCreditInfoList() = 9
+
 
     /**
      * 重置 ViewPager 的高度,使高度等于Child 总数的高度(有bug)
@@ -145,7 +227,8 @@ public class ViewUtils {
      * @param viewPager ViewPager
      * @param position 位置
      */
-    public static void setViewPagerChildTotalHeight(ViewPager viewPager, int position) {
+    @SuppressLint("NewApi")
+    public static void setViewPagerChildCountHeight(ViewPager viewPager, int position) {
         if (viewPager != null) {
             View childView = viewPager.getChildAt(position);
             if (childView != null) {
@@ -186,9 +269,9 @@ public class ViewUtils {
     }
 
     /**
-     * 重置 ViewPager 的高度为最高的 Child 的高度
+     * 重置 ViewPager 的高度,为最高child的高度
      *
-     * @param parentView 比如：ViewGroup、LinearLayout
+     * @param parentView ViewGroup
      */
     public static void setViewPagerHeightByMaxChild(ViewGroup parentView) {
         if (parentView != null) {
@@ -216,7 +299,7 @@ public class ViewUtils {
     /**
      * 设置View的对齐方式。(view与anchor对齐方式为verb)
      *
-     * @param view 需要设置对齐的View
+     * @param view 哪个View需要设置对齐
      * @param verb 对齐方式（如：RelativeLayout.BELOW，view在id为verb的View的下方）
      * @param anchor 对齐哪个View的id
      */
@@ -246,7 +329,7 @@ public class ViewUtils {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // 如果选中，显示密码, 否则隐藏密码
                     editText.setTransformationMethod(isChecked ? visibleMethod : goneMethod);
-                    setFocusPosition(editText);
+                    Utils.setFocusPosition(editText);
                 }
             });
         }
@@ -293,7 +376,7 @@ public class ViewUtils {
      */
     public static boolean withinCircle(Point curPoint, Point circlePoint, float circleRadius) {
         double distance = getInterval(curPoint, circlePoint); // 两个坐标距离
-        return distance < circleRadius; // 小于圆的半径就是在圆内
+        return distance < circleRadius;
     }
 
     /**
@@ -308,7 +391,8 @@ public class ViewUtils {
             return 0F;
         }
         // 开方
-        return Math.sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
+        double distance = Math.sqrt((point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y));
+        return distance;
     }
 
     /**
@@ -346,9 +430,6 @@ public class ViewUtils {
      */
     public static void setLeftMargin(ImageView view, int menuCountWidth, int menuCount, int currPosition, int nextPosition, float offset) {
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-        if (layoutParams == null) {
-            layoutParams = new LinearLayout.LayoutParams(-2, -2);
-        }
         layoutParams.leftMargin = getLeftMargin(menuCountWidth, menuCount, currPosition, nextPosition, offset);
         view.setLayoutParams(layoutParams);
     }
@@ -451,12 +532,12 @@ public class ViewUtils {
      */
     public static <T extends View> T get(View convertView, @IdRes int viewId) {
         if (convertView == null) return null;
-        SparseArray<T> sparseArray = (SparseArray<T>) convertView.getTag();
+        SparseArray<View> sparseArray = (SparseArray<View>) convertView.getTag();
         if (sparseArray == null) {
             sparseArray = new SparseArray<>();
             convertView.setTag(sparseArray);
         }
-        T childView = sparseArray.get(viewId);
+        View childView = sparseArray.get(viewId);
         if (childView == null) {
             childView = convertView.findViewById(viewId);
             sparseArray.put(viewId, childView);
@@ -487,13 +568,12 @@ public class ViewUtils {
 
     /**
      * 设置 EditText 的 android:maxLength 值
-     *
      * @param editText
      * @param maxLength
      */
     public static void setMaxLength(EditText editText, int maxLength) {
         if (editText != null && maxLength > 0) {
-            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+            editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(maxLength) });
         }
     }
 
@@ -568,25 +648,33 @@ public class ViewUtils {
     /**
      * 定位光标位置到EditText文本的末尾
      *
-     * @param editText EditText
+     * @param mEditText EditText
      */
-    public static void setFocusPosition(EditText editText) {
-        if (editText != null) {
-            editText.requestFocus();
-            Editable text = editText.getText();
-            Selection.setSelection(text, text.length());
+    public static void setFocusPosition(EditText mEditText) {
+        if (mEditText == null) {
+            return;
         }
+        mEditText.requestFocus();
+        Editable text = mEditText.getText();
+        Selection.setSelection(text, text.length());
     }
 
     /**
-     * 设置EditText的最大长度
+     * 隐藏软键盘
      *
-     * @param editText EditText
-     * @param maxLength 最大长度
+     * @param activity
      */
-    public static void setEditTextMaxLength(EditText editText, int maxLength) {
-        if (editText != null) {
-            editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+    public static void setSoftInputVisible(Activity activity) {
+        if (activity != null) {
+            View currentFocusView = activity.getCurrentFocus();
+            if (currentFocusView != null) {
+                ((InputMethodManager) activity.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(currentFocusView.getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            if (currentFocusView instanceof EditText) {
+                Utils.setFocusPosition((EditText) currentFocusView);
+            }
         }
     }
 }

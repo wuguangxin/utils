@@ -1,11 +1,14 @@
 package com.wuguangxin.utils.demo.ui;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
+import com.wuguangxin.utils.JsonUtils;
 import com.wuguangxin.utils.MapUtils;
 import com.wuguangxin.utils.demo.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +32,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActivityMap.put(R.id.toast_utils, ToastUtilsActivity.class);
         mActivityMap.put(R.id.storage_utils, StorageUtilsActivity.class);
         mActivityMap.put(R.id.android_utils, AndroidUtilsActivity.class);
-        mActivityMap.put(R.id.date_utils, DateUtilsActivity.class);
         mActivityMap.put(R.id.dialog_utils, DialogUtilsActivity.class);
     }
 
     @Override
     public void initData() {
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        String s = JsonUtils.toJsonString(list);
+        Log.i("MainActivity", s);
     }
 
     @Override

@@ -95,7 +95,9 @@ public class VerifyCodeUtil{
 //					canvas.save(Canvas.ALL_SAVE_FLAG);// 保存
 					canvas.save();// 保存
 					canvas.restore();// 恢复
-					Object[] objs = {verifyCodeImage, code};
+					Object[] objs = {
+						verifyCodeImage, code
+					};
 					Message msg = new Message();
 					msg.what = 0;
 					msg.obj = objs;
@@ -121,11 +123,11 @@ public class VerifyCodeUtil{
 	}
 
 	/**
-	 * 画干扰线
+	 * 画线
 	 * @param canvas 画板
 	 * @param paint 画笔
 	 */
-	private static void drawLine(Canvas canvas, Paint paint){
+	final private static void drawLine(Canvas canvas, Paint paint){
 		int color = randomColor();
 		int startX = random.nextInt(width);
 		int startY = random.nextInt(height);
@@ -140,7 +142,7 @@ public class VerifyCodeUtil{
 	 * 随机颜色
 	 * @return 颜色
 	 */
-	private static int randomColor(){
+	final private static int randomColor(){
 		return randomColor(1);
 	}
 

@@ -2,9 +2,6 @@ package com.wuguangxin.utils;
 
 import java.lang.reflect.ParameterizedType;
 
-/**
- * 泛型解析工具类
- */
 public class TUtil {
 
     /**
@@ -16,8 +13,13 @@ public class TUtil {
      */
     public static <T> T getT(Object obj, int position) {
         try {
-            return ((Class<T>) ((ParameterizedType) (obj.getClass().getGenericSuperclass())).getActualTypeArguments()[position]).newInstance();
-        } catch (Exception e) {
+            return ((Class<T>) ((ParameterizedType) (obj.getClass()
+                    .getGenericSuperclass())).getActualTypeArguments()[position]).newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
         return null;
@@ -26,7 +28,7 @@ public class TUtil {
     public static Class<?> forName(String className) {
         try {
             return Class.forName(className);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

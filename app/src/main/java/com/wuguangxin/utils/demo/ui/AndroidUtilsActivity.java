@@ -22,7 +22,7 @@ public class AndroidUtilsActivity extends BaseActivity {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\n=========系统信息：=========\n");
+        sb.append("\n\n=========系统信息：=========");
         sb.append("\nSDK版本：").append(AndroidUtils.getSdkVersion());
         sb.append("\n系统版本：").append(AndroidUtils.getRelease());
         sb.append("\n设备型号：").append(AndroidUtils.getModel());
@@ -33,7 +33,7 @@ public class AndroidUtilsActivity extends BaseActivity {
         sb.append("\n是否处于后台运行：").append(AndroidUtils.isAppOnBackground(context));
         sb.append("\n是否处于前台运行：").append(AndroidUtils.isAppOnForeground(context));
 
-        sb.append("\n=========硬件功能：=========\n");
+        sb.append("\n\n=========硬件功能：=========");
         sb.append("\n是否开启了重力感应：").append(AndroidUtils.isOpenRotate(context));
         sb.append("\n是否开启了锁屏功能：").append(AndroidUtils.isOpenKeyguard(context));
         // 需要权限
@@ -42,7 +42,7 @@ public class AndroidUtilsActivity extends BaseActivity {
         sb.append("\n是否开启了辅助功能：").append("有bug"/*AndroidUtils.isAccessibilitySettingsOn(context, null)*/);
         sb.append("\n悬浮窗口权限是否打开：").append(AndroidUtils.checkAppOps(context));
 
-        sb.append("\n=========屏幕信息：=========\n");
+        sb.append("\n\n=========屏幕信息：=========");
         sb.append("\n屏幕宽：").append(AndroidUtils.getScreenWidth(context));
         sb.append("\n屏幕高：").append(AndroidUtils.getScreenHeight(context));
         sb.append("\n状态栏高：").append(AndroidUtils.getStatusBarHeight(context));
@@ -51,14 +51,14 @@ public class AndroidUtilsActivity extends BaseActivity {
         sb.append("\n屏幕密度：").append(AndroidUtils.getScreenDensity(context));
         sb.append("\n字体缩放比例：").append(AndroidUtils.getScaledDensity(context));
 
-        sb.append("\n=========APP信息：=========\n");
+        sb.append("\n\n=========APP信息：=========");
         sb.append("\n程序包名：").append(AndroidUtils.getPackageName(context));
         sb.append("\nAPP版本名：").append(AndroidUtils.getVersionName(context));
         sb.append("\nAPP版本号：").append(AndroidUtils.getVersionCode(context));
         sb.append("\n应用渠道号：").append(AndroidUtils.getChannelName(context, ""));
-        sb.append("\n联系人：").append(AndroidUtils.getContactPhone(context, null));
+        sb.append("\n本机手机号：").append(AndroidUtils.getContactNumber(context, null));
         sb.append("\n应用是否处于栈顶：").append(AndroidUtils.isTopActivity(context));
-        sb.append("\n当前栈顶程序包名：").append(AndroidUtils.getTopActivityPackageName(context));
+        sb.append("\n当前栈顶程序包名：").append(AndroidUtils.getAppTopActivityPackageName(context));
 
         sb.append("\n运行的程序列表：").append(AndroidUtils.getRunningAppList(context));
 

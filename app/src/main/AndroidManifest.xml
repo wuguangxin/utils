@@ -32,14 +32,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.AnimUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MmkvUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.SoftKeyBoardActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ToastUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.StorageUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AndroidUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.DateUtilsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.DialogUtilsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AnimUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.MmkvUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.SoftKeyBoardActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.ToastUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.StorageUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.AndroidUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.DialogUtilsActivity" android:screenOrientation="fullSensor"/>
     </application>
 
 </manifest>

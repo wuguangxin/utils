@@ -77,8 +77,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getLeft_in() {
-        return getLeft_in(DEF_ANIM_DURATION);
+    public static TranslateAnimation getLeftIn() {
+        return getLeftIn(DEF_ANIM_DURATION);
     }
 
     /**
@@ -87,7 +87,7 @@ public class AnimUtil {
      * @param duration 时长（毫秒）
      * @return
      */
-    public static TranslateAnimation getLeft_in(long duration) {
+    public static TranslateAnimation getLeftIn(long duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
@@ -107,8 +107,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getLeft_out() {
-        return getLeft_out(DEF_ANIM_DURATION);
+    public static TranslateAnimation getLeftOut() {
+        return getLeftOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -117,7 +117,7 @@ public class AnimUtil {
      * @param duration 动画时长毫秒值
      * @return
      */
-    public static TranslateAnimation getLeft_out(long duration) {
+    public static TranslateAnimation getLeftOut(long duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F,
@@ -141,8 +141,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getTop_in() {
-        return getTop_in(400);
+    public static TranslateAnimation getTopIn() {
+        return getTopIn(400);
     }
 
     /**
@@ -151,7 +151,7 @@ public class AnimUtil {
      * @param duration 动画时长毫秒值
      * @return
      */
-    public static TranslateAnimation getTop_in(int duration) {
+    public static TranslateAnimation getTopIn(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
@@ -172,8 +172,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getTop_out() {
-        return getTop_out(DEF_ANIM_DURATION);
+    public static TranslateAnimation getTopOut() {
+        return getTopOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -182,7 +182,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static TranslateAnimation getTop_out(int duration) {
+    public static TranslateAnimation getTopOut(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
@@ -203,8 +203,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getRight_in() {
-        return getRight_in(DEF_ANIM_DURATION);
+    public static TranslateAnimation getRightIn() {
+        return getRightIn(DEF_ANIM_DURATION);
     }
 
     /**
@@ -213,7 +213,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static TranslateAnimation getRight_in(int duration) {
+    public static TranslateAnimation getRightIn(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
@@ -232,8 +232,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getRight_out() {
-        return getRight_out(DEF_ANIM_DURATION);
+    public static TranslateAnimation getRightOut() {
+        return getRightOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -242,7 +242,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static TranslateAnimation getRight_out(int duration) {
+    public static TranslateAnimation getRightOut(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 1.0F,
@@ -262,8 +262,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getBottom_in() {
-        return getBottom_in(DEF_ANIM_DURATION);
+    public static TranslateAnimation getBottomIn() {
+        return getBottomIn(DEF_ANIM_DURATION);
     }
 
     /**
@@ -272,7 +272,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static TranslateAnimation getBottom_in(int duration) {
+    public static TranslateAnimation getBottomIn(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
@@ -296,8 +296,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static TranslateAnimation getBottom_out() {
-        return getBottom_out(DEF_ANIM_DURATION);
+    public static TranslateAnimation getBottomOut() {
+        return getBottomOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -306,7 +306,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static TranslateAnimation getBottom_out(int duration) {
+    public static TranslateAnimation getBottomOut(int duration) {
         TranslateAnimation translate = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
@@ -331,8 +331,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static AlphaAnimation getFade_in() {
-        return getFade_in(DEF_ANIM_DURATION);
+    public static AlphaAnimation getFadeIn() {
+        return getFadeIn(DEF_ANIM_DURATION);
     }
 
     /**
@@ -341,7 +341,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static AlphaAnimation getFade_in(int duration) {
+    public static AlphaAnimation getFadeIn(int duration) {
         AlphaAnimation alpha = new AlphaAnimation(0.0F, 1.0F);
         alpha.setDuration(duration);
         return alpha;
@@ -357,8 +357,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static AlphaAnimation getFade_out() {
-        return getFade_out(DEF_ANIM_DURATION);
+    public static AlphaAnimation getFadeOut() {
+        return getFadeOut(DEF_ANIM_DURATION);
     }
 
     /**
@@ -367,7 +367,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static AlphaAnimation getFade_out(int duration) {
+    public static AlphaAnimation getFadeOut(int duration) {
         AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0F);
         alpha.setDuration(duration);
         return alpha;
@@ -383,8 +383,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static RotateAnimation getRotate_20() {
-        return getRotate_20(1000);
+    public static RotateAnimation getRotate20() {
+        return getRotate20(1000);
     }
 
     /**
@@ -393,7 +393,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static RotateAnimation getRotate_20(int duration) {
+    public static RotateAnimation getRotate20(int duration) {
 //        float fromDegrees,
 //        float toDegrees,
 //        int pivotXType,
@@ -422,8 +422,8 @@ public class AnimUtil {
      *
      * @return
      */
-    public static RotateAnimation getRotate_360() {
-        return getRotate_360(1000);
+    public static RotateAnimation getRotate360() {
+        return getRotate360(1000);
     }
 
     /**
@@ -432,7 +432,7 @@ public class AnimUtil {
      * @param duration 动画时长
      * @return
      */
-    public static RotateAnimation getRotate_360(int duration) {
+    public static RotateAnimation getRotate360(int duration) {
         RotateAnimation rotate = new RotateAnimation(0, 360, // 360度旋转
                 Animation.RELATIVE_TO_SELF, 0.5F, // 50%
                 Animation.RELATIVE_TO_SELF, 0.5F // 50%
@@ -561,7 +561,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startLeftIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getLeft_in());
+        if (view != null) startAnim(view, View.VISIBLE, getLeftIn());
     }
 
     /**
@@ -570,7 +570,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startTopIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getTop_in());
+        if (view != null) startAnim(view, View.VISIBLE, getTopIn());
     }
 
     /**
@@ -579,7 +579,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startRightIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRight_in());
+        if (view != null) startAnim(view, View.VISIBLE, getRightIn());
     }
 
     /**
@@ -588,7 +588,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startBottomIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getBottom_in());
+        if (view != null) startAnim(view, View.VISIBLE, getBottomIn());
     }
 
     /**
@@ -597,7 +597,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startLeftOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getLeft_out());
+        if (view != null) startAnim(view, View.GONE, getLeftOut());
     }
 
     /**
@@ -606,7 +606,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startTopOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getTop_out());
+        if (view != null) startAnim(view, View.GONE, getTopOut());
     }
 
     /**
@@ -615,7 +615,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startRightOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getRight_out());
+        if (view != null) startAnim(view, View.GONE, getRightOut());
     }
 
     /**
@@ -624,7 +624,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startBottomOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getBottom_out());
+        if (view != null) startAnim(view, View.GONE, getBottomOut());
     }
 
     /**
@@ -633,7 +633,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startFadeIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getFade_in());
+        if (view != null) startAnim(view, View.VISIBLE, getFadeIn());
     }
 
     /**
@@ -642,7 +642,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startFadeOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getFade_out());
+        if (view != null) startAnim(view, View.GONE, getFadeOut());
     }
 
     /**
@@ -651,7 +651,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startAlphaLayerFadeIn(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getFade_in());
+        if (view != null) startAnim(view, View.VISIBLE, getFadeIn());
     }
 
     /**
@@ -660,7 +660,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startAlphaLayerFadeOut(View view) {
-        if (view != null) startAnim(view, View.GONE, getFade_out(300));
+        if (view != null) startAnim(view, View.GONE, getFadeOut(300));
     }
 
     /**
@@ -669,7 +669,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startRotate20(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRotate_20());
+        if (view != null) startAnim(view, View.VISIBLE, getRotate20());
     }
 
     /**
@@ -678,7 +678,7 @@ public class AnimUtil {
      * @param view 要执行动画的view
      */
     public static void startRotate360(View view) {
-        if (view != null) startAnim(view, View.VISIBLE, getRotate_360());
+        if (view != null) startAnim(view, View.VISIBLE, getRotate360());
     }
 
     /**
@@ -1131,6 +1131,6 @@ public class AnimUtil {
         itemView.startAnimation(rotateAnimation);
     }
 
-    //============以上代码是给列表的Item做动画 EDN====================================================
+    //============以上代码是给列表的Item做动画 END====================================================
 
 }
