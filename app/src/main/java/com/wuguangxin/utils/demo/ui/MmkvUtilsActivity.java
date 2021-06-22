@@ -7,9 +7,9 @@ import android.widget.RadioGroup;
 
 import com.google.gson.reflect.TypeToken;
 import com.wuguangxin.utils.MD5;
-import com.wuguangxin.utils.MmkvUtils;
 import com.wuguangxin.utils.demo.R;
 import com.wuguangxin.utils.demo.UserBean;
+import com.wuguangxin.utils.mmkv.MmkvUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

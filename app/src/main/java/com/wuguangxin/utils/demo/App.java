@@ -6,7 +6,7 @@ import android.content.Context;
 import com.wuguangxin.utils.DES;
 import com.wuguangxin.utils.Logger;
 import com.wuguangxin.utils.MD5;
-import com.wuguangxin.utils.MmkvUtils;
+import com.wuguangxin.utils.mmkv.MmkvUtils;
 
 import java.lang.ref.WeakReference;
 
