@@ -7,7 +7,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 2
-        versionName "1.0.0"
+        versionName "1.1.0"
         description "整合一些常用工具类"
 
         // 作用是当本项目作为lib或者module被别人使用，如果本项目中有不可被混淆的代码时，可在本项目中开启混淆配置，
@@ -36,23 +36,24 @@ android {
     lintOptions {
         abortOnError false
     }
-
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+
+    api 'com.google.code.gson:gson:2.8.7'
 
     // 二维码,ZXingUtils用到
     api 'com.google.zxing:core:3.4.0'
 
     // 腾讯mmkv替代sp (https://github.com/Tencent/MMKV/blob/master/readme_cn.md)
     api 'com.tencent:mmkv-static:1.2.7'
+
     // MmkvUtils在初始化时有可能会报错，则需要使用ReLinker来辅助加载，（增加大小 45kb）
     // 详细看：https://github.com/Tencent/MMKV/wiki/android_advance_cn#%E8%87%AA%E5%AE%9A%E4%B9%89-library-loader
-//    implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
+    // implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
 
 }
 
