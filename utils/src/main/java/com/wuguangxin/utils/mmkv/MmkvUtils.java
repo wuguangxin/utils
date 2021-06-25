@@ -203,40 +203,40 @@ public class MmkvUtils {
 
     // ------------------------------------ GET ------------------------------------
 
-    public int get(String key, int defValue) {
-        return getInt(key, defValue);
+    public static int get(String key, int defValue) {
+        return edit().get(key, defValue);
     }
 
     public static long get(String key, long defValue) {
-        return edit().getLong(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static float get(String key, float defValue) {
-        return edit().getFloat(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static byte[] get(String key, byte[] defValue) {
-        return edit().getBytes(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static double get(String key, double defValue) {
-        return edit().getDouble(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static boolean get(String key, boolean defValue) {
-        return edit().getBoolean(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static String get(String key, String defValue) {
-        return edit().getString(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static String[] get(String key, String[] defValue) {
-        return edit().getStringArray(key, defValue);
+        return edit().get(key, defValue);
     }
 
     public static Set<String> get(String key, Set<String> defValue) {
-        return edit().getStringSet(key, defValue);
+        return edit().get(key, defValue);
     }
 
     // ------------------------------------ put/get XXX ------------------------------------
