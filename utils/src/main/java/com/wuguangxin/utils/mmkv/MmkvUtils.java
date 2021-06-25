@@ -3,20 +3,14 @@ package com.wuguangxin.utils.mmkv;
 
 import android.content.Context;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
-import com.google.gson.Gson;
 import com.tencent.mmkv.MMKV;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +47,7 @@ System.out.println("bytes: " + new String(kv.decodeBytes("bytes")));
 
 /**
  * <p>
- * MMKV快速存取工具类，代替SP，是微信团队开源的一个key-value存储组件。支持多用户存储
+ * MMKV快速存取工具类，代替SP，是微信团队开源的一个key-value存储组件。支持多用户存储。（静态方法）
  * </p>
  * <P>
  * <br/>基本要求：
@@ -74,26 +68,24 @@ System.out.println("bytes: " + new String(kv.decodeBytes("bytes")));
  */
 public class MmkvUtils {
 
-    private static String userId; // 当前用户ID
-    private static String cryptKey; // 加密key
+    private static Config config = new Config();
 
-    /**
-     * 初始化，在 Application.onCreate()中调用。
-     *
-     * @param context Application上下文
-     */
+    private static Config edit() {
+        if (config == null) {
+            config = new Config();
+        }
+        return config;
+    }
+
     public static String init(Context context) {
         return init(context, null);
     }
 
     /**
-     * 初始化，在 Application.onCreate()中调用。
-     *
-     * @param context Application上下文
-     * @param cryptKey 加密秘钥（可选）
+     * 在 Application.onCreate() 中初始化
      */
     public static String init(Context context, String cryptKey) {
-        MmkvUtils.cryptKey = cryptKey;
+        edit().setCryptKey(cryptKey);
         return MMKV.initialize(context);
 
         // 先不考虑该问题，出问题再解决
@@ -112,462 +104,362 @@ public class MmkvUtils {
 
     /**
      * 设置AES加密KEY
-     *
      * @param cryptKey AES加密KEY
      */
     public static void setCryptKey(String cryptKey) {
-        MmkvUtils.cryptKey = cryptKey;
+        edit().setCryptKey(cryptKey);
     }
 
     /**
      * 切换用户
-     *
      * @param userId
      */
     public static void switchUser(String userId) {
-        MmkvUtils.userId = userId;
-    }
-
-    private static MMKV build() {
-        // 设置了用户ID，则使用用户专用的存储实例对象，否则使用默认的
-        if (!TextUtils.isEmpty(userId)) {
-            // return MMKV.mmkvWithID(userId);
-            // userId：多用户时用户ID
-            // mode：单进程 SINGLE_PROCESS_MODE(默认)，多进程 MULTI_PROCESS_MODE
-            // cryptKey：加密key
-            if (TextUtils.isEmpty(cryptKey)) {
-                return MMKV.mmkvWithID(userId, MMKV.SINGLE_PROCESS_MODE);
-            }
-            return MMKV.mmkvWithID(userId, MMKV.SINGLE_PROCESS_MODE, cryptKey);
-        }
-        if (!TextUtils.isEmpty(cryptKey)) {
-            return MMKV.defaultMMKV(MMKV.SINGLE_PROCESS_MODE, cryptKey);
-        }
-        return MMKV.defaultMMKV();
+        edit().switchUser(userId);
     }
 
     /**
      * 重置加密（AES）秘钥
-     *
      * @param encryptKey 秘钥
      * @return
      */
     public static boolean reKey(String encryptKey) {
-        return build().reKey(encryptKey);
+        return edit().reKey(encryptKey);
     }
 
-    /**
-     * 清除加密，并使数据明文。
-     *
-     * @return
-     */
+    /** 清除加密，并使数据明文。 */
     public static boolean clearKey() {
-        return build().reKey(null); // 设置null即可
+        return edit().reKey(null); // 设置null即可
     }
 
     /** 删除指定key对应的value */
-    public static void removeValueByKey(String key) {
-        build().removeValueForKey(key);
+    public static void removeValueForKey(String key) {
+        edit().removeValueForKey(key);
     }
 
     /** 删除指定多个key对应的value */
     public static void removeValuesForKeys(String... keys) {
-        build().removeValuesForKeys(keys);
+        edit().removeValuesForKeys(keys);
     }
 
     /** 是否包含指定的key */
     public static boolean containsKey(String key) {
-        return build().containsKey(key);
+        return edit().containsKey(key);
     }
 
-    // ########################### 基本类型操作区1 ###################################################
+    // ------------------------------------ PUT ------------------------------------
 
-    // int
-    public static boolean put(String key, int value) {
-        return putInt(key, value);
+    public static EditorProxy put(String key, int value) {
+        return edit().put(key, value);
     }
 
-    // long
-    public static boolean put(String key, long value) {
-        return putLong(key, value);
+    public static EditorProxy put(String key, long value) {
+        return edit().put(key, value);
     }
 
-    // float
-    public static boolean put(String key, float value) {
-        return putFloat(key, value);
+    public static EditorProxy put(String key, float value) {
+        return edit().put(key, value);
     }
 
-    // byte
-    public static boolean put(String key, byte[] value) {
-        return putBytes(key, value);
+    public static EditorProxy put(String key, byte[] value) {
+        return edit().put(key, value);
     }
 
-    // double
-    public static boolean put(String key, double value) {
-        return putDouble(key, value);
+    public static EditorProxy put(String key, double value) {
+        return edit().put(key, value);
     }
 
-    // boolean
-    public static boolean put(String key, boolean value) {
-        return putBoolean(key, value);
+    public static EditorProxy put(String key, boolean value) {
+        return edit().put(key, value);
     }
 
-    // String
-    public static boolean put(String key, String value) {
-        return putString(key, value);
+    public static EditorProxy put(String key, String value) {
+        return edit().put(key, value);
     }
 
-    // Set<String>
-    public static boolean put(String key, Set<String> value) {
-        return putSet(key, value);
+    public static EditorProxy put(String key, String[] value) {
+        return edit().put(key, value);
     }
 
-    // String[]
-    public static boolean put(String key, String[] value) {
-        return putStringArray(key, value);
+    public static EditorProxy put(String key, Serializable value) {
+        return edit().put(key, value);
     }
 
-    // Parcelable
-    public static boolean put(String key, Parcelable value) {
-        return putParcelable(key, value);
+    public static EditorProxy put(String key, Parcelable value) {
+        return edit().put(key, value);
     }
 
-    // Serializable
-    public static boolean put(String key, Serializable value) {
-        return putBean(key, value);
+    public  static EditorProxy put(String key, Set<String> value) {
+        return edit().put(key, value);
     }
 
+    public static <T extends Serializable> EditorProxy put(String key, List<T> value) {
+        return edit().put(key, value);
+    }
 
-    public static int get(String key, int defValue) {
+    public static <K extends Serializable, V extends Serializable> EditorProxy put(String key, Map<K, V> value) {
+        return edit().put(key, value);
+    }
+
+    // ------------------------------------ GET ------------------------------------
+
+    public int get(String key, int defValue) {
         return getInt(key, defValue);
     }
 
     public static long get(String key, long defValue) {
-        return getLong(key, defValue);
+        return edit().getLong(key, defValue);
     }
 
     public static float get(String key, float defValue) {
-        return getFloat(key, defValue);
+        return edit().getFloat(key, defValue);
     }
 
     public static byte[] get(String key, byte[] defValue) {
-        return getBytes(key, defValue);
+        return edit().getBytes(key, defValue);
     }
 
     public static double get(String key, double defValue) {
-        return getDouble(key, defValue);
+        return edit().getDouble(key, defValue);
     }
 
     public static boolean get(String key, boolean defValue) {
-        return getBoolean(key, defValue);
+        return edit().getBoolean(key, defValue);
     }
 
     public static String get(String key, String defValue) {
-        return getString(key, defValue);
-    }
-
-    public static Set<String> get(String key, Set<String> defValue) {
-        return getSet(key, defValue);
+        return edit().getString(key, defValue);
     }
 
     public static String[] get(String key, String[] defValue) {
-        return getStringArray(key, defValue);
+        return edit().getStringArray(key, defValue);
     }
 
-    public static <T extends Parcelable> T get(String key, Class<T> defValue) {
-        return getParcelable(key, defValue);
+    public static Set<String> get(String key, Set<String> defValue) {
+        return edit().getStringSet(key, defValue);
     }
 
-    // ########################### 存储指定的基本数据类型 ############################################
-
-    // ----------String
-
-    public static boolean putString(String key, String value) {
-        return build().encode(key, value);
-    }
-
-    public static String getString(String key) {
-        return getString(key, null);
-    }
-
-    public static String getString(String key, String defValue) {
-        return build().decodeString(key, defValue);
-    }
+    // ------------------------------------ put/get XXX ------------------------------------
 
     // ----------int
 
-    public static boolean putInt(String key, int value) {
-        return build().encode(key, value);
-    }
-
-    public static int getInt(String key) {
-        return build().decodeInt(key, 0);
+    public static EditorProxy putInt(String key, int value) {
+        return edit().putInt(key, value);
     }
 
     public static int getInt(String key, int defValue) {
-        return build().decodeInt(key, defValue);
+        return edit().getInt(key, defValue);
+    }
+
+    public static int getInt(String key) {
+        return edit().getInt(key);
     }
 
     // ----------long
 
-    public static boolean putLong(String key, long value) {
-        return build().encode(key, value);
-    }
-
-    public static long getLong(String key) {
-        return getLong(key, 0L);
+    public static EditorProxy putLong(String key, long value) {
+        return edit().putLong(key, value);
     }
 
     public static long getLong(String key, long defValue) {
-        return build().decodeLong(key, defValue);
+        return edit().getLong(key, defValue);
     }
 
-    // ----------boolean
-
-    public static boolean putBoolean(String key, boolean value) {
-        return build().encode(key, value);
-    }
-
-    public static boolean getBoolean(String key) {
-        return getBoolean(key, false);
-    }
-
-    public static boolean getBoolean(String key, boolean defValue) {
-        return build().decodeBool(key, defValue);
+    public static long getLong(String key) {
+        return edit().getLong(key);
     }
 
     // ----------float
 
-    public static boolean putFloat(String key, float value) {
-        return build().encode(key, value);
-    }
-
-    public static float getFloat(String key) {
-        return getFloat(key, 0.0F);
+    public static EditorProxy putFloat(String key, float value) {
+        return edit().putFloat(key, value);
     }
 
     public static float getFloat(String key, float defValue) {
-        return build().decodeFloat(key, defValue);
+        return edit().getFloat(key, defValue);
+    }
+
+    public static float getFloat(String key) {
+        return edit().getFloat(key);
     }
 
     // ----------double
 
-    public static boolean putDouble(String key, double value) {
-        return build().encode(key, value);
-    }
-
-    public static double getDouble(String key) {
-        return getDouble(key, 0.0D);
+    public static EditorProxy putDouble(String key, double value) {
+        return edit().putDouble(key, value);
     }
 
     public static double getDouble(String key, double defValue) {
-        return build().decodeDouble(key, defValue);
+        return edit().getDouble(key, defValue);
     }
 
-    // ----------byte
-
-    public static boolean putBytes(String key, byte[] value) {
-        return build().encode(key, value);
+    public static double getDouble(String key) {
+        return edit().getDouble(key);
     }
 
-    public static byte[] getBytes(String key) {
-        return getBytes(key, (byte[]) null);
+    // ----------boolean
+
+    public static EditorProxy putBoolean(String key, boolean value) {
+        return edit().putBoolean(key, value);
+    }
+
+    public static boolean getBoolean(String key, boolean defValue) {
+        return edit().getBoolean(key, defValue);
+    }
+
+    public static boolean getBoolean(String key) {
+        return edit().getBoolean(key);
+    }
+
+    // ----------String
+
+    public static EditorProxy putString(String key, String value) {
+        return edit().putString(key, value);
+    }
+
+    public static String getString(String key, String defValue) {
+        return edit().getString(key, defValue);
+    }
+
+    public static String getString(String key) {
+        return edit().getString(key);
+    }
+
+    // ----------byte[]
+
+    public static EditorProxy putBytes(String key, byte[] value) {
+        return edit().putBytes(key, value);
     }
 
     public static byte[] getBytes(String key, byte[] defValue) {
-        return build().decodeBytes(key, defValue);
+        return edit().getBytes(key, defValue);
     }
 
-    // ----------Set<String>
-
-    public static boolean putSet(String key, Set<String> value) {
-        return build().encode(key, value);
-    }
-
-    public static Set<String> getSet(String key) {
-        return getSet(key, (Set<String>) null);
-    }
-
-    public static Set<String> getSet(String key, Set<String> defValue) {
-        return build().decodeStringSet(key, defValue);
-    }
-
-    // ---------- Set<String>
-
-    public static boolean putStringSet(String key, Set<String> value) {
-        return build().encode(key, value);
-    }
-
-    public static Set<String> getStringSet(String key) {
-        return getStringSet(key, null);
-    }
-
-    public static Set<String> getStringSet(String key, Set<String> defValue) {
-        return build().getStringSet(key, defValue);
+    public static byte[] getBytes(String key) {
+        return edit().getBytes(key);
     }
 
     // ---------- String[]
 
-    public static boolean putStringArray(String key, String[] value) {
-        Set<String> set = new HashSet<>(); // 转为set来存储
-        Collections.addAll(set, value);
-        return build().encode(key, set);
-    }
-
-    public static String[] getStringArray(String key) {
-        return getStringArray(key, null);
+    public static EditorProxy putStringArray(String key, String[] value) {
+        return edit().putStringArray(key, value);
     }
 
     public static String[] getStringArray(String key, String[] defValue) {
-        Set<String> set = getSet(key);
-        if (set != null) {
-            return (String[]) set.toArray(new String[0]);
-        }
-        return defValue;
+        return edit().getStringArray(key, defValue);
+    }
+
+    public static String[] getStringArray(String key) {
+        return edit().getStringArray(key);
+    }
+
+    // ---------- Set<String>
+
+    public static EditorProxy putStringSet(String key, Set<String> value) {
+        return edit().putStringSet(key, value);
+    }
+
+    public static Set<String> getStringSet(String key, Set<String> defValue) {
+        return edit().getStringSet(key, defValue);
+    }
+
+    public static Set<String> getStringSet(String key) {
+        return edit().getStringSet(key);
     }
 
     // ########################### 存储对象数据类型 #################################################
 
     // ------- Parcelable
 
-    public static boolean putParcelable(String key, Parcelable value) {
-        return build().encode(key, value);
+    public static EditorProxy putParcelable(String key, Parcelable value) {
+        return edit().putParcelable(key, value);
+    }
+
+    public static <T extends Parcelable> T getParcelable(String key, Class<T> clazz) {
+        return edit().getParcelable(key, clazz);
     }
 
     public static <T extends Parcelable> T getParcelable(String key) {
-        return build().decodeParcelable(key, null);
-    }
-
-    public static <T extends Parcelable> T getParcelable(String key, Class<T> defValue) {
-        return build().decodeParcelable(key, defValue);
+        return edit().getParcelable(key);
     }
 
     // ------- Serializable
 
-    public static <T extends Serializable> boolean putBean(String key, T value) {
-        return putString(key, new Gson().toJson(value));
+    public static <T extends Serializable> EditorProxy putSerializable(String key, T value) {
+        return edit().putSerializable(key, value);
     }
 
-    public static <T> T getBean(String key, Type type) {
-        String json = getString(key);
-        return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, type);
+    public static <T> T getSerializable(String key, Class<T> clazz) {
+        return edit().getSerializable(key, clazz);
     }
 
     // ------- BigDecimal
 
-    public static boolean putBigDecimal(String key, BigDecimal value) {
-        return putString(key, value == null ? BigDecimal.ZERO.toString() : value.toString());
-    }
-
-    public static BigDecimal getBigDecimal(String key) {
-        return getBigDecimal(key, null);
+    public static EditorProxy putBigDecimal(String key, BigDecimal value) {
+        return edit().putBigDecimal(key, value);
     }
 
     public static BigDecimal getBigDecimal(String key, BigDecimal defValue) {
-        String valueStr = getString(key, null);
-        if (!TextUtils.isEmpty(valueStr)) {
-            try {
-                return new BigDecimal(valueStr);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return defValue;
+        return edit().getBigDecimal(key, defValue);
+    }
+
+    public static BigDecimal getBigDecimal(String key) {
+        return edit().getBigDecimal(key);
     }
 
     // ------- JSONObject
 
-    public static boolean putJSONObject(String key, JSONObject value) {
-        return putString(key, value == null ? null : value.toString());
-    }
-
-    public static JSONObject getJSONObject(String key) {
-        return getJSONObject(key, null);
+    public static EditorProxy putJSONObject(String key, JSONObject value) {
+        return edit().putJSONObject(key, value);
     }
 
     public static JSONObject getJSONObject(String key, JSONObject defValue) {
-        String strValue = getString(key, null);
-        if (!TextUtils.isEmpty(strValue)) {
-            try {
-                return new JSONObject(strValue);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return defValue;
+        return edit().getJSONObject(key, defValue);
+    }
+
+    public static JSONObject getJSONObject(String key) {
+        return edit().getJSONObject(key);
     }
 
     // ------- JSONArray
 
-    public static boolean putJSONArray(String key, JSONArray value) {
-        return putString(key, value == null ? null : value.toString());
-    }
-
-    public static JSONArray getJSONArray(String key) {
-        return getJSONArray(key, null);
+    public static EditorProxy putJSONArray(String key, JSONArray value) {
+        return edit().putJSONArray(key, value);
     }
 
     public static JSONArray getJSONArray(String key, JSONArray defValue) {
-        String strValue = getString(key, null);
-        if (!TextUtils.isEmpty(strValue)) {
-            try {
-                return new JSONArray(strValue);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return defValue;
+        return edit().getJSONArray(key, defValue);
     }
 
-    /**
-     * 用于存储List集合
-     *
-     * @param key 存储的key
-     * @param list 数据List
-     * @return 保存结果
-     */
-    public static <T> boolean putList(String key, List<T> list) {
-        return putString(key, new Gson().toJson(list));
+    public static JSONArray getJSONArray(String key) {
+        return edit().getJSONArray(key);
     }
 
-    /**
-     * 获取List集合
-     *
-     * @param key key
-     * @param type 数据类型Type
-     * @return 对应的Lis集合
-     */
-    public static <T> List<T> getList(String key, Type type) {
-        String json = getString(key);
-        if (!TextUtils.isEmpty(json)) {
-            return new Gson().fromJson(json, type);
-        }
-        return null;
+    // ------- List
+
+    public static <T> EditorProxy putList(String key, List<T> value) {
+        return edit().putList(key, value);
     }
 
-    /**
-     * 保存Map集合
-     *
-     * @param key key
-     * @param map 数据Map
-     * @return 保存结果
-     */
-    public static <K, V> boolean putMap(String key, Map<K, V> map) {
-        return putString(key, new Gson().toJson(map));
+    public static <T> List<T> getList(String key, List<T> defValue) {
+        return edit().getList(key, defValue);
     }
 
-    /**
-     * 用于获取List集合
-     *
-     * @param key key
-     * @param type 数据类型Type
-     * @return 对应的Lis集合
-     */
-    public static <K, V> Map<K, V> getMap(String key, Type type) {
-        String json = getString(key);
-        if (!TextUtils.isEmpty(json)) {
-            return new Gson().fromJson(json, type);
-        }
-        return null;
+    public static <T> List<T> getList(String key) {
+        return edit().getList(key);
+    }
+
+    // ------- Map
+
+    public static <K, V> EditorProxy putMap(String key, Map<K, V> value) {
+        return edit().putMap(key, value);
+    }
+
+    public static <K, V> Map<K, V> getMap(String key, Map<K, V> defValue) {
+        return edit().getMap(key, defValue);
+    }
+
+    public static <K, V> Map<K, V> getMap(String key) {
+        return edit().getMap(key, null);
     }
 }

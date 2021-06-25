@@ -250,11 +250,6 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_PARENT, 0.0F);
         translate.setDuration(duration);
         return translate;
-
-//        AnimationSet set = new AnimationSet(false);
-//        set.addAnimation(translate);
-//        return set; //
-//        return loadAnim(context, R.anim.xin_anim_right_out);
     }
 
     /**

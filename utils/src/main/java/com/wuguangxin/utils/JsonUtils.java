@@ -118,7 +118,7 @@ public class JsonUtils {
 	}
 
 	/**
-	 * 将json对象解析为List
+	 * 将json对象解析为Map
 	 * @param json
 	 * @param type 泛型类型：参考 Type type = new TypeToken<Map<String, T>>(){}.getType();
 	 * @return

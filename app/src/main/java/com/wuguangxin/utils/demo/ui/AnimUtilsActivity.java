@@ -38,7 +38,6 @@ public class AnimUtilsActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
     }
 
     @Override

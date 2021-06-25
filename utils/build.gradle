@@ -54,6 +54,5 @@ dependencies {
     // MmkvUtils在初始化时有可能会报错，则需要使用ReLinker来辅助加载，（增加大小 45kb）
     // 详细看：https://github.com/Tencent/MMKV/wiki/android_advance_cn#%E8%87%AA%E5%AE%9A%E4%B9%89-library-loader
     // implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
-
 }
 

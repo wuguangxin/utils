@@ -5,16 +5,25 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.google.gson.reflect.TypeToken;
+import com.wuguangxin.utils.Logger;
 import com.wuguangxin.utils.MD5;
+import com.wuguangxin.utils.demo.AppConfig;
 import com.wuguangxin.utils.demo.R;
 import com.wuguangxin.utils.demo.UserBean;
 import com.wuguangxin.utils.mmkv.MmkvUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,7 +59,62 @@ public class MmkvUtilsActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        try {
+            test();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void test() throws JSONException {
+        UserBean user1 = new UserBean("1", "一");
+        UserBean user2 = new UserBean("2", "二");
+        UserBean user3 = new UserBean("3", "三");
 
+        AppConfig.getInstance().put("user1", user1);
+        UserBean getUser1 = AppConfig.getInstance().getSerializable("user1", UserBean.class);
+        Logger.i("user1", getUser1);
+
+        Map<String, UserBean> userMap = new HashMap<>();
+        userMap.put(user1.getId(), user1);
+        userMap.put(user2.getId(), user2);
+        userMap.put(user3.getId(), user3);
+
+        List<Object> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add(userMap);
+        AppConfig.getInstance().put("list", list);
+        Logger.i("list", AppConfig.getInstance().getList("list"));
+
+        List<UserBean> userList = Arrays.asList(user1, user2, user3);
+        AppConfig.getInstance().putList("userList", userList);
+        Logger.i("userList", AppConfig.getInstance().getList("userList"));
+
+        AppConfig.getInstance().putMap("userMap", userMap);
+        Logger.i("userMap", AppConfig.getInstance().getMap("userMap"));
+
+        UserBean userBean = new UserBean("1", "WGX");
+        AppConfig.getInstance().putSerializable("userBean", userBean);
+        Logger.i("userBean", AppConfig.getInstance().getSerializable("userBean", UserBean.class));
+
+        Set<String> sets = new HashSet<>();
+        sets.add("AAA");
+        sets.add("BBB");
+        sets.add("CCC");
+        Logger.i("sets", AppConfig.getInstance().putStringSet("sets", sets).getStringSet("sets"));
+
+        BigDecimal bigDecimal = BigDecimal.valueOf(100.123454565656D);
+        Logger.i("bigDecimal", AppConfig.getInstance().putBigDecimal("bigDecimal", bigDecimal).getBigDecimal("bigDecimal"));
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", "张三");
+        Logger.i("jsonObject", AppConfig.getInstance().putJSONObject("jsonObject", jsonObject).getJSONObject("jsonObject"));
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put("aaa");
+        jsonArray.put(jsonObject);
+        Logger.i("jsonArray", AppConfig.getInstance().putJSONArray("jsonArray", jsonArray).getJSONArray("jsonArray"));
     }
 
     @Override
@@ -91,50 +155,56 @@ public class MmkvUtilsActivity extends BaseActivity {
         switch (id) {
             // 基本数据
         case R.id.put:
-            showToast(currentUser.getUsername() + (MmkvUtils.put(KEY_TEST, getText()) ? "存入成功" : "存入失败"));
+            MmkvUtils.putString(KEY_TEST, getText());
+            showToast(currentUser.getUsername() + "存入成功");
             break;
         case R.id.get:
-            showToast(currentUser.getUsername() + "取出：" + MmkvUtils.get(KEY_TEST, (String) null));
+            showToast(currentUser.getUsername() + "取出：" + MmkvUtils.getString(KEY_TEST, null));
             break;
         case R.id.del:
-            MmkvUtils.removeValueByKey(KEY_TEST);
+            MmkvUtils.removeValueForKey(KEY_TEST);
             showToast(currentUser.getUsername() + "删除信息：" + !MmkvUtils.containsKey(KEY_TEST));
             break;
 
             // 操作List
         case R.id.put_list:
-            showToast(currentUser.getUsername() + (MmkvUtils.putList(KEY_LIST, list2) ? "List存入成功" : "List存入失败"));
+            MmkvUtils.putList(KEY_LIST, list2);
+            showToast(currentUser.getUsername() + "List存入成功");
             break;
         case R.id.get_list:
-            showToast(currentUser.getUsername() + "取出List：" + MmkvUtils.getList(KEY_LIST, new TypeToken<List<Map<String, String>>>() {}.getType()));
+            showToast(currentUser.getUsername() + "取出List：" + MmkvUtils.getList(KEY_LIST));
             break;
         case R.id.del_list:
-            MmkvUtils.removeValueByKey(KEY_LIST);
+            MmkvUtils.removeValueForKey(KEY_LIST);
             showToast(currentUser.getUsername() + "删除List：" + !MmkvUtils.containsKey(KEY_LIST));
             break;
 
             // 操作Map
         case R.id.put_map:
-            showToast(currentUser.getUsername() + (MmkvUtils.putMap(KEY_MAP, map1) ? "Map存入成功" : "Map存入失败"));
+            MmkvUtils.putMap(KEY_MAP, map1);
+            showToast(currentUser.getUsername() + ("Map存入成功"));
             break;
         case R.id.get_map:
-            showToast(currentUser.getUsername() + "取出Map：" + MmkvUtils.getMap(KEY_MAP, new TypeToken<Map<String, String>>() {}.getType()));
+            // Type type = new TypeToken<Map<String, String>>() {}.getType());
+            showToast(currentUser.getUsername() + "取出Map：" + MmkvUtils.getMap(KEY_MAP, null));
             break;
         case R.id.del_map:
-            MmkvUtils.removeValueByKey(KEY_MAP);
+            MmkvUtils.removeValueForKey(KEY_MAP);
             showToast(currentUser.getUsername() + "删除Map：" + !MmkvUtils.containsKey(KEY_MAP));
             break;
 
             // 操作Bean
         case R.id.put_bean:
-            showToast(currentUser.getUsername() + (MmkvUtils.putBean(KEY_BEAN, currentUser) ? "Bean存入成功" : "Bean存入失败"));
+            MmkvUtils.putSerializable(KEY_BEAN, currentUser);
+            showToast(currentUser.getUsername() + "Bean存入成功");
             break;
         case R.id.get_bean:
-            UserBean userBean = MmkvUtils.getBean(KEY_BEAN, new TypeToken<UserBean>() {}.getType());
+            // Type type = new TypeToken<UserBean>() {}.getType();
+            UserBean userBean = MmkvUtils.getSerializable(KEY_BEAN, UserBean.class);
             showToast(currentUser.getUsername() + "取出Bean：" + userBean);
             break;
         case R.id.del_bean:
-            MmkvUtils.removeValueByKey(KEY_BEAN);
+            MmkvUtils.removeValueForKey(KEY_BEAN);
             showToast(currentUser.getUsername() + "删除Bean：" + !MmkvUtils.containsKey(KEY_BEAN));
             break;
         }
