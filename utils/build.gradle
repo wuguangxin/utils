@@ -7,12 +7,8 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 2
-        versionName "1.2.0"
-        description "优化mmkv存储工具类\n" +
-                "使用方式：\n" +
-                "1.继承Config的方式，可参考Config.SimpleConfig类；\n" +
-                "2.静态方法方式可以参考MmkvUtils类；\n" +
-                "注意：多用户存储需要设置id，不然会使用MMKV默认的实例。"
+        versionName "1.2.1"
+        description "优化AnimUtils的位移类的动画，默认时长改为300毫秒，统一加上AccelerateDecelerateInterpolator插值器"
 
         // 作用是当本项目作为lib或者module被别人使用，如果本项目中有不可被混淆的代码时，可在本项目中开启混淆配置，
         // 当第三方引用到本module并打包时，会自动应用本module中的混淆配置文件，避免别人忘记配置而导致错误

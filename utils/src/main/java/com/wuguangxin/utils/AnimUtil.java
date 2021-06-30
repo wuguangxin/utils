@@ -18,7 +18,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.LinearInterpolator;
@@ -59,7 +58,7 @@ public class AnimUtil {
     android:toXDelta="80%p"：表示父层View的80%，是以它父层View为参照的。
     */
 
-    private final static int DEF_ANIM_DURATION = 500; // 默认动画时长
+    private final static int DEF_ANIM_DURATION = 300; // 默认动画时长
 
     /**
      * 加载动画。
@@ -93,8 +92,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
-        translate.setDuration(duration);
         translate.setInterpolator(new AccelerateDecelerateInterpolator());
+        translate.setDuration(duration);
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 //        AnimationSet set = new AnimationSet(false);
 //        set.addAnimation(translate);
@@ -123,9 +124,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
         translate.setFillEnabled(true);
-        translate.setFillAfter(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 
 //        AnimationSet set = new AnimationSet(false);
@@ -157,8 +159,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
-        translate.setInterpolator(new BounceInterpolator());
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 
 //        AnimationSet set = new AnimationSet(false);
@@ -188,8 +192,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, -1.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
-        translate.setInterpolator(new BounceInterpolator());
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 
 //        AnimationSet set = new AnimationSet(false);
@@ -219,7 +225,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 //        AnimationSet set = new AnimationSet(false);
 //        set.addAnimation(translate);
@@ -248,7 +257,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_PARENT, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
+        translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
     }
 
@@ -273,9 +285,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_SELF, 1.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
-        translate.setFillAfter(true);
         translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 
 //        AnimationSet set = new AnimationSet(false);
@@ -307,10 +320,10 @@ public class AnimUtil {
                 Animation.RELATIVE_TO_SELF, 0.0F,
                 Animation.RELATIVE_TO_PARENT, 0.0F,
                 Animation.RELATIVE_TO_SELF, 1.0F);
+        translate.setInterpolator(new AccelerateDecelerateInterpolator());
         translate.setDuration(duration);
-        // 让动画停留在最后一帧
-        translate.setFillAfter(true);
         translate.setFillEnabled(true);
+        translate.setFillAfter(true); // 让动画停留在最后一帧
         return translate;
 
 //        AnimationSet set = new AnimationSet(false);

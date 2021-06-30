@@ -1,14 +1,12 @@
 package com.wuguangxin.utils.demo.ui;
 
 import android.Manifest;
-import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.wuguangxin.utils.AnimUtil;
@@ -61,22 +59,22 @@ public class AnimUtilsActivity extends BaseActivity {
         int id = view.getId();
         switch (id) {
         case R.id.left_in:
-//            mImageView.startAnimation(AnimUtil.getLeft_in());
+            mImageView.startAnimation(AnimUtil.getLeftIn());
 
-            ObjectAnimator animator = ObjectAnimator.ofFloat(mImageView, "translationX", -mImageView.getWidth(), 0);
-            animator.setInterpolator(new AccelerateDecelerateInterpolator());
-            animator.setDuration(500);
-            animator.start();
+//            ObjectAnimator animator = ObjectAnimator.ofFloat(mImageView, "translationX", -mImageView.getWidth(), 0);
+//            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+//            animator.setDuration(500);
+//            animator.start();
             break;
         case R.id.left_out:
             mImageView.startAnimation(AnimUtil.getLeftOut());
 //            mImageView.animate().translationX(-mImageView.getWidth()).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
             break;
         case R.id.top_in:
-            mImageView.startAnimation(AnimUtil.getTopIn(1000));
+            mImageView.startAnimation(AnimUtil.getTopIn(500));
             break;
         case R.id.top_out:
-            mImageView.startAnimation(AnimUtil.getTopOut(1000));
+            mImageView.startAnimation(AnimUtil.getTopOut(500));
 //            mImageView.animate().translationY(-mImageView.getHeight());
             break;
         case R.id.right_in:
@@ -113,7 +111,6 @@ public class AnimUtilsActivity extends BaseActivity {
             break;
         case R.id.request_permission:
             // 请求权限
-//            AndroidUtils.requestPermissions(this, PERMISSION_EXTERNAL_STORAGE, 100);
             ActivityCompat.requestPermissions(this, PERMISSION_EXTERNAL_STORAGE, 100);
             break;
         case R.id.check_permission:
