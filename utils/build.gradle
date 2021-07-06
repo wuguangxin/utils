@@ -39,20 +39,13 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-
+    api 'androidx.appcompat:appcompat:1.2.0'
+    api 'androidx.annotation:annotation:1.1.0'
+    api 'androidx.cardview:cardview:1.0.0'
     api 'com.google.code.gson:gson:2.8.7'
-
     // 二维码,ZXingUtils用到
     api 'com.google.zxing:core:3.4.0'
-
     // 腾讯mmkv替代sp (https://github.com/Tencent/MMKV/blob/master/readme_cn.md)
     api 'com.tencent:mmkv-static:1.2.7'
-
-    // MmkvUtils在初始化时有可能会报错，则需要使用ReLinker来辅助加载，（增加大小 45kb）
-    // 详细看：https://github.com/Tencent/MMKV/wiki/android_advance_cn#%E8%87%AA%E5%AE%9A%E4%B9%89-library-loader
-    // implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
 }
 
