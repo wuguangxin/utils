@@ -68,9 +68,9 @@ public class SortUtils {
      * 然后再按此方法对这两部分数据分别进行快速排序，
      * 整个排序过程可以递归进行，以此达到整个数据变成有序序列。
      *
-     * @param arr 数组
+     * @param arr   数组
      * @param start 起始位 0
-     * @param end 结束位 数组长度-1（arr.length-1）
+     * @param end   结束位 数组长度-1（arr.length-1）
      */
     public static void quickSort(int[] arr, int start, int end) {
         if (start < end) {
@@ -205,6 +205,7 @@ public class SortUtils {
 
     /**
      * 堆排序
+     *
      * @param arr
      */
     public static void heapSort(int[] arr) {
@@ -215,7 +216,7 @@ public class SortUtils {
         }
         // 现在已得到最大的数在最前面
         // [10, 7, 9, 6, 0, 1, 8, 4, 2]
-        for (int i = arr.length-1; i > 0; i--) {
+        for (int i = arr.length - 1; i > 0; i--) {
             // 先把数组中的第0个和堆中的最后一个数交换位置
             int temp = arr[0];
             arr[0] = arr[i];
@@ -227,15 +228,16 @@ public class SortUtils {
 
     /**
      * 调整为大顶堆
-     * @param arr 数组
-     * @param size 元素长度
+     *
+     * @param arr   数组
+     * @param size  元素长度
      * @param index 开始位置
      */
     public static void maxHeap(int[] arr, int size, int index) {
         // 左子节点
-        int leftNode = 2*index+1;
+        int leftNode = 2 * index + 1;
         // 右子节点
-        int rightNode = 2*index+2;
+        int rightNode = 2 * index + 2;
         // 默认最大节点为index
         int max = index;
         // 分别和两个子节点对比，找出最大的节点

@@ -58,95 +58,95 @@ public class StorageUtils {
 
     private static final String TAG = "StorageUtils";
 
-    public static void test(Context context) {
-//        Logger.i(TAG, "========内存区====================================");
-//        Logger.i(TAG, "getFilesDir()：" + getFilesDir(context));                                             // /data/user/0/<包名>/files
-//        Logger.i(TAG, "getCacheDir()：" + getCacheDir(context));                                             // /data/user/0/<包名>/cache
-//        Logger.i(TAG, "getCodeCacheDir()：" + getCodeCacheDir(context));                                     // /data/user/0/<包名>/code_cache
-//
-//        Logger.i(TAG, "getExternalCacheDir()：" + getExternalCacheDir(context));                             // /storage/emulated/0/Android/data/<包名>/cache
-//        Logger.i(TAG, "getExternalFilesDir()：" + getExternalFilesDir(context));                             // /storage/emulated/0/Android/data/<包名>/files
-//        Logger.i(TAG, "getExternalFilesDirDCIM()：" + getExternalFilesDirDCIM(context));                     // /storage/emulated/0/Android/data/<包名>/files/DCIM
-//        Logger.i(TAG, "getExternalFilesDirCache()：" + getExternalFilesDirCache(context));                   // /storage/emulated/0/Android/data/<包名>/files/Caches
-//        Logger.i(TAG, "getExternalFilesDirMusic()：" + getExternalFilesDirMusic(context));                   // /storage/emulated/0/Android/data/<包名>/files/Music
-//        Logger.i(TAG, "getExternalFilesDirAlarms()：" + getExternalFilesDirAlarms(context));                 // /storage/emulated/0/Android/data/<包名>/files/Alarms
-//        Logger.i(TAG, "getExternalFilesDirMovies()：" + getExternalFilesDirMovies(context));                 // /storage/emulated/0/Android/data/<包名>/files/Movies
-//        Logger.i(TAG, "getExternalFilesDirPictures()：" + getExternalFilesDirPictures(context));             // /storage/emulated/0/Android/data/<包名>/files/Pictures
-//        Logger.i(TAG, "getExternalFilesDirPodcasts()：" + getExternalFilesDirPodcasts(context));             // /storage/emulated/0/Android/data/<包名>/files/Podcasts
-//        Logger.i(TAG, "getExternalFilesDirDownloads()：" + getExternalFilesDirDownloads(context));           // /storage/emulated/0/Android/data/<包名>/files/Download
-//        Logger.i(TAG, "getExternalFilesDirDocuments()：" + getExternalFilesDirDocuments(context));           // /storage/emulated/0/Android/data/<包名>/files/Documents
-//        Logger.i(TAG, "getExternalFilesDirRingtones()：" + getExternalFilesDirRingtones(context));           // /storage/emulated/0/Android/data/<包名>/files/Ringtones
-//        Logger.i(TAG, "getExternalFilesDirAudioBooks()：" + getExternalFilesDirAudioBooks(context));         // /storage/emulated/0/Android/data/<包名>/files/Audiobooks
-//        Logger.i(TAG, "getExternalFilesDirNotifications()：" + getExternalFilesDirNotifications(context));   // /storage/emulated/0/Android/data/<包名>/files/Notifications
-//
-//        Logger.i(TAG, "========存储卡====================================");
-//        Logger.i(TAG, "hasExternalStorage()：" + hasExternalStorage());                      // true
-//        Logger.i(TAG, "getRootDirectory()：" + getRootDirectory());                          // /system
-//        Logger.i(TAG, "getDataDirectory()：" + getDataDirectory());                          // /data
-//        Logger.i(TAG, "getDownloadCacheDirectory()：" + getDownloadCacheDirectory());        // /data/cache
-//        Logger.i(TAG, "getDirectoryDCIM()：" + getDirectoryDCIM());                          // /storage/emulated/0/DCIM
-//        Logger.i(TAG, "getDirectoryMusic()：" + getDirectoryMusic());                        // /storage/emulated/0/Music
-//        Logger.i(TAG, "getDirectoryAlarms()：" + getDirectoryAlarms());                      // /storage/emulated/0/Alarms
-//        Logger.i(TAG, "getDirectoryMovies()：" + getDirectoryMovies());                      // /storage/emulated/0/Movies
-//        Logger.i(TAG, "getDirectoryPictures()：" + getDirectoryPictures());                  // /storage/emulated/0/Pictures
-//        Logger.i(TAG, "getDirectoryDownloads()：" + getDirectoryDownloads());                // /storage/emulated/0/Download
-//        Logger.i(TAG, "getDirectoryDocuments()：" + getDirectoryDocuments());                // /storage/emulated/0/Documents
-//        Logger.i(TAG, "getDirectoryScreenshots()：" + getDirectoryScreenshots());            // /storage/emulated/0/Screenshots
-//
-//        Logger.i(TAG, "========容量====================================");
-//        Logger.i(TAG, "isLowMemory()：" + isLowMemory(context));                             // 是否是低内存：false
-//        Logger.i(TAG, "getTotalRAMSize()：" + getTotalRAMSize(context));                     // 5903380480    = 5.49GB
-//        Logger.i(TAG, "getAvailRAMSize()：" + getAvailRAMSize(context));                     // 1810214912    = 1.68GB
-//        Logger.i(TAG, "getInternalStorageTotalSize()：" + getInternalStorageTotalSize());    // 118981873664  = 110.81GB
-//        Logger.i(TAG, "getInternalStorageAvailSize()：" + getInternalStorageAvailSize());    // 3656527872    = 3.40GB
-//        Logger.i(TAG, "getExternalStorageTotalSize()：" + getExternalStorageTotalSize());    // 118981873664  = 110.81GB
-//        Logger.i(TAG, "getExternalStorageAvailSize()：" + getExternalStorageAvailSize());    // 3656527872    = 3.40GB
+    /*public static void test(Context context) {
+        Logger.i(TAG, "========内存区====================================");
+        Logger.i(TAG, "getFilesDir()：" + getFilesDir(context));                                             // /data/user/0/<包名>/files
+        Logger.i(TAG, "getCacheDir()：" + getCacheDir(context));                                             // /data/user/0/<包名>/cache
+        Logger.i(TAG, "getCodeCacheDir()：" + getCodeCacheDir(context));                                     // /data/user/0/<包名>/code_cache
+
+        Logger.i(TAG, "getExternalCacheDir()：" + getExternalCacheDir(context));                             // /storage/emulated/0/Android/data/<包名>/cache
+        Logger.i(TAG, "getExternalFilesDir()：" + getExternalFilesDir(context));                             // /storage/emulated/0/Android/data/<包名>/files
+        Logger.i(TAG, "getExternalFilesDirDCIM()：" + getExternalFilesDirDCIM(context));                     // /storage/emulated/0/Android/data/<包名>/files/DCIM
+        Logger.i(TAG, "getExternalFilesDirCache()：" + getExternalFilesDirCache(context));                   // /storage/emulated/0/Android/data/<包名>/files/Caches
+        Logger.i(TAG, "getExternalFilesDirMusic()：" + getExternalFilesDirMusic(context));                   // /storage/emulated/0/Android/data/<包名>/files/Music
+        Logger.i(TAG, "getExternalFilesDirAlarms()：" + getExternalFilesDirAlarms(context));                 // /storage/emulated/0/Android/data/<包名>/files/Alarms
+        Logger.i(TAG, "getExternalFilesDirMovies()：" + getExternalFilesDirMovies(context));                 // /storage/emulated/0/Android/data/<包名>/files/Movies
+        Logger.i(TAG, "getExternalFilesDirPictures()：" + getExternalFilesDirPictures(context));             // /storage/emulated/0/Android/data/<包名>/files/Pictures
+        Logger.i(TAG, "getExternalFilesDirPodcasts()：" + getExternalFilesDirPodcasts(context));             // /storage/emulated/0/Android/data/<包名>/files/Podcasts
+        Logger.i(TAG, "getExternalFilesDirDownloads()：" + getExternalFilesDirDownloads(context));           // /storage/emulated/0/Android/data/<包名>/files/Download
+        Logger.i(TAG, "getExternalFilesDirDocuments()：" + getExternalFilesDirDocuments(context));           // /storage/emulated/0/Android/data/<包名>/files/Documents
+        Logger.i(TAG, "getExternalFilesDirRingtones()：" + getExternalFilesDirRingtones(context));           // /storage/emulated/0/Android/data/<包名>/files/Ringtones
+        Logger.i(TAG, "getExternalFilesDirAudioBooks()：" + getExternalFilesDirAudioBooks(context));         // /storage/emulated/0/Android/data/<包名>/files/Audiobooks
+        Logger.i(TAG, "getExternalFilesDirNotifications()：" + getExternalFilesDirNotifications(context));   // /storage/emulated/0/Android/data/<包名>/files/Notifications
+
+        Logger.i(TAG, "========存储卡====================================");
+        Logger.i(TAG, "hasExternalStorage()：" + hasExternalStorage());                      // true
+        Logger.i(TAG, "getRootDirectory()：" + getRootDirectory());                          // /system
+        Logger.i(TAG, "getDataDirectory()：" + getDataDirectory());                          // /data
+        Logger.i(TAG, "getDownloadCacheDirectory()：" + getDownloadCacheDirectory());        // /data/cache
+        Logger.i(TAG, "getDirectoryDCIM()：" + getDirectoryDCIM());                          // /storage/emulated/0/DCIM
+        Logger.i(TAG, "getDirectoryMusic()：" + getDirectoryMusic());                        // /storage/emulated/0/Music
+        Logger.i(TAG, "getDirectoryAlarms()：" + getDirectoryAlarms());                      // /storage/emulated/0/Alarms
+        Logger.i(TAG, "getDirectoryMovies()：" + getDirectoryMovies());                      // /storage/emulated/0/Movies
+        Logger.i(TAG, "getDirectoryPictures()：" + getDirectoryPictures());                  // /storage/emulated/0/Pictures
+        Logger.i(TAG, "getDirectoryDownloads()：" + getDirectoryDownloads());                // /storage/emulated/0/Download
+        Logger.i(TAG, "getDirectoryDocuments()：" + getDirectoryDocuments());                // /storage/emulated/0/Documents
+        Logger.i(TAG, "getDirectoryScreenshots()：" + getDirectoryScreenshots());            // /storage/emulated/0/Screenshots
+
+        Logger.i(TAG, "========容量====================================");
+        Logger.i(TAG, "isLowMemory()：" + isLowMemory(context));                             // 是否是低内存：false
+        Logger.i(TAG, "getTotalRAMSize()：" + getTotalRAMSize(context));                     // 5903380480    = 5.49GB
+        Logger.i(TAG, "getAvailRAMSize()：" + getAvailRAMSize(context));                     // 1810214912    = 1.68GB
+        Logger.i(TAG, "getInternalStorageTotalSize()：" + getInternalStorageTotalSize());    // 118981873664  = 110.81GB
+        Logger.i(TAG, "getInternalStorageAvailSize()：" + getInternalStorageAvailSize());    // 3656527872    = 3.40GB
+        Logger.i(TAG, "getExternalStorageTotalSize()：" + getExternalStorageTotalSize());    // 118981873664  = 110.81GB
+        Logger.i(TAG, "getExternalStorageAvailSize()：" + getExternalStorageAvailSize());    // 3656527872    = 3.40GB
 
 
-        // 小米8（Android 10）测试
-//        // ==========内存区====================================
-//        StorageUtils.getFilesDir()：               /data/user/0/<包名>/files
-//        StorageUtils.getCacheDir()：               /data/user/0/<包名>/cache
-//        StorageUtils.getCodeCacheDir()：           /data/user/0/<包名>/code_cache
+         小米8（Android 10）测试
+        // ==========内存区====================================
+        StorageUtils.getFilesDir()：               /data/user/0/<包名>/files
+        StorageUtils.getCacheDir()：               /data/user/0/<包名>/cache
+        StorageUtils.getCodeCacheDir()：           /data/user/0/<包名>/code_cache
 
-//        // ==========App====================================
-//        StorageUtils.getExternalCacheDir()：               /storage/emulated/0/Android/data/<包名>/cache
-//        StorageUtils.getExternalFilesDir()：               /storage/emulated/0/Android/data/<包名>/files
-//        StorageUtils.getExternalFilesDirDCIM()：           /storage/emulated/0/Android/data/<包名>/files/DCIM
-//        StorageUtils.getExternalFilesDirCache()：          /storage/emulated/0/Android/data/<包名>/files/Caches
-//        StorageUtils.getExternalFilesDirMusic()：          /storage/emulated/0/Android/data/<包名>/files/Music
-//        StorageUtils.getExternalFilesDirAlarms()：         /storage/emulated/0/Android/data/<包名>/files/Alarms
-//        StorageUtils.getExternalFilesDirMovies()：         /storage/emulated/0/Android/data/<包名>/files/Movies
-//        StorageUtils.getExternalFilesDirPictures()：       /storage/emulated/0/Android/data/<包名>/files/Pictures
-//        StorageUtils.getExternalFilesDirPodcasts()：       /storage/emulated/0/Android/data/<包名>/files/Podcasts
-//        StorageUtils.getExternalFilesDirDownloads()：      /storage/emulated/0/Android/data/<包名>/files/Download
-//        StorageUtils.getExternalFilesDirDocuments()：      /storage/emulated/0/Android/data/<包名>/files/Documents
-//        StorageUtils.getExternalFilesDirRingtones()：      /storage/emulated/0/Android/data/<包名>/files/Ringtones
-//        StorageUtils.getExternalFilesDirAudioBooks()：     /storage/emulated/0/Android/data/<包名>/files/Audiobooks
-//        StorageUtils.getExternalFilesDirNotifications()：  /storage/emulated/0/Android/data/<包名>/files/Notifications
-//        // ==========存储卡区====================================
-//
-//        StorageUtils.getRootDirectory()：          /system
-//        StorageUtils.getDataDirectory()：          /data
-//        StorageUtils.getDownloadCacheDirectory()： /data/cache
-//        // 共享存储区
-//        StorageUtils.hasExternalStorage()：        true
-//        StorageUtils.getDirectoryPictures()：      /storage/emulated/0/Pictures
-//        StorageUtils.getDirectoryDCIM()：          /storage/emulated/0/DCIM
-//        StorageUtils.getDirectoryMusic()：         /storage/emulated/0/Music
-//        StorageUtils.getDirectoryAlarms()：        /storage/emulated/0/Alarms
-//        StorageUtils.getDirectoryMovies()：        /storage/emulated/0/Movies
-//        StorageUtils.getDirectoryDownloads()：     /storage/emulated/0/Download
-//        StorageUtils.getDirectoryScreenshots()：   /storage/emulated/0/Screenshots
-//        StorageUtils.getDirectoryDocuments()：     /storage/emulated/0/Documents
-//        // ==========存储空间====================================
-//        StorageUtils.getTotalRAMSize()            // 5903380480       = 5.90GB
-//        StorageUtils.getAvailRAMSize()            // 1943891968       = 1.94GB
-//        StorageUtils.getTotalMemorySize()         // 118981873664     = 118.98
-//        StorageUtils.getAvailMemorySize()         // 3524849664       = 3.52GB
-//        StorageUtils.getTotalExternalMemorySize() // 118981873664     = 118.98
-//        StorageUtils.getAvailExternalMemorySize() // 3524849664       = 3.52GB
-    }
+        // ==========App====================================
+        StorageUtils.getExternalCacheDir()：               /storage/emulated/0/Android/data/<包名>/cache
+        StorageUtils.getExternalFilesDir()：               /storage/emulated/0/Android/data/<包名>/files
+        StorageUtils.getExternalFilesDirDCIM()：           /storage/emulated/0/Android/data/<包名>/files/DCIM
+        StorageUtils.getExternalFilesDirCache()：          /storage/emulated/0/Android/data/<包名>/files/Caches
+        StorageUtils.getExternalFilesDirMusic()：          /storage/emulated/0/Android/data/<包名>/files/Music
+        StorageUtils.getExternalFilesDirAlarms()：         /storage/emulated/0/Android/data/<包名>/files/Alarms
+        StorageUtils.getExternalFilesDirMovies()：         /storage/emulated/0/Android/data/<包名>/files/Movies
+        StorageUtils.getExternalFilesDirPictures()：       /storage/emulated/0/Android/data/<包名>/files/Pictures
+        StorageUtils.getExternalFilesDirPodcasts()：       /storage/emulated/0/Android/data/<包名>/files/Podcasts
+        StorageUtils.getExternalFilesDirDownloads()：      /storage/emulated/0/Android/data/<包名>/files/Download
+        StorageUtils.getExternalFilesDirDocuments()：      /storage/emulated/0/Android/data/<包名>/files/Documents
+        StorageUtils.getExternalFilesDirRingtones()：      /storage/emulated/0/Android/data/<包名>/files/Ringtones
+        StorageUtils.getExternalFilesDirAudioBooks()：     /storage/emulated/0/Android/data/<包名>/files/Audiobooks
+        StorageUtils.getExternalFilesDirNotifications()：  /storage/emulated/0/Android/data/<包名>/files/Notifications
+        // ==========存储卡区====================================
+
+        StorageUtils.getRootDirectory()：          /system
+        StorageUtils.getDataDirectory()：          /data
+        StorageUtils.getDownloadCacheDirectory()： /data/cache
+        // 共享存储区
+        StorageUtils.hasExternalStorage()：        true
+        StorageUtils.getDirectoryPictures()：      /storage/emulated/0/Pictures
+        StorageUtils.getDirectoryDCIM()：          /storage/emulated/0/DCIM
+        StorageUtils.getDirectoryMusic()：         /storage/emulated/0/Music
+        StorageUtils.getDirectoryAlarms()：        /storage/emulated/0/Alarms
+        StorageUtils.getDirectoryMovies()：        /storage/emulated/0/Movies
+        StorageUtils.getDirectoryDownloads()：     /storage/emulated/0/Download
+        StorageUtils.getDirectoryScreenshots()：   /storage/emulated/0/Screenshots
+        StorageUtils.getDirectoryDocuments()：     /storage/emulated/0/Documents
+        // ==========存储空间====================================
+        StorageUtils.getTotalRAMSize()            // 5903380480       = 5.90GB
+        StorageUtils.getAvailRAMSize()            // 1943891968       = 1.94GB
+        StorageUtils.getTotalMemorySize()         // 118981873664     = 118.98
+        StorageUtils.getAvailMemorySize()         // 3524849664       = 3.52GB
+        StorageUtils.getTotalExternalMemorySize() // 118981873664     = 118.98
+        StorageUtils.getAvailExternalMemorySize() // 3524849664       = 3.52GB
+    }*/
 
     /**
      * 获取 ActivityManager

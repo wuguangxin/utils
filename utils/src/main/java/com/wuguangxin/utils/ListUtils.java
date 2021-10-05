@@ -27,8 +27,7 @@ public class ListUtils {
         } else if (len >= size - 1) {
             return result.subList(index, size - 1);
         } else {
-            int toIndex = index + len > size ? size : index + len;
-            return result.subList(index, toIndex);
+            return result.subList(index, Math.min(index + len, size));
         }
     }
 }

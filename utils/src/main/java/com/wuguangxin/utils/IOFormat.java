@@ -24,31 +24,33 @@ import java.net.URL;
 /**
  * Bitmap、Drawable、InputStream和byte[] 之间互相转换的（single）工具类。
  *
- * {@link #fileToDrawable(File)}
- * {@link #fileToBitmap(File)}
- *
- * {@link #drawableToBitmap(Drawable)}
- * {@link #drawableToInputStream(Drawable)}
- * {@link #drawableToBitmap(Drawable)}
- * {@link #drawableToBytes(Drawable)}
- *
- * {@link #bitmapToDrawable(Bitmap)}
- * {@link #bitmapToInputStream(Bitmap)}
- * {@link #bitmapToInputStream(Bitmap, int)}
- * {@link #bitmapToBytes(Bitmap)}
- * {@link #bitmapToBytes(Bitmap, int)}
- *
- * {@link #bytesToDrawable(byte[])}
- * {@link #bytesToBitmap(byte[])}
- * {@link #bytesToInputStream(byte[])}
- *
- * {@link #inputStreamToBitmap(InputStream)}
- * {@link #inputStreamToDrawable(InputStream)}
- * {@link #inputStreamToBytes(InputStream)}
+ * <br>{@link #fileToDrawable(File)}
+ * <br>{@link #fileToBitmap(File)}
+ * <br>
+ * <br>{@link #drawableToBitmap(Drawable)}
+ * <br>{@link #drawableToInputStream(Drawable)}
+ * <br>{@link #drawableToBitmap(Drawable)}
+ * <br>{@link #drawableToBytes(Drawable)}
+ * <br>
+ * <br>{@link #bitmapToDrawable(Bitmap)}
+ * <br>{@link #bitmapToInputStream(Bitmap)}
+ * <br>{@link #bitmapToInputStream(Bitmap, int)}
+ * <br>{@link #bitmapToBytes(Bitmap)}
+ * <br>{@link #bitmapToBytes(Bitmap, int)}
+ * <br>
+ * <br>{@link #bytesToDrawable(byte[])}
+ * <br>{@link #bytesToBitmap(byte[])}
+ * <br>{@link #bytesToInputStream(byte[])}
+ * <br>
+ * <br>{@link #inputStreamToBitmap(InputStream)}
+ * <br>{@link #inputStreamToDrawable(InputStream)}
+ * <br>{@link #inputStreamToBytes(InputStream)}
  *
  * {@link #uriToBitmap(Context, Uri)}
  *
  * {@link #readStream(InputStream)}
+ *
+ * <p>Created by wuguangxin on 14/6/2 </p>
  */
 public class IOFormat {
 
@@ -85,7 +87,9 @@ public class IOFormat {
             e.printStackTrace();
         } finally {
             try {
-                is.close();
+                if (is != null) {
+                    is.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,12 +108,14 @@ public class IOFormat {
         InputStream is = null;
         try {
             is = new FileInputStream(file);
-            return inputStreamToBitmap(is);
+            return BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                is.close();
+                if (is != null) {
+                    is.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -206,10 +212,9 @@ public class IOFormat {
      */
     public InputStream bitmapToInputStream(Bitmap bitmap, int quality) {
         if (bitmap == null) return null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, quality, baos);
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        return bais;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, quality, os);
+        return new ByteArrayInputStream(os.toByteArray());
     }
 
     /**
@@ -231,9 +236,9 @@ public class IOFormat {
      */
     public byte[] bitmapToBytes(Bitmap bitmap, int quality) {
         if (bitmap == null) return null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, quality, baos);
-        return baos.toByteArray();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, quality, os);
+        return os.toByteArray();
     }
 
     /**
@@ -312,34 +317,34 @@ public class IOFormat {
     /**
      * InputStream 转换成 Bitmap
      *
-     * @param inputStream InputStream
+     * @param is InputStream
      * @return Bitmap
      */
-    public Bitmap inputStreamToBitmap(InputStream inputStream) {
-        return BitmapFactory.decodeStream(inputStream);
+    public Bitmap inputStreamToBitmap(InputStream is) {
+        return BitmapFactory.decodeStream(is);
     }
 
     /**
      * InputStream 转换成 Drawable
      *
-     * @param inputStream InputStream
+     * @param is InputStream
      * @return Drawable
      */
-    public Drawable inputStreamToDrawable(InputStream inputStream) {
-        return bitmapToDrawable(inputStreamToBitmap(inputStream));
+    public Drawable inputStreamToDrawable(InputStream is) {
+        return bitmapToDrawable(inputStreamToBitmap(is));
     }
 
     /**
      * InputStream 转换成 byte[]
      *
-     * @param inputStream InputStream
+     * @param is InputStream
      * @return byte[]
      */
-    public byte[] inputStreamToBytes(InputStream inputStream) {
+    public byte[] inputStreamToBytes(InputStream is) {
         byte[] readByte = new byte[1024];
         StringBuilder sb = new StringBuilder();
         try {
-            while (inputStream.read(readByte, 0, 1024) != -1) {
+            while (is.read(readByte, 0, 1024) != -1) {
                 sb.append(new String(readByte));
             }
             return sb.toString().getBytes();
@@ -390,12 +395,12 @@ public class IOFormat {
     /**
      * 生成与原图同样大小的Bitmap，不作压缩
      *
-     * @param imageUrl 图片URL
+     * @param pathName 文件路径
      * @return Bitmap
      */
-    public Bitmap urlToBitmap(String imageUrl) {
+    public Bitmap urlToBitmap(String pathName) {
         try {
-            return BitmapFactory.decodeFile(imageUrl);
+            return BitmapFactory.decodeFile(pathName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -405,50 +410,52 @@ public class IOFormat {
     /**
      * 得到图片字节流 数组大小
      *
-     * @param inStream InputStream
+     * @param is InputStream
      * @return byte[]
      * @throws Exception
      */
-    public byte[] readStream(InputStream inStream) throws Exception {
-        int len;
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        while ((len = inStream.read(buffer)) != -1) {
-            outStream.write(buffer, 0, len);
+    public byte[] readStream(InputStream is) throws Exception {
+        if (is == null) {
+            return null;
         }
-        outStream.close();
-        inStream.close();
-        return outStream.toByteArray();
+        int len;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        while ((len = is.read(buffer)) != -1) {
+            os.write(buffer, 0, len);
+        }
+        os.close();
+        is.close();
+        return os.toByteArray();
     }
 
     /**
-     * 简单获取网落图片资源
+     * 同步获取网落图片并转为Bitmap返回（需要在子线程操作）。
      *
      * @param url String
      * @return Bitmap
      */
-    public Bitmap getBitmapFromUrl(final String url) {
+    public Bitmap getBitmapFromUrl(String url) {
         if (TextUtils.isEmpty(url)) {
             return null;
         }
         InputStream is = null;
-        URL imgUrl;
         try {
-            imgUrl = new URL(url);
+            URL imgUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-            // conn.setConnectionTiem(0); // 表示没有时间限制
             conn.setConnectTimeout(6000); // 超时时间
             conn.setDoInput(true);
             conn.setUseCaches(false); // 不使用缓存
-            // conn.connect(); // 这句可有可无，没有影响
+            conn.connect(); // 这句可有可无，没有影响
             is = conn.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            return bitmap;
+            return BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                is.close();
+                if (is != null) {
+                    is.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

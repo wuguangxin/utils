@@ -22,8 +22,8 @@ import androidx.annotation.StringRes;
  */
 public class ToastUtils {
 
-    private static int ICON_SUCCESS = R.drawable.xin_toast_icon;
-    private static int ICON_FAILED = R.drawable.xin_toast_icon;
+    private static final int ICON_SUCCESS = R.drawable.xin_toast_icon;
+    private static final int ICON_FAILED = R.drawable.xin_toast_icon;
     private static WeakReference<Toast> mSystemToast;
     private static WeakReference<CustomToast> mToast;
 

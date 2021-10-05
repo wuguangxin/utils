@@ -9,7 +9,7 @@ import java.util.Objects;
 import androidx.core.util.Supplier;
 
 /**
- * Object对象工具类（copy了 @{@link Objects}），因为Objects类仅支持API19以上
+ * Object对象工具类（复制了 @{@link Objects}），因为Objects类仅支持API19以上
  * Created by wuguangxin on 2019-12-27.
  */
 public class ObjectUtils {

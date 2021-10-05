@@ -48,47 +48,6 @@ private static boolean isAudioUsable;
 		}
 	}
 
-//	/**
-//	 * 该方法在API 22 以前使用（不包括22），如果API在16包括以上，使用 getNotificationOnSDK22After().
-//	 * @param context
-//	 * @param intent
-//	 * @param id
-//	 * @param title
-//	 * @param message
-//	 * @param icon
-//	 * @return
-//	 */
-//	@NonNull
-//	private static Notification getNotification(Context context, Intent intent, int id, String title, String message, int icon) {
-//		Notification notification = new Notification(icon, message, System.currentTimeMillis());
-//		PendingIntent pendingIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-//		// 设置点击状态栏的图标出现的提示信息
-//		// 该方法在API22之后删除了。
-////		notification.setLatestEventInfo(context, title, message, pendingIntent);
-//		// audioStreamType的值必须AudioManager中的值，代表着响铃的模式
-//		notification.audioStreamType = android.media.AudioManager.ADJUST_LOWER;
-//		// 点击通知自动消失
-//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		// 点击清除通知不消失，直到用户点击通知
-////		notification.flags |= Notification.FLAG_NO_CLEAR;
-//		if(isAudioUsable()){
-//			// 默认声音
-//			notification.defaults |= Notification.DEFAULT_SOUND;
-//			// 自定义声音
-////			notification.sound = Uri.parse("file:///android_asset/sound_buy_ok.mp3");  // asset文件
-////			notification.sound = Uri.parse("file:///sdcard/Music/voice/xy2_tingyuan.mp3");  // SD卡
-////			notification.sound = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.sound_buy_ok);
-////			notification.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "7");
-//		}
-//		if(isShakeUsable()){
-//			// 默认震动
-//			notification.defaults |= Notification.DEFAULT_VIBRATE;
-//			// 自定义震动规律
-////			notification.vibrate = vibrate;
-//		}
-//		return notification;
-//	}
-
 	/**
 	 * 当创建通知时，如果SDK大于22，则使用本方法，但该方法最小支持为SDK16
 	 * @param context 上下文

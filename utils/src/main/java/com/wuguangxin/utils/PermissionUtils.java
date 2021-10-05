@@ -24,21 +24,6 @@ public class PermissionUtils {
      */
     public static boolean checkPermission(Context context, String permission) {
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
-
-//        boolean result = false;
-//        if (VERSION.SDK_INT >= 23) {
-//            try {
-//                Class<?> clazz = Class.forName("android.content.Context");
-//                Method method = clazz.getMethod("checkSelfPermission", String.class);
-//                result = (int) method.invoke(context, permission) == PackageManager.PERMISSION_GRANTED;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            PackageManager pm = context.getPackageManager();
-//            result = pm.checkPermission(permission, context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
-//        }
-//        return result;
     }
 
     /**
@@ -49,7 +34,8 @@ public class PermissionUtils {
      * @return 如果其中某个权限为获取，返回false，否则返回true
      */
     public static boolean checkPermission(Context context, String... permissions) {
-        if (context == null || permissions == null) return true;
+        ObjectUtils.requireNonNull(context, "'context' cannot be null");
+        if (permissions == null) return true;
         String packageName = context.getPackageName();
         PackageManager packageManager = context.getPackageManager();
         for (String permission : permissions) {
@@ -68,6 +54,7 @@ public class PermissionUtils {
      * @return
      */
     public static String[] checkUnAcceptPermission(Context context, String... permissions) {
+        ObjectUtils.requireNonNull(context, "'context' cannot be null");
         ArrayList<String> list = new ArrayList<>();
         if (permissions != null) {
             for (String permission : permissions) {
@@ -90,6 +77,17 @@ public class PermissionUtils {
      * @param requestCode 请求码
      */
     public static void requestPermissions(Activity activity, String[] permissions, int requestCode) {
+        ActivityCompat.requestPermissions(activity, permissions, requestCode);
+    }
+
+    /**
+     * 请求权限。（直接搬用系统的： {@link ActivityCompat#requestPermissions(Activity, String[], int)}）
+     *
+     * @param activity Activity
+     * @param requestCode 请求码
+     * @param permissions 权限集
+     */
+    public static void requestPermissions(Activity activity, int requestCode, String... permissions) {
         ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 }

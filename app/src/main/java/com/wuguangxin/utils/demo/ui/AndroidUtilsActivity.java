@@ -5,10 +5,13 @@ import android.widget.TextView;
 
 import com.wuguangxin.utils.AndroidUtils;
 import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utils.demo.databinding.ActivityAndroidUtilsBinding;
 
 import butterknife.BindView;
 
 public class AndroidUtilsActivity extends BaseActivity {
+    ActivityAndroidUtilsBinding binding;
+
     @BindView(R.id.android_info) TextView mTextView;
 
     @Override
@@ -18,6 +21,7 @@ public class AndroidUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        binding = ActivityAndroidUtilsBinding.inflate(getLayoutInflater());
         setTitle(getSimpleTitle());
 
         StringBuilder sb = new StringBuilder();
@@ -37,7 +41,7 @@ public class AndroidUtilsActivity extends BaseActivity {
         sb.append("\n是否开启了重力感应：").append(AndroidUtils.isOpenRotate(context));
         sb.append("\n是否开启了锁屏功能：").append(AndroidUtils.isOpenKeyguard(context));
         // 需要权限
-//        sb.append("\n是否支持指纹传感器：").append(AndroidUtils.isSupportFingerprint(context));
+        sb.append("\n是否支持指纹传感器：").append(AndroidUtils.isSupportFingerprint(context));
 //        sb.append("\n是否开启了指纹传感器：").append(AndroidUtils.hasEnrolledFingerprints(context));
         sb.append("\n是否开启了辅助功能：").append("有bug"/*AndroidUtils.isAccessibilitySettingsOn(context, null)*/);
         sb.append("\n悬浮窗口权限是否打开：").append(AndroidUtils.checkAppOps(context));
@@ -75,13 +79,13 @@ public class AndroidUtilsActivity extends BaseActivity {
 
     @Override
     public void setListener() {
-        findViewById(R.id.run_background).setOnClickListener(v -> AndroidUtils.setAppRunInBackground(context));
-        findViewById(R.id.reboot).setOnClickListener(v -> AndroidUtils.restartApplication(context));
-        findViewById(R.id.uninstall).setOnClickListener(v -> AndroidUtils.uninstallApplication(context));
-        findViewById(R.id.startApp).setOnClickListener(v -> AndroidUtils.startApplication(context));
-        findViewById(R.id.shareApp).setOnClickListener(v -> AndroidUtils.shareApplication(context));
-        findViewById(R.id.immersion).setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this));
-        findViewById(R.id.immersion2).setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this, (ViewGroup) getWindow().getDecorView()));
-        findViewById(R.id.immersion_clear).setOnClickListener(v -> AndroidUtils.clearImmersionStatusBar(AndroidUtilsActivity.this));
+        binding.runBackground.setOnClickListener(v -> AndroidUtils.setAppRunInBackground(context));
+        binding.reboot.setOnClickListener(v -> AndroidUtils.restartApplication(context));
+        binding.uninstall.setOnClickListener(v -> AndroidUtils.uninstallApplication(context));
+        binding.startApp.setOnClickListener(v -> AndroidUtils.startApplication(context));
+        binding.shareApp.setOnClickListener(v -> AndroidUtils.shareApplication(context));
+        binding.immersion.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this));
+        binding.immersion2.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this, (ViewGroup) getWindow().getDecorView()));
+        binding.immersionClear.setOnClickListener(v -> AndroidUtils.clearImmersionStatusBar(AndroidUtilsActivity.this));
     }
 }

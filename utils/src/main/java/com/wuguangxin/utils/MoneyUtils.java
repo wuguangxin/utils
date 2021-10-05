@@ -1,10 +1,8 @@
 package com.wuguangxin.utils;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 /**
@@ -25,11 +23,11 @@ public class MoneyUtils {
      * System.out.println(formatString(",###,###.00", bd1)); //out: .00
      * System.out.println(formatString(",###,##0.00", bd1)); //out: 0.00
      */
-    private static final String REG = "#####0.00";
+    private static final String REG = "######.######";
 
 
     /**
-     * 格式化金额
+     * 格式化金额（小数点后的0会去掉，如1.0，返回1，1.010，返回1.01）
      * @param value 字符串金额
      * @return
      */
@@ -49,40 +47,38 @@ public class MoneyUtils {
     /**
      * 格式化金额
      * @param value 金额
-     * @param unit 附加文字，比如"元"
+     * @param suffix 后缀，比如"元"
      * @return
      */
-    public static String format(String value, String unit) {
-        return format(formatBigDecimal(value), unit);
+    public static String format(String value, String suffix) {
+        return format(formatBigDecimal(value), suffix);
     }
 
     /**
      * 格式化金额
      *
      * @param value 金额
-     * @param unit 附加文字，比如"元"
+     * @param suffix 后缀，比如"元"
      * @return
      */
-    public static String format(Number value, String unit) {
+    public static String format(Number value, String suffix) {
         if (value == null) value = BigDecimal.ZERO;
-        if (TextUtils.isEmpty(unit)) unit = "";
-        DecimalFormat format = new DecimalFormat(REG);
-        return format.format(value) + unit;
+        if (suffix == null) suffix = "";
+        return new DecimalFormat(REG).format(value) + suffix;
     }
 
     /**
      * 格式化金额
      *
      * @param value 数值
-     * @param unit 附加文字，比如"元"
+     * @param suffix 后缀，比如"元"
      * @param emptyValue 如果格式化后的金额为0，则返回该值
      * @return
      */
-    public static String format(Number value, String unit, String emptyValue) {
+    public static String format(Number value, String suffix, String emptyValue) {
         if (isZero(value)) return emptyValue;
-        if (TextUtils.isEmpty(unit)) unit = "";
-        DecimalFormat format = new DecimalFormat(REG);
-        return format.format(value) + unit;
+        if (suffix == null) suffix = "";
+        return new DecimalFormat(REG).format(value) + suffix;
     }
 
     /**
@@ -183,15 +179,7 @@ public class MoneyUtils {
             return BigDecimal.ZERO;
         }
         try {
-            if (number instanceof Integer
-                    || number instanceof Float
-                    || number instanceof Long
-                    || number instanceof Double
-                    || number instanceof Short
-                    || number instanceof BigInteger
-                    || number instanceof BigDecimal
-                    || number instanceof Number
-                    ) {
+            if (number instanceof Number) {
                 return new BigDecimal(number.toString());
             } else if (number instanceof String) {
                 String str = ((String) number).replaceAll(",", "");
@@ -200,8 +188,9 @@ public class MoneyUtils {
                 return BigDecimal.ZERO;
             }
         } catch (Exception e) {
-            return BigDecimal.ZERO;
+            e.printStackTrace();
         }
+        return BigDecimal.ZERO;
     }
 
     /**
@@ -213,15 +202,14 @@ public class MoneyUtils {
      * @return
      */
     public static BigDecimal getProfit(BigDecimal money, BigDecimal income, int duration, int ratio) {
-        BigDecimal profit = BigDecimal.ZERO;
-        if (money == null || money.compareTo(BigDecimal.ZERO) == 0) {
-            return profit;
+        boolean isZero = money == null || money.compareTo(BigDecimal.ZERO) == 0;
+        if (isZero) {
+            return BigDecimal.ZERO;
+        } else {
+            return money
+                    .multiply(income)
+                    .multiply(BigDecimal.valueOf(duration))
+                    .divide(BigDecimal.valueOf(ratio * 100L), 2, BigDecimal.ROUND_DOWN);
         }
-        profit = money
-                .multiply(income)
-                .multiply(BigDecimal.valueOf(duration))
-                .divide(BigDecimal.valueOf(ratio * 100), 2, BigDecimal.ROUND_DOWN);
-        Log.i("getProfit", "收益 profit：" + profit.toString());
-        return profit;
     }
 }

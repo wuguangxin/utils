@@ -15,23 +15,15 @@ import java.text.NumberFormat;
  */
 public class NumberUtils {
 
+    private static final String REG = "######.######";
+
     /**
      * 去小数后面的.00 或 .0
      * @param number 数值
      * @return 字符串
      */
-    public static String replaceZero(Number number) {
-        if(number == null) {
-            return "0";
-        }
-        String s = number.toString();
-        if(TextUtils.isEmpty(s)) {
-            return "0";
-        }
-        if(s.startsWith(".")) s = "0" + s;
-        if(s.endsWith(".00")) s = s.replace(".00", "");
-        if(s.endsWith(".0")) s = s.replace(".0", "");
-        return s;
+    public static String removeEndZero(Number number) {
+        return new DecimalFormat(REG).format(number);
     }
 
     /**

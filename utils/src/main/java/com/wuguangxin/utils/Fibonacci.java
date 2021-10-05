@@ -1,9 +1,9 @@
 package com.wuguangxin.utils;
 
 /**
- * 斐波那契数列。前两个数固定为1，第三位及以后为前两位之和；
- * 1 1 2 3 5 8 13 21
- * Created by wuguangxin on 2020-05-28.
+ * 斐波那契数列。前两个数固定为1，第三位及以后为前两位之和：
+ * <br>(1 1 2 3 5 8 13 21)
+ * <p>Created by wuguangxin on 2020-05-28.
  */
 public class Fibonacci {
 

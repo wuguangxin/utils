@@ -42,10 +42,9 @@ import java.util.concurrent.RecursiveTask;
 import androidx.annotation.RequiresApi;
 
 /**
- * 文件操作工具类
- * 参考资料 http://www.tuicool.com/articles/AvUnqiy
- * file:///android_asset/
- * Created by wuguangxin on 2014/5/5
+ * 文件操作工具类。
+ * <p>资源路径：file:///android_asset/
+ * <p>Created by wuguangxin on 2014/5/5
  */
 public class FileUtils {
     private static final String TAG = FileUtils.class.getSimpleName();
@@ -68,7 +67,7 @@ public class FileUtils {
     /**
      * 把序列化对象保存到内存中
      *
-     * @param obj 序列化对象
+     * @param obj            序列化对象
      * @param targetFilePath 保存路径
      * @return 序列化成功返回true
      */
@@ -112,9 +111,9 @@ public class FileUtils {
     /**
      * 存储List对象
      *
-     * @param context 程序上下文
+     * @param context  程序上下文
      * @param fileName 文件名，要在系统内保持唯一
-     * @param list 对象数组集合，对象必须实现 Parcelable 接口
+     * @param list     对象数组集合，对象必须实现 Parcelable 接口
      * @return boolean 存储成功的标志
      */
     @SuppressLint("Recycle")
@@ -139,6 +138,7 @@ public class FileUtils {
 
     /**
      * 获取文件大小
+     *
      * @param file
      * @return
      */
@@ -154,6 +154,7 @@ public class FileUtils {
 
     /**
      * 获取文件大小（递归方式）
+     *
      * @param file
      * @return
      */
@@ -176,6 +177,7 @@ public class FileUtils {
 
     /**
      * 获取文件大小（线程池方式）
+     *
      * @param file
      * @return
      */
@@ -223,8 +225,9 @@ public class FileUtils {
 
     /**
      * 格式化文件大小
+     *
      * @param context
-     * @param size Long类型的字节大小
+     * @param size    Long类型的字节大小
      * @return
      */
     public static String formatFileSize(Context context, long size) {
@@ -233,8 +236,9 @@ public class FileUtils {
 
     /**
      * 格式化文件大小
+     *
      * @param context
-     * @param size Long类型的字节大小
+     * @param size    Long类型的字节大小
      * @return
      */
     public static String formatShortFileSize(Context context, long size) {
@@ -263,7 +267,7 @@ public class FileUtils {
     /**
      * 复制流
      *
-     * @param is 要复制的文件InputStream
+     * @param is         要复制的文件InputStream
      * @param targetFile 目标文件路径
      */
     public static void copyInputStream(InputStream is, File targetFile) {
@@ -294,8 +298,8 @@ public class FileUtils {
     /**
      * 异步把文件从Assets下复制到data/data/下
      *
-     * @param context 上下文
-     * @param fileName 文件名
+     * @param context       上下文
+     * @param fileName      文件名
      * @param targetFileDir 目标文件所在目录
      */
     public static void copyRawFile(Context context, int resId, String fileName, File targetFileDir) {
@@ -344,7 +348,7 @@ public class FileUtils {
      * 异步复制assets中的文件夹到指定目录下
      *
      * @param context
-     * @param dirName Assets目录下的文件夹(不能是子目录)
+     * @param dirName  Assets目录下的文件夹(不能是子目录)
      * @param savePath 目标文件夹
      */
     public static void copyAssetsDir(final Context context, final String dirName, final String savePath) {
@@ -454,7 +458,7 @@ public class FileUtils {
     /**
      * 把数据写入到文件
      *
-     * @param data 数据
+     * @param data     数据
      * @param filePath 目标文件路径
      */
     public static boolean writeTextToFile(String data, String filePath) {
@@ -464,7 +468,7 @@ public class FileUtils {
     /**
      * 把数据写入到文件
      *
-     * @param data 数据
+     * @param data       数据
      * @param targetFile 目标文件
      */
     public static boolean writeTextToFile(String data, File targetFile) {
@@ -475,7 +479,7 @@ public class FileUtils {
     /**
      * 把数据写入到文件
      *
-     * @param data 数据
+     * @param data       数据
      * @param targetFile 目标文件
      */
     public static boolean writeTextToFile(byte[] data, File targetFile) {
@@ -634,7 +638,8 @@ public class FileUtils {
         try {
             in = context.openFileInput(accessFileName);
             byte[] buf = new byte[in.available()];
-            while (in.read(buf) != -1) { }
+            while (in.read(buf) != -1) {
+            }
             return new String(buf, Charset.forName("UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -689,7 +694,7 @@ public class FileUtils {
      * 异步把文件从Assets下复制到data/data/files/ 下
      *
      * @param context
-     * @param fileName 要复制的文件名
+     * @param fileName   要复制的文件名
      * @param targetFile 目标文件
      */
     public static void copyAssetsFileAsync(final Context context, final String fileName, final File targetFile) {
@@ -706,7 +711,7 @@ public class FileUtils {
     /**
      * 复制文件
      *
-     * @param sourceFile 源
+     * @param sourceFile      源
      * @param destinationFile 目标
      * @throws IOException 异常
      */
@@ -730,7 +735,7 @@ public class FileUtils {
     /**
      * 从一个输入流复制到一个输出流（默认缓冲大小 8192 B ）
      *
-     * @param input 输入流
+     * @param input  输入流
      * @param output 输出流
      * @return 总大小
      * @throws IOException 异常
@@ -780,12 +785,11 @@ public class FileUtils {
     }
 
 
-
     /**
      * 判断一个网络URL文件是否已下载到指定的目录下
      *
      * @param path 路劲
-     * @param url 网络URL
+     * @param url  网络URL
      * @return
      */
     public static boolean isExistsFile(String path, String url) {
