@@ -25,7 +25,7 @@ public class App extends Application {
         Logger.setDebug(Constants.LOG_DEBUG);   // 日志debug模式
         Logger.setTagPrefix("wgx/");            // 设置日志Tag前缀，便于过滤
 
-//         StrictModeUtils.start(true); // 开始使用严格策略模式来检查程序性能
+        //StrictModeUtils.start(true); // 开始使用严格策略模式来检查程序性能
     }
 
     public Context getContext() {
