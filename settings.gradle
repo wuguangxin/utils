@@ -9,6 +9,6 @@ dependencyResolutionManagement {
         maven { url 'https://www.jitpack.io' }
     }
 }
-rootProject.name = "utils"
+rootProject.name = "lib-utils"
 include ':app'
 include ':utils'
