@@ -23,7 +23,6 @@ public class StorageUtilsActivity extends BaseActivity {
     public void initView() {
         setTitle(getSimpleTitle());
         Context context = this;
-        StorageUtils.test(this);
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n====存储信息=====");
