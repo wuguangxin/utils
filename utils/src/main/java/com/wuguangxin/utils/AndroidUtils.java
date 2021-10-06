@@ -488,7 +488,6 @@ public class AndroidUtils {
      * @return MAC地址
      * @deprecated use getMac()
      */
-    @SuppressLint("HardwareIds")
     public static String getMac(Context context) {
         try {
             WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
