@@ -9,8 +9,8 @@ android {
     defaultConfig {
         targetSdk rootProject.ext.targetSdkVersion
         minSdk rootProject.ext.minSdkVersion
-        versionCode 3
-        versionName "1.3.0"
+        versionCode 4
+        versionName "1.4.0"
 
         // 作用是当本项目作为lib或者module被别人使用，如果本项目中有不可被混淆的代码时，可在本项目中开启混淆配置，
         // 当第三方引用到本module并打包时，会自动应用本module中的混淆配置文件，避免别人忘记配置而导致错误
