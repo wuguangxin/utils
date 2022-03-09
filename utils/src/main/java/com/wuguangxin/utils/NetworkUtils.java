@@ -1,8 +1,6 @@
 package com.wuguangxin.utils;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,9 +8,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+
+import androidx.annotation.RequiresPermission;
 
 /**
  * 网络工具类。
@@ -27,18 +26,30 @@ public class NetworkUtils {
         return null;
     }
 
-    public static NetworkInfo getNetworkInfo(Context context) {
-        return (getConnectivityManager(context)).getActiveNetworkInfo();
+    /**
+     * 判断是否有可用网络
+     *
+     * @param context 上下文
+     */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    public static boolean isConnected(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            return info != null && info.isConnected();
+        }
+        return false;
     }
 
     /**
      * 检测是否支持网络链接
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isNetSupport(Context context) {
         try {
-            ConnectivityManager connectivityManager = getConnectivityManager(context);
-            if (connectivityManager != null) {
-                NetworkInfo[] infoArr = connectivityManager.getAllNetworkInfo();
+            ConnectivityManager manager = getConnectivityManager(context);
+            if (manager != null) {
+                NetworkInfo[] infoArr = manager.getAllNetworkInfo();
                 for (NetworkInfo info : infoArr) {
                     if (info.getState() == NetworkInfo.State.CONNECTED) {
                         return true;
@@ -56,10 +67,11 @@ public class NetworkUtils {
      *
      * @param context 上下文
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifiConnected1(Context context) {
         ConnectivityManager manager = getConnectivityManager(context);
         if (manager != null) {
-            NetworkInfo info = manager.getActiveNetworkInfo();
+             NetworkInfo info = manager.getActiveNetworkInfo();
             return info != null && info.getType() == ConnectivityManager.TYPE_WIFI;
         }
         return false;
@@ -71,24 +83,11 @@ public class NetworkUtils {
      *
      * @param context 上下文
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifiConnected(Context context) {
         ConnectivityManager manager = getConnectivityManager(context);
         if (manager != null) {
             NetworkInfo info = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            return info != null && info.isConnected();
-        }
-        return false;
-    }
-
-    /**
-     * 判断是否有可用网络
-     *
-     * @param context 上下文
-     */
-    public static boolean isConnected(Context context) {
-        ConnectivityManager manager = getConnectivityManager(context);
-        if (manager != null) {
-            NetworkInfo info = manager.getActiveNetworkInfo();
             return info != null && info.isConnected();
         }
         return false;
@@ -101,13 +100,23 @@ public class NetworkUtils {
      * @param context 上下文
      * @return 基站的连接状态
      */
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isBaseStateConnection(Context context) {
-        ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = getConnectivityManager(context);
         if (manager != null) {
             NetworkInfo info = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             return info != null && info.isConnected();
         }
         return false;
+    }
+
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    public static NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+        if (manager != null) {
+            return manager.getActiveNetworkInfo();
+        }
+        return null;
     }
 
     /**
@@ -122,16 +131,7 @@ public class NetworkUtils {
                 .setPositiveButton("设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = null;
-                        //判断手机系统的版本  即API大于10 就是3.0或以上版本
-                        if (Build.VERSION.SDK_INT > 10) {
-                            intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                        } else {
-                            intent = new Intent();
-                            ComponentName component = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
-                            intent.setComponent(component);
-                            intent.setAction("android.intent.action.VIEW");
-                        }
+                        Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
                         context.startActivity(intent);
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -154,15 +154,16 @@ public class NetworkUtils {
     /**
      * 获取当前连接网络类型
      *
-     * @param paramContext
+     * @param context
      * @return
      */
-    public static int getNetworkType(Context paramContext) {
-        ConnectivityManager localConnectivityManager = (ConnectivityManager) paramContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (localConnectivityManager != null) {
-            NetworkInfo localNetworkInfo = localConnectivityManager.getActiveNetworkInfo();
-            if (localNetworkInfo != null) {
-                return localNetworkInfo.getType();
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+    public static int getNetworkType(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            if (info != null) {
+                return info.getType();
             }
         }
         return -1;
@@ -171,14 +172,15 @@ public class NetworkUtils {
     /**
      * 检测是否使用3G/4G
      *
-     * @param paramContext
+     * @param context
      * @return
      */
-    public static boolean is3Gor4G(Context paramContext) {
+    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
+    public static boolean is3Gor4G(Context context) {
         try {
-            TelephonyManager telephonyManager = (TelephonyManager) paramContext.getSystemService(Context.TELEPHONY_SERVICE);
-            if (telephonyManager != null) {
-                int networkType = telephonyManager.getNetworkType();
+            TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if (manager != null) {
+                int networkType = manager.getNetworkType();
                 return networkType == TelephonyManager.NETWORK_TYPE_UMTS        // 3 3G
                         || networkType == TelephonyManager.NETWORK_TYPE_EVDO_A  // 6 API 4：中国电信的3g网络，是3G中的一种版本
                         || networkType == TelephonyManager.NETWORK_TYPE_HSDPA   // 8 API 5：3GPP中三个发展阶段：基本型HSDPA、增强型HSDPA、新空中接口。
@@ -213,13 +215,13 @@ public class NetworkUtils {
      * @param context
      * @return
      */
-    @SuppressLint("DefaultLocale")
+    @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isWifiEnabled(Context context) {
         try {
-            ConnectivityManager connectivityManager = getConnectivityManager(context);
-            if (connectivityManager != null) {
-                NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-                return info != null && info.getTypeName().toLowerCase().equals("wifi");
+            ConnectivityManager manager = getConnectivityManager(context);
+            if (manager != null) {
+                NetworkInfo info = manager.getActiveNetworkInfo();
+                return info != null && info.getTypeName().equalsIgnoreCase("wifi");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,10 +236,10 @@ public class NetworkUtils {
      * @return
      */
     public static String getWifiIpAddress(Context context) {
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager != null) {
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            int ipAddress = wifiInfo.getIpAddress();
+        WifiManager manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (manager != null) {
+            WifiInfo info = manager.getConnectionInfo();
+            int ipAddress = info.getIpAddress();
             if (ipAddress == 0) return null;
             return ((ipAddress & 0xff) + "." + (ipAddress >> 8 & 0xff) + "."
                     + (ipAddress >> 16 & 0xff) + "." + (ipAddress >> 24 & 0xff));

@@ -17,7 +17,7 @@ import java.util.Locale;
  */
 @SuppressLint("SimpleDateFormat")
 public class DateUtils {
-    private static final String DEFAULT_URL = "http://www.baidu.com"; // 默认时间来源
+    private static final String DEFAULT_URL = "https://www.baidu.com"; // 默认时间来源
     public static final SimpleDateFormat FORMAT_DATE_LONG = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat FORMAT_DATE_SHORT = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat FORMAT_DATE = FORMAT_DATE_SHORT;

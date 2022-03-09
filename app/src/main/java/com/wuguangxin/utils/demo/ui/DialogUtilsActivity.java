@@ -1,9 +1,15 @@
 package com.wuguangxin.utils.demo.ui;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -141,11 +147,56 @@ public class DialogUtilsActivity extends BaseActivity {
         switch (v.getId()) {
         case R.id.showDialog:
             if (dialog == null) {
-                dialog = DialogUtils.showDialog(this, "标题", "恭喜你中大奖了！", null, null);
+                dialog = showDialog(this, null, null);
             } else {
                 dialog.show();
             }
             break;
         }
+    }
+
+    public static AlertDialog showDialog(final Context context, final Intent posIntent, final Intent negIntent) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        if (negIntent != null) {
+            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    context.startActivity(negIntent);
+                }
+            });
+        }
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                if (posIntent != null) {
+                    context.startActivity(posIntent);
+                }
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        View view = View.inflate(context, R.layout.dialog_edit, null);
+        EditText editText = view.findViewById(R.id.edit_text);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        alertDialog.setView(view);
+        alertDialog.show();
+        return alertDialog;
     }
 }

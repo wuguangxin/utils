@@ -1,6 +1,7 @@
 package com.wuguangxin.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,5 +30,11 @@ public class ListUtils {
         } else {
             return result.subList(index, Math.min(index + len, size));
         }
+    }
+
+    public static <T> List<T> toList(T... elements) {
+        List<T> list = new ArrayList<T>();
+        Collections.addAll(list, elements);
+        return list;
     }
 }

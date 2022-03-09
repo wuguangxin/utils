@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.RequiresPermission;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 /*
@@ -488,15 +489,17 @@ public class AndroidUtils {
      * @return MAC地址
      * @deprecated use getMac()
      */
+    @SuppressLint("HardwareIds")
+    @Deprecated
     public static String getMac(Context context) {
-        try {
+        /*try {
             WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo wifiInfo = wifi.getConnectionInfo();
             return wifiInfo.getMacAddress();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return null;
+        }*/
+        return getMac();
     }
 
     /**
@@ -1521,6 +1524,7 @@ public class AndroidUtils {
      * @param context context
      * @return 是否支持指纹识别
      */
+    @RequiresPermission(android.Manifest.permission.USE_FINGERPRINT)
     public static boolean isSupportFingerprint(Context context) {
         ObjectUtils.requireNonNull(context, "'context' cannot be null");
         if (VERSION.SDK_INT < VERSION_CODES.M) {
@@ -1537,8 +1541,9 @@ public class AndroidUtils {
      * @param context context
      * @return 是否有注册过的指纹信息
      */
+    @RequiresPermission(android.Manifest.permission.USE_FINGERPRINT)
     public static boolean hasEnrolledFingerprints(Context context) {
-        ObjectUtils.requireNonNull(context, "'context' cannot be null");
+        ObjectUtils.requireNonNull(context, "'context' not be null");
         if (VERSION.SDK_INT < VERSION_CODES.M) {
             FingerprintManagerCompat manager = FingerprintManagerCompat.from(context);
             return manager.hasEnrolledFingerprints();
@@ -1555,7 +1560,7 @@ public class AndroidUtils {
      * @return 是否开启
      */
     public static boolean isAccessibilitySettingsOn(Context context, Class<? extends AccessibilityService> serviceClass) {
-        ObjectUtils.requireNonNull(context, "'context' cannot be null");
+        ObjectUtils.requireNonNull(context, "'context' not be null");
         if (serviceClass != null) {
             int accessibilityEnabled = 0;
             // TestService为对应的服务

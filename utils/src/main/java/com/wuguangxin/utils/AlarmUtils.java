@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * 到期提醒工具类
+ * 提醒工具类
  * Created by wuguangxin on 15-6-16
  */
 public class AlarmUtils {
