@@ -1,18 +1,23 @@
 package com.wuguangxin.utils.demo.ui;
 
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.AndroidUtils;
 import com.wuguangxin.utils.demo.R;
-import com.wuguangxin.utils.demo.databinding.ActivityAndroidUtilsBinding;
-
-import butterknife.BindView;
 
 public class AndroidUtilsActivity extends BaseActivity {
-    ActivityAndroidUtilsBinding binding;
 
-    @BindView(R.id.android_info) TextView mTextView;
+    private TextView info;
+    private Button runBackground;
+    private Button reboot;
+    private Button uninstall;
+    private Button startApp;
+    private Button shareApp;
+    private Button immersion;
+    private Button immersion2;
+    private Button immersionClear;
 
     @Override
     public int getLayoutRes() {
@@ -21,8 +26,17 @@ public class AndroidUtilsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        binding = ActivityAndroidUtilsBinding.inflate(getLayoutInflater());
         setTitle(getSimpleTitle());
+
+        info = findViewById(R.id.android_info);
+        runBackground = findViewById(R.id.run_background);
+        reboot = findViewById(R.id.reboot);
+        uninstall = findViewById(R.id.uninstall);
+        startApp = findViewById(R.id.startApp);
+        shareApp = findViewById(R.id.shareApp);
+        immersion = findViewById(R.id.immersion);
+        immersion2 = findViewById(R.id.immersion2);
+        immersionClear = findViewById(R.id.immersion_clear);
 
         StringBuilder sb = new StringBuilder();
 
@@ -43,7 +57,8 @@ public class AndroidUtilsActivity extends BaseActivity {
         // 需要权限
         sb.append("\n是否支持指纹传感器：").append(AndroidUtils.isSupportFingerprint(context));
 //        sb.append("\n是否开启了指纹传感器：").append(AndroidUtils.hasEnrolledFingerprints(context));
-        sb.append("\n是否开启了辅助功能：").append("有bug"/*AndroidUtils.isAccessibilitySettingsOn(context, null)*/);
+        sb.append("\n是否开启了辅助功能：").append("有bug"/*AndroidUtils.isAccessibilitySettingsOn(context,
+        null)*/);
         sb.append("\n悬浮窗口权限是否打开：").append(AndroidUtils.checkAppOps(context));
 
         sb.append("\n\n=========屏幕信息：=========");
@@ -69,7 +84,7 @@ public class AndroidUtilsActivity extends BaseActivity {
         sb.append("\n友盟使用的设备信息：").append(AndroidUtils.getDeviceInfo(context));
 
 
-        mTextView.setText(sb);
+        info.setText(sb);
     }
 
     @Override
@@ -79,13 +94,13 @@ public class AndroidUtilsActivity extends BaseActivity {
 
     @Override
     public void setListener() {
-        binding.runBackground.setOnClickListener(v -> AndroidUtils.setAppRunInBackground(context));
-        binding.reboot.setOnClickListener(v -> AndroidUtils.restartApplication(context));
-        binding.uninstall.setOnClickListener(v -> AndroidUtils.uninstallApplication(context));
-        binding.startApp.setOnClickListener(v -> AndroidUtils.startApplication(context));
-        binding.shareApp.setOnClickListener(v -> AndroidUtils.shareApplication(context));
-        binding.immersion.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this));
-        binding.immersion2.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this, (ViewGroup) getWindow().getDecorView()));
-        binding.immersionClear.setOnClickListener(v -> AndroidUtils.clearImmersionStatusBar(AndroidUtilsActivity.this));
+        runBackground.setOnClickListener(v -> AndroidUtils.setAppRunInBackground(context));
+        reboot.setOnClickListener(v -> AndroidUtils.restartApplication(context));
+        uninstall.setOnClickListener(v -> AndroidUtils.uninstallApplication(context));
+        startApp.setOnClickListener(v -> AndroidUtils.startApplication(context));
+        shareApp.setOnClickListener(v -> AndroidUtils.shareApplication(context));
+        immersion.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this));
+        immersion2.setOnClickListener(v -> AndroidUtils.setImmersionStatusBar(AndroidUtilsActivity.this, (ViewGroup) getWindow().getDecorView()));
+        immersionClear.setOnClickListener(v -> AndroidUtils.clearImmersionStatusBar(AndroidUtilsActivity.this));
     }
 }

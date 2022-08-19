@@ -9,10 +9,7 @@ import com.wuguangxin.utils.demo.R;
 
 import java.io.File;
 
-import butterknife.BindView;
-
 public class StorageUtilsActivity extends BaseActivity {
-    @BindView(R.id.storage_info) TextView mTextView;
 
     @Override
     public int getLayoutRes() {
@@ -71,6 +68,7 @@ public class StorageUtilsActivity extends BaseActivity {
         sb.append(format("截屏目录：", StorageUtils.getDirectoryScreenshots())); // /storage/emulated/0/Screenshots
 
         String info = sb.toString().replaceAll(getPackageName(), "<包名>");
+        TextView mTextView = findViewById(R.id.storage_info);
         mTextView.setText(info);
     }
 

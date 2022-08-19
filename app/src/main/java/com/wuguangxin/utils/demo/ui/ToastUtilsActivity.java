@@ -1,17 +1,13 @@
 package com.wuguangxin.utils.demo.ui;
 
-import android.view.View;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.ToastUtils;
 import com.wuguangxin.utils.demo.R;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class ToastUtilsActivity extends BaseActivity {
 
-    @BindView(R.id.toast_text) TextView mTextView;
+    private TextView mTextView;
     private int count;
 
     @Override
@@ -22,6 +18,7 @@ public class ToastUtilsActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle(getSimpleTitle());
+        mTextView = findViewById(R.id.toast_text);
     }
 
     @Override
@@ -31,13 +28,10 @@ public class ToastUtilsActivity extends BaseActivity {
 
     @Override
     public void setListener() {
-
-    }
-
-    @OnClick({R.id.show_toast})
-    public void onClick(View v) {
-        count++;
-        mTextView.setText(String.valueOf(count));
-        ToastUtils.showToast(this, "Toast " + count);
+        findViewById(R.id.show_toast).setOnClickListener(v -> {
+            count++;
+            mTextView.setText(String.valueOf(count));
+            ToastUtils.showToast(ToastUtilsActivity.this, "Toast " + count);
+        });
     }
 }

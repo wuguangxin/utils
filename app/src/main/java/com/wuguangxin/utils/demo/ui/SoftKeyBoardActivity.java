@@ -6,11 +6,8 @@ import android.widget.EditText;
 import com.wuguangxin.utils.SoftHideKeyBoardUtil;
 import com.wuguangxin.utils.demo.R;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class SoftKeyBoardActivity extends BaseActivity {
-    @BindView(R.id.edit) EditText mEditText;
+    private EditText mEditText;
 
     @Override
     public int getLayoutRes() {
@@ -20,6 +17,8 @@ public class SoftKeyBoardActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle(getSimpleTitle());
+
+        mEditText = findViewById(R.id.edit);
     }
 
     @Override
@@ -29,11 +28,9 @@ public class SoftKeyBoardActivity extends BaseActivity {
 
     @Override
     public void setListener() {
+        setClickIds(this::onClicked, R.id.show, R.id.hide, R.id.toggle, R.id.pick);
     }
 
-    @OnClick({
-            R.id.show, R.id.hide, R.id.toggle, R.id.pick,
-    })
     public void onClicked(View view) {
         int id = view.getId();
         switch (id) {

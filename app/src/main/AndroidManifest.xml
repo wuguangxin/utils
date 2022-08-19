@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -47,6 +48,7 @@
         <activity android:name=".ui.StorageUtilsActivity" android:screenOrientation="fullSensor"/>
         <activity android:name=".ui.AndroidUtilsActivity" android:screenOrientation="fullSensor"/>
         <activity android:name=".ui.DialogUtilsActivity" android:screenOrientation="fullSensor"/>
+        <activity android:name=".ui.WaveViewActivity" android:screenOrientation="fullSensor"/>
     </application>
 
 </manifest>

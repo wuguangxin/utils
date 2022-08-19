@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ProgressWaveView">
+        <attr name="behindColor" format="reference|color" />
+        <attr name="aboveColor" format="reference|color" />
+        <attr name="waveProgress" format="reference|float" />
+        <attr name="shapeType" format="enum">
+            <enum name="square" value="0" />
+            <enum name="circle" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="lineSpace" format="dimension|reference"/> <!--垂直间距-->
+        <attr name="itemSpace" format="dimension|reference"/> <!--横向间距-->
+        <attr name="spanCount" format="integer|reference"/> <!--横向有几个label-->
+        <attr name="maxSize" format="integer|reference"/> <!--最多显示label个数-->
+        <attr name="singleLine" format="boolean|reference"/> <!--是否只显示一行-->
+    </declare-styleable>
+
+</resources>

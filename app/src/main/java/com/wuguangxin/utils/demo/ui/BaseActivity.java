@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.wuguangxin.utils.Logger;
 import com.wuguangxin.utils.ToastUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private Unbinder mBinder;
     protected Context context;
 
     @Override
@@ -21,7 +19,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
         context = this;
-        mBinder = ButterKnife.bind(this);
         setTitle(getTitleByActivity());
         initView();
         initData();
@@ -35,12 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void initData();
 
     public abstract void setListener();
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBinder != null) mBinder.unbind();
-    }
 
     public void openActivity(Class<? extends Activity> activityClass) {
         Intent intent = new Intent(this, activityClass);
@@ -62,5 +53,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void printLogI(String text) {
         Logger.i(this, text);
+    }
+
+    public void setClickIds(View.OnClickListener clickListener, int... clickViewIds) {
+        if (clickViewIds.length > 0) {
+            for (int id : clickViewIds) {
+                findViewById(id).setOnClickListener(clickListener);
+            }
+        }
     }
 }

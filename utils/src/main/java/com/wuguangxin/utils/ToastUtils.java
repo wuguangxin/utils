@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wuguangxin.R;
-
 import java.lang.ref.WeakReference;
 
 import androidx.annotation.DrawableRes;

@@ -2,7 +2,6 @@ package com.wuguangxin.utils.demo.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,17 +17,13 @@ import com.wuguangxin.utils.DialogUtils;
 import com.wuguangxin.utils.NumberUtils;
 import com.wuguangxin.utils.demo.R;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class DialogUtilsActivity extends BaseActivity {
 
-    @BindView(R.id.showDialog) View mShowDialog;
-    @BindView(R.id.gravityRadioGroup) RadioGroup gravityRadioGroup;
-    @BindView(R.id.alphaSeekBar) SeekBar alphaSeekBar;
-    @BindView(R.id.alphaValue) TextView alphaValue;
-    @BindView(R.id.widthSeekBar) SeekBar widthSeekBar;
-    @BindView(R.id.widthValue) TextView widthValue;
+    private RadioGroup gravityRadioGroup;
+    private SeekBar alphaSeekBar;
+    private TextView alphaValue;
+    private SeekBar widthSeekBar;
+    private TextView widthValue;
 
     int screenWidth;
     AlertDialog dialog;
@@ -36,7 +31,7 @@ public class DialogUtilsActivity extends BaseActivity {
     int gravity = Gravity.CENTER;
     // 宽度
     int width = ViewGroup.LayoutParams.MATCH_PARENT;
-    // 透明度
+    // 透明度0-1
     float alpha;
 
     @Override
@@ -47,6 +42,13 @@ public class DialogUtilsActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle(getSimpleTitle());
+
+        gravityRadioGroup = findViewById(R.id.gravityRadioGroup);
+        alphaSeekBar = findViewById(R.id.alphaSeekBar);
+        alphaValue = findViewById(R.id.alphaValue);
+        widthSeekBar = findViewById(R.id.widthSeekBar);
+        widthValue = findViewById(R.id.widthValue);
+
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         widthSeekBar.setMax(screenWidth);
         widthSeekBar.setProgress(screenWidth);
@@ -111,6 +113,14 @@ public class DialogUtilsActivity extends BaseActivity {
 
             }
         });
+
+        findViewById(R.id.showDialog).setOnClickListener(v -> {
+            if (dialog == null) {
+                dialog = showDialog(context, null, null);
+            } else {
+                dialog.show();
+            }
+        });
     }
 
     private void updateDialog() {
@@ -118,8 +128,8 @@ public class DialogUtilsActivity extends BaseActivity {
     }
 
     private void setAlphaSeekBar(int progress) {
-        alpha = progress;
-        alphaValue.setText(NumberUtils.formatPercent(alpha/(float)alphaSeekBar.getMax(), 2));
+        alpha = progress / 100f;
+        alphaValue.setText(NumberUtils.formatPercent(alpha, 2));
         updateDialog();
     }
 
@@ -139,40 +149,18 @@ public class DialogUtilsActivity extends BaseActivity {
         updateDialog();
     }
 
-
-    @OnClick({
-            R.id.showDialog,
-    })
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.showDialog:
-            if (dialog == null) {
-                dialog = showDialog(this, null, null);
-            } else {
-                dialog.show();
-            }
-            break;
-        }
-    }
-
     public static AlertDialog showDialog(final Context context, final Intent posIntent, final Intent negIntent) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         if (negIntent != null) {
-            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    context.startActivity(negIntent);
-                }
+            dialog.setNegativeButton("取消", (dialog12, which) -> {
+                dialog12.cancel();
+                context.startActivity(negIntent);
             });
         }
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                if (posIntent != null) {
-                    context.startActivity(posIntent);
-                }
+        dialog.setPositiveButton("确定", (dialog1, which) -> {
+            dialog1.cancel();
+            if (posIntent != null) {
+                context.startActivity(posIntent);
             }
         });
 

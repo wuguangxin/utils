@@ -25,16 +25,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class MmkvUtilsActivity extends BaseActivity {
-    @BindView(R.id.edit_text) EditText mEditText;
-    @BindView(R.id.user_radio_group) RadioGroup mUserRadioGroup;
-    @BindView(R.id.user_1) RadioButton mUser1;
-    @BindView(R.id.user_2) RadioButton mUser2;
+    private EditText mEditText;
+    private RadioGroup mUserRadioGroup;
+    private RadioButton mUser1;
+    private RadioButton mUser2;
     private List<UserBean> userList;
     private UserBean currentUser;
+
+    final String KEY_TEST = "text";
+    final String KEY_LIST = "list";
+    final String KEY_MAP = "map";
+    final String KEY_BEAN = "bean";
 
     @Override
     public int getLayoutRes() {
@@ -44,6 +46,12 @@ public class MmkvUtilsActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle(getSimpleTitle());
+
+        mEditText = findViewById(R.id.edit_text);
+        mUserRadioGroup = findViewById(R.id.user_radio_group);
+        mUser1 = findViewById(R.id.user_1);
+        mUser2 = findViewById(R.id.user_2);
+
         userList = new ArrayList<>();
         userList.add(new UserBean(MD5.encode("0"), "张三"));
         userList.add(new UserBean(MD5.encode("1"), "李四"));
@@ -137,19 +145,13 @@ public class MmkvUtilsActivity extends BaseActivity {
                 }
             }
         });
+
+        setClickIds(this::onClicked, R.id.put, R.id.get, R.id.del,
+                R.id.put_list, R.id.get_list, R.id.del_list,
+                R.id.put_map, R.id.get_map, R.id.del_map,
+                R.id.put_bean, R.id.get_bean, R.id.del_bean);
     }
 
-    final String KEY_TEST = "text";
-    final String KEY_LIST = "list";
-    final String KEY_MAP = "map";
-    final String KEY_BEAN = "bean";
-
-    @OnClick({
-            R.id.put, R.id.get, R.id.del,
-            R.id.put_list, R.id.get_list, R.id.del_list,
-            R.id.put_map, R.id.get_map, R.id.del_map,
-            R.id.put_bean, R.id.get_bean, R.id.del_bean,
-    })
     public void onClicked(View view) {
         int id = view.getId();
         switch (id) {

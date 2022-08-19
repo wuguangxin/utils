@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:padding="15dp">
+
+    <RelativeLayout
+        android:id="@+id/extreme_rain_vol_anim_layout"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/extreme_rain_vol_anim_bg_out"
+        android:padding="20dp">
+
+        <com.wuguangxin.utils.demo.view.ProgressWaveView
+            android:id="@+id/extreme_rain_vol_anim"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/extreme_rain_vol_anim_bg_in"
+            app:aboveColor="#355BDD"
+            app:behindColor="#99355BDD"
+            app:shapeType="circle"
+            app:waveProgress="0.8" />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="@id/extreme_rain_vol_anim"
+            android:layout_alignTop="@id/extreme_rain_vol_anim"
+            android:layout_alignBottom="@id/extreme_rain_vol_anim"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/extreme_rain_vol_level"
+            android:visibility="visible"
+            app:layout_constraintDimensionRatio="H,117:117" />
+
+        <ImageView
+            android:id="@+id/bubble1"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bubble"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/bubble2"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bubble"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/bubble3"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/bubble"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/extreme_rain_vol_anim_layout2"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/extreme_rain_vol_anim_bg_out"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/extreme_rain_vol_anim2"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/extreme_rain_vol_anim_bg_in"
+            android:scaleType="centerInside"
+            android:src="@drawable/anim_wave_5" />
+
+    </RelativeLayout>
+
+</LinearLayout>

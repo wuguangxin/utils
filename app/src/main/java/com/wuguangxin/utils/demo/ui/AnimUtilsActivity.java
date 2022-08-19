@@ -18,11 +18,9 @@ import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import butterknife.BindView;
-import butterknife.OnClick;
 
 public class AnimUtilsActivity extends BaseActivity {
-    @BindView(R.id.anim_image_view) ImageView mImageView;
+    private ImageView mImageView;
 
     @Override
     public int getLayoutRes() {
@@ -32,6 +30,7 @@ public class AnimUtilsActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle(getSimpleTitle());
+        mImageView = findViewById(R.id.anim_image_view);
     }
 
     @Override
@@ -40,21 +39,19 @@ public class AnimUtilsActivity extends BaseActivity {
 
     @Override
     public void setListener() {
+        setClickIds(this::onClicked,
+                R.id.left_in, R.id.left_out,
+                R.id.top_in, R.id.top_out,
+                R.id.right_in, R.id.right_out,
+                R.id.bottom_in, R.id.bottom_out,
 
+                R.id.fade_in, R.id.fade_out,
+                R.id.rotate_20, R.id.rotate_360,
+                R.id.zoom_out, R.id.zoom_in,
+
+                R.id.request_permission, R.id.check_permission, R.id.write_file);
     }
 
-    @OnClick({
-            R.id.left_in, R.id.left_out,
-            R.id.top_in, R.id.top_out,
-            R.id.right_in, R.id.right_out,
-            R.id.bottom_in, R.id.bottom_out,
-
-            R.id.fade_in, R.id.fade_out,
-            R.id.rotate_20, R.id.rotate_360,
-            R.id.zoom_out, R.id.zoom_in,
-
-            R.id.request_permission, R.id.check_permission, R.id.write_file,
-    })
     public void onClicked(View view) {
         int id = view.getId();
         switch (id) {
