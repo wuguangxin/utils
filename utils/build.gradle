@@ -30,7 +30,7 @@ android {
 
                     // You can then customize attributes of the publication as shown below.
                     groupId = 'com.wuguangxin.utils' //
-                    artifactId = 'final'
+//                    artifactId = 'utils'
                     version = defaultConfig.versionCode
                 }
             }
