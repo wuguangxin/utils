@@ -1,11 +1,11 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.AndroidUtils;
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 public class AndroidUtilsActivity extends BaseActivity {
 

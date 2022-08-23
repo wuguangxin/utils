@@ -1,10 +1,10 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.view.View;
 import android.widget.EditText;
 
 import com.wuguangxin.utils.SoftHideKeyBoardUtil;
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 public class SoftKeyBoardActivity extends BaseActivity {
     private EditText mEditText;

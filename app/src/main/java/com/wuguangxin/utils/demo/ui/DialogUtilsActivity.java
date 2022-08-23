@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.wuguangxin.utils.DialogUtils;
 import com.wuguangxin.utils.NumberUtils;
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 public class DialogUtilsActivity extends BaseActivity {
 

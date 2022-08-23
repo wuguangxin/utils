@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.view.View;
 import com.wuguangxin.utils.JsonUtils;
 import com.wuguangxin.utils.ListUtils;
 import com.wuguangxin.utils.MapUtils;
-import com.wuguangxin.utils.demo.R;
-import com.wuguangxin.utils.demo.UserBean;
+import com.wuguangxin.utilsdemo.R;
+import com.wuguangxin.utilsdemo.UserBean;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         PackageManager pm = getPackageManager();
         List<PackageInfo> packinfos = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES | PackageManager.GET_PERMISSIONS);
         for (PackageInfo info : packinfos) {
-            if (!"com.wuguangxin.utils.demo".equals(info.packageName)) {
+            if (!"com.wuguangxin.utilsdemo".equals(info.packageName)) {
                 printLogI("不是本APP");
                 continue;
             }

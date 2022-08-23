@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.view.View;
 import android.widget.EditText;
@@ -7,9 +7,9 @@ import android.widget.RadioGroup;
 
 import com.wuguangxin.utils.Logger;
 import com.wuguangxin.utils.MD5;
-import com.wuguangxin.utils.demo.AppConfig;
-import com.wuguangxin.utils.demo.R;
-import com.wuguangxin.utils.demo.UserBean;
+import com.wuguangxin.utilsdemo.AppConfig;
+import com.wuguangxin.utilsdemo.R;
+import com.wuguangxin.utilsdemo.UserBean;
 import com.wuguangxin.utils.mmkv.MmkvUtils;
 
 import org.json.JSONArray;

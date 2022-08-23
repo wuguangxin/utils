@@ -1,11 +1,11 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.content.Context;
 import android.widget.TextView;
 
 import com.wuguangxin.utils.FileUtils;
 import com.wuguangxin.utils.StorageUtils;
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 import java.io.File;
 

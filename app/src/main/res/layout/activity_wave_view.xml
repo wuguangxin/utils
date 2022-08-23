@@ -15,7 +15,7 @@
         android:background="@drawable/extreme_rain_vol_anim_bg_out"
         android:padding="20dp">
 
-        <com.wuguangxin.utils.demo.view.ProgressWaveView
+        <com.wuguangxin.utilsdemo.view.ProgressWaveView
             android:id="@+id/extreme_rain_vol_anim"
             android:layout_width="117dp"
             android:layout_height="117dp"

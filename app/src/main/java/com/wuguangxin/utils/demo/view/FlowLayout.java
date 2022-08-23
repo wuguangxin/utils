@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.view;
+package com.wuguangxin.utilsdemo.view;
 
 import android.content.Context;
 import android.os.Handler;

@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.animation.ValueAnimator;
 import android.graphics.drawable.AnimationDrawable;
@@ -10,8 +10,8 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
-import com.wuguangxin.utils.demo.R;
-import com.wuguangxin.utils.demo.view.ProgressWaveView;
+import com.wuguangxin.utilsdemo.R;
+import com.wuguangxin.utilsdemo.view.ProgressWaveView;
 
 /**
  * 波浪View

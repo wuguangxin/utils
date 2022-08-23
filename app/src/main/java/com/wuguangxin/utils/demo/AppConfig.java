@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo;
+package com.wuguangxin.utilsdemo;
 
 import com.wuguangxin.utils.mmkv.Config;
 import com.wuguangxin.utils.mmkv.EditorProxy;

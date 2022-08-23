@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.app.Activity;
 import android.content.Context;

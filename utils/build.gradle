@@ -29,8 +29,8 @@ android {
                     from components.release
 
                     // You can then customize attributes of the publication as shown below.
-                    groupId = 'com.wuguangxin' //
-                    artifactId = 'utils'
+                    groupId = 'com.wuguangxin.utils' //
+                    artifactId = 'final'
                     version = defaultConfig.versionCode
                 }
             }

@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.ui;
+package com.wuguangxin.utilsdemo.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.wuguangxin.utils.AnimUtil;
 import com.wuguangxin.utils.BitmapUtils;
 import com.wuguangxin.utils.PermissionUtils;
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 import java.io.File;
 

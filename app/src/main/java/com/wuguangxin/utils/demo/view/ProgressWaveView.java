@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.demo.view;
+package com.wuguangxin.utilsdemo.view;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -17,7 +17,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.wuguangxin.utils.demo.R;
+import com.wuguangxin.utilsdemo.R;
 
 /**
  * 水波纹进度组件

@@ -8,7 +8,7 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.wuguangxin.utils.demo"
+        applicationId "com.wuguangxin.utilsdemo"
         multiDexEnabled true
         targetSdk rootProject.ext.targetSdkVersion
         minSdk rootProject.ext.minSdkVersion
