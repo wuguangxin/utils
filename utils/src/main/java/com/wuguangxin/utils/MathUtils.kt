@@ -1,4 +1,4 @@
-package com.wuguangxin.utils
+package com.wuguangxin.utils;
 
 import java.math.BigDecimal
 

@@ -1,4 +1,4 @@
-package com.wuguangxin.utils
+package com.wuguangxin.utils;
 
 import android.content.BroadcastReceiver
 import android.content.Context

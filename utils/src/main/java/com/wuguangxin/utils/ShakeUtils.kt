@@ -1,4 +1,4 @@
-package com.wuguangxin.utils
+package com.wuguangxin.utils;
 
 import android.content.Context
 import android.view.HapticFeedbackConstants

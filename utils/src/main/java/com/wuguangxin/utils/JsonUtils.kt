@@ -1,4 +1,4 @@
-package com.wuguangxin.utils
+package com.wuguangxin.utils;
 
 import com.google.gson.GsonBuilder
 import org.json.JSONObject

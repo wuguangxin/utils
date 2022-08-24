@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.wuguangxin.utils.JsonUtils;
 import com.wuguangxin.utils.ListUtils;
 import com.wuguangxin.utils.MapUtils;
+import com.wuguangxin.utils.JsonUtils;
 import com.wuguangxin.utilsdemo.R;
 import com.wuguangxin.utilsdemo.UserBean;
 

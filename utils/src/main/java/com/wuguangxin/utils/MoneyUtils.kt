@@ -1,6 +1,6 @@
-package com.wuguangxin.utils
+package com.wuguangxin.utils;
 
-import com.wuguangxin.utils.ext.toBigDecimal
+import com.wuguangxin.ext.toBigDecimal
 import java.math.BigDecimal
 import java.text.DecimalFormat
 

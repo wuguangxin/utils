@@ -1,4 +1,4 @@
-package com.wuguangxin.utils.ext
+package com.wuguangxin.ext
 
 import java.math.BigDecimal
 import java.math.RoundingMode

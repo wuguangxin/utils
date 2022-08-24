@@ -1,7 +1,7 @@
 package com.wuguangxin.utilsdemo;
 
-import com.wuguangxin.utils.mmkv.Config;
 import com.wuguangxin.utils.mmkv.EditorProxy;
+import com.wuguangxin.utils.mmkv.Config;
 
 /**
  * MMKV存储。适用于存储APP的配置数据
