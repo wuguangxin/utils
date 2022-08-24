@@ -10,6 +10,6 @@ dependencyResolutionManagement {
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
     }
 }
-rootProject.name = "utils"
+rootProject.name = "UtilsDemo"
 include ':app'
 include ':utils'
